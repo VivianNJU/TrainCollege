@@ -9,13 +9,12 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 @Repository
 public class StudentDaoImpl implements StudentDao {
     @Autowired
     private SessionFactory sessionFactory;
 
+    private static final String searchByEmailPwd = "from Student where email = :email and password = :password";
     private static final String searchByEmail = "from Student where email = :email";
 
     private Session getCurrentSession() {
@@ -51,6 +50,15 @@ public class StudentDaoImpl implements StudentDao {
 
     public void flush() {
         getCurrentSession().flush();
+    }
+
+    public Student getByEmailPwd(String email, String password) {
+        Query query = getCurrentSession().createQuery(searchByEmailPwd).setParameter("email",email).setParameter("password",password);
+        if(query.list().size()==0)
+            return null;
+        else{
+            return (Student) query.list().get(0);
+        }
     }
 
     public Student getByEmail(String email) {

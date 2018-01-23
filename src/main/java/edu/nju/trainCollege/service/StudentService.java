@@ -1,9 +1,14 @@
 package edu.nju.trainCollege.service;
 
 import edu.nju.trainCollege.model.Student;
+import org.hibernate.service.spi.ServiceException;
+
+import javax.mail.internet.ParseException;
 
 public interface StudentService {
-    public String login(String email,String password);
+    public Student login(String email,String password);
 
-    public Integer register(Student student);
+    public boolean register(Student student);
+
+    public void processActivate(String email , String validateCode)throws ServiceException;
 }

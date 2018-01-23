@@ -6,22 +6,21 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>AdminLTE 2 | Log in</title>
+    <title>Train COLLEGE | Log in</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
-    <link rel="stylesheet" href="static/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="static/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="static/Ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="/static/Ionicons/css/ionicons.min.css">
     <!-- Theme style -->
-    <link rel="stylesheet" href="css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/css/AdminLTE.min.css">
     <!-- iCheck -->
     <%--<link rel="stylesheet" href="../../plugins/iCheck/square/blue.css">--%>
 
@@ -60,12 +59,17 @@
             </div>
             <%--学员类型为0，机构类型为1--%>
             <input name="type" type="hidden" value="0">
+            <p style="color: red">${error}</p>
+
+            <div class="input-group">
+                <div class="input-group-btn" disabled>
+                    <button type="button" class="btn btn-warning">密码</button>
+                </div>
+                <!-- /btn-group -->
+                <input required type="password" class="form-control" placeholder="密码">
+            </div>
             <br>
 
-            <div class="form-group has-feedback">
-                <input required type="password" class="form-control" placeholder="密码">
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            </div>
             <div class="row">
                 <div class="col-xs-8">
                     <div class="checkbox">
@@ -82,7 +86,7 @@
             </div>
         </form>
 
-        <a href="#" class="text-center">注册成为新学员</a><br>
+        <a href="student/register" class="text-center">注册成为新学员</a><br>
         <a href="#" class="text-center">注册成为新教学机构</a>
 
     </div>
@@ -91,9 +95,9 @@
 <!-- /.login-box -->
 
 <!-- jQuery 3 -->
-<script src="static/jquery/dist/jquery.min.js"></script>
+<script src="/static/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
-<script src="static/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script>
     $(function () {
