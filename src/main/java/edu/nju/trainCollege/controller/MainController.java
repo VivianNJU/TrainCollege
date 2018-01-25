@@ -1,5 +1,6 @@
 package edu.nju.trainCollege.controller;
 
+import com.sun.deploy.util.SessionState;
 import edu.nju.trainCollege.model.Student;
 import edu.nju.trainCollege.service.StudentService;
 import org.hibernate.service.spi.ServiceException;
@@ -9,10 +10,13 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
+@SessionAttributes({"student"})
 public class MainController {
 
     @Autowired
@@ -36,8 +40,9 @@ public class MainController {
                     model.addAttribute("error"," * 该账号未通过邮件认证或已失效");
                     return "index";
                 }else{
-                    request.getSession().setAttribute("user",student);
-                    return "student/homepage";
+//                    因为注解，该属性直接添加到session中
+                    model.addAttribute("student",student);
+                    return "redirect:/student/homepage";
                 }
 
             }else{
@@ -86,5 +91,11 @@ public class MainController {
             model.addAttribute("message",e.getMessage()).addAttribute("title",":(");
         }
         return "student/activate";
+    }
+
+    @RequestMapping(value = "logout")
+    public String logout(SessionStatus status){
+        status.setComplete();
+        return "redirect:/index";
     }
 }

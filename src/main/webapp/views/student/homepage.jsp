@@ -21,15 +21,13 @@
     <link rel="stylesheet" href="/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
          folder instead of downloading all of them to reduce the load. -->
-    <%--<link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">--%>
+    <link rel="stylesheet" href="/css/skins/_all-skins.min.css">
 </head>
-<body>
-<jsp:include page="../public/student_header.jsp" flush="true" >
-    <jsp:param name="name" value="小明"/>
-</jsp:include>
+<body class="skin-green-light sidebar-mini">
+<jsp:include page="../public/student_header.jsp" flush="true" />
 
 <jsp:include page="../public/student_nav.jsp" flush="true" >
-    <jsp:param name="name" value="小明"/>
+    <jsp:param name="homepage" value="activate"/>
 </jsp:include>
 
 <!-- jQuery 3 -->
