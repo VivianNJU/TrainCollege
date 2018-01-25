@@ -59,7 +59,7 @@
             </div>
             <div class="row">
                 <div class="col-xs-8">
-                    <p>* 邮箱验证后，方可用于登陆</p>
+                    <p style="color: red">* 邮箱验证后，方可用于登陆</p>
                 </div>
                 <div class="col-xs-4">
                     <button type="submit" class="btn btn-primary btn-block btn-flat">注册</button>

@@ -32,8 +32,14 @@ public class MainController {
             String password = request.getParameter("password");
             Student student = studentService.login(email,password);
             if(student!=null){
-                request.getSession().setAttribute("user",student);
-                return "student/index";
+                if(student.getState()!=1){
+                    model.addAttribute("error"," * 该账号未通过邮件认证或已失效");
+                    return "index";
+                }else{
+                    request.getSession().setAttribute("user",student);
+                    return "student/homepage";
+                }
+
             }else{
                 model.addAttribute("error"," * 用户名或密码不正确");
                 return "index";
@@ -69,15 +75,15 @@ public class MainController {
     }
 
 
-    @RequestMapping(value = "student/activate", method = RequestMethod.GET)
+    @RequestMapping(value = "student/activate")
     public String activateStudent(HttpServletRequest request, ModelMap model){
         String email = request.getParameter("email");//获取email
         String validateCode = request.getParameter("validateCode");//激活码
         try {
             studentService.processActivate(email , validateCode);//调用激活方法
-            model.addAttribute("message",":) 激活成功");
+            model.addAttribute("message","激活成功").addAttribute("title",":)");
         } catch (ServiceException e) {
-            model.addAttribute("message",":( "+e.getMessage());
+            model.addAttribute("message",e.getMessage()).addAttribute("title",":(");
         }
         return "student/activate";
     }

@@ -26,9 +26,9 @@ public class StudentServiceImpl implements StudentService {
         else{
             studentDao.save(student);
             ///邮件的内容
-            StringBuffer sb=new StringBuffer("感谢您注册Train COLLEGE,点击下面链接激活账号，48小时内有效，否则重新注册账号，链接只能使用一次，请尽快激活！</br>");
+            StringBuffer sb=new StringBuffer("感谢您注册Train COLLEGE,点击下面链接激活账号，请尽快激活！<br>");
             sb.append("如果这不是您的注册行为，请不要点击!<br>");
-            sb.append("<a href=\"http://localhost:8080/student/activte?email=");
+            sb.append("<a href=\"http://localhost:8080/student/activate?email=");
             sb.append(student.getEmail());
             sb.append("&validateCode=");
             sb.append(student.getPassword());

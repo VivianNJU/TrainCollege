@@ -66,7 +66,7 @@
                     <button type="button" class="btn btn-warning">密码</button>
                 </div>
                 <!-- /btn-group -->
-                <input required type="password" class="form-control" placeholder="密码">
+                <input required name="password" type="password" class="form-control" placeholder="密码">
             </div>
             <br>
 

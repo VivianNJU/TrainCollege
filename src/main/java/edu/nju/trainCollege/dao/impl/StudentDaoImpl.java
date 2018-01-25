@@ -40,7 +40,10 @@ public class StudentDaoImpl implements StudentDao {
     }
 
     public void saveOrUpdate(Student entity) {
-        getCurrentSession().saveOrUpdate(entity);
+        Session session = getCurrentSession();
+        Transaction tx=session.beginTransaction();
+        session.saveOrUpdate(entity);
+        tx.commit();
     }
 
     public void delete(Integer id) {
@@ -59,6 +62,7 @@ public class StudentDaoImpl implements StudentDao {
         else{
             return (Student) query.list().get(0);
         }
+
     }
 
     public Student getByEmail(String email) {
