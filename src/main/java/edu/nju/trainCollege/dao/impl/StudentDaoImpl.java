@@ -47,8 +47,7 @@ public class StudentDaoImpl implements StudentDao {
     }
 
     public void delete(Integer id) {
-        Student person = getCurrentSession().load(Student.class,id);
-        getCurrentSession().delete(person);
+
     }
 
     public void flush() {

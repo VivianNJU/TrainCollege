@@ -86,8 +86,8 @@
             </div>
         </form>
 
-        <a href="student/register" class="text-center">注册成为新学员</a><br>
-        <a href="#" class="text-center">注册成为新教学机构</a>
+        <a href="/student/register" class="text-center">注册成为新学员</a><br>
+        <a href="/college/register" class="text-center">注册成为新教学机构</a>
 
     </div>
     <!-- /.login-box-body -->

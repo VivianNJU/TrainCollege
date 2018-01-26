@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: DELL
-  Date: 2018/1/23
-  Time: 19:53
+  Date: 2018/1/26
+  Time: 9:57
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -38,16 +38,16 @@
     </div>
 
     <div class="register-box-body">
-        <p class="login-box-msg">注册成为新用户</p>
+        <p class="login-box-msg">注册成为新教学机构</p>
 
         <form action="register" method="post">
             <div class="form-group has-feedback">
-                <input required name="username" type="text" class="form-control" placeholder="昵称">
+                <input required name="name" type="text" class="form-control" placeholder="(必填)机构名称">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input required name="email" type="email" class="form-control" placeholder="邮箱">
-                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <input required name="phone" type="tel" class="form-control" placeholder="(必填)联系电话">
+                <span class="glyphicon glyphicon-earphone form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
                 <input required name="password1" type="password" class="form-control" placeholder="密码">
@@ -57,9 +57,22 @@
                 <input required name="password2" type="password" class="form-control" placeholder="再输入一次密码">
                 <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
             </div>
+            <div class="form-group has-feedback">
+                <input required name="location" type="text" class="form-control" placeholder="(必填)机构地点">
+                <span class="glyphicon glyphicon-map-marker form-control-feedback"></span>
+            </div>
+            <div class="form-group">
+                <label>师资力量</label>
+                <textarea required name="teacher" rows="5" class="form-control" placeholder="(必填)"></textarea>
+            </div>
+            <div class="form-group">
+                <label>其他介绍</label>
+                <textarea name="other" rows="5" class="form-control" placeholder="(选填)"></textarea>
+            </div>
+
             <div class="row">
                 <div class="col-xs-8">
-                    <p style="color: red">* 邮箱验证后，方可用于登陆</p>
+                    <p style="color: red">* 管理员验证后，方可登陆</p>
                 </div>
                 <div class="col-xs-4">
                     <button type="submit" class="btn btn-primary btn-block btn-flat">注册</button>
@@ -70,7 +83,7 @@
         <p style="color: red">${error}</p>
 
         <a href="index" class="text-center">我已经有账户了</a><br>
-        <a href="/college/register" class="text-center">注册成为新教学机构</a>
+        <a href="/student/register" class="text-center">注册成为新学员</a>
     </div>
     <!-- /.form-box -->
 </div>

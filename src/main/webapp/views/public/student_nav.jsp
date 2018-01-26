@@ -33,7 +33,7 @@
         <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
-            <li class="${homepage}">
+            <li class="${param.homepage}">
                 <a href="/student/homepage">
                     <i class="fa fa-home"></i> <span>主 页</span>
                     <span class="pull-right-container">
@@ -43,7 +43,7 @@
 
 <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
-            <li class="treeview ${browse}">
+            <li class="treeview ${param.browse}">
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
                     <span>课程浏览</span>
@@ -52,9 +52,9 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="${famous}"><a href="#"><i class="fa fa-circle-o"></i> 热门课程</a></li>
-                    <li class="${latest}"><a href="#"><i class="fa fa-circle-o"></i> 最新课程</a></li>
-                    <li class="${collect}"><a href="#"><i class="fa fa-circle-o"></i> 收藏课程</a></li>
+                    <li class="${param.famous}"><a href="#"><i class="fa fa-circle-o"></i> 热门课程</a></li>
+                    <li class="${param.latest}"><a href="#"><i class="fa fa-circle-o"></i> 最新课程</a></li>
+                    <li class="${param.collect}"><a href="#"><i class="fa fa-circle-o"></i> 收藏课程</a></li>
                 </ul>
             </li>
 

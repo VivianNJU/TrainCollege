@@ -1,7 +1,9 @@
 package edu.nju.trainCollege.controller;
 
 import com.sun.deploy.util.SessionState;
+import edu.nju.trainCollege.model.College;
 import edu.nju.trainCollege.model.Student;
+import edu.nju.trainCollege.service.CollegeService;
 import edu.nju.trainCollege.service.StudentService;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class MainController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private CollegeService collegeService;
 
     @RequestMapping(value = "index")
     public String index(ModelMap model){
@@ -54,8 +59,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "student/register", method = RequestMethod.GET)
-    public String studentRegister(ModelMap model){
-        model.addAttribute("error","");
+    public String studentRegister(){
         return "student/register";
     }
 
@@ -77,6 +81,36 @@ public class MainController {
             model.addAttribute("error","注册成功，验证邮件已发送至邮箱，请验证后登陆");
         }
         return "student/register";
+    }
+
+    @RequestMapping(value = "college/register", method = RequestMethod.GET)
+    public String collegeRegister(){
+        return "college/register";
+    }
+
+    @RequestMapping(value = "college/register", method = RequestMethod.POST)
+    public String addCollege(HttpServletRequest request, ModelMap model){
+        String password = request.getParameter("password1");
+        if(!password.equals(request.getParameter("password2"))){
+            model.addAttribute("error","密码不一致");
+            return "college/register";
+        }
+        College college = new College();
+        college.setName(request.getParameter("name"));
+        college.setTeacher(request.getParameter("teacher"));
+        college.setLocation(request.getParameter("Location"));
+        college.setOther(request.getParameter("other"));
+        college.setPhone(request.getParameter("phone"));
+        college.setPassword(password);
+
+
+        String id = collegeService.register(college);
+        if(id.length()<7){
+            model.addAttribute("error","注册失败，请稍后再试");
+        }else{
+            model.addAttribute("error","注册成功，您的机构编码为:<b>"+id+"</b>，待管理员验证后方可用编码登陆。");
+        }
+        return "college/register";
     }
 
 

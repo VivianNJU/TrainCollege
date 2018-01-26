@@ -24,11 +24,19 @@
     <link rel="stylesheet" href="/css/skins/_all-skins.min.css">
 </head>
 <body class="skin-green-light sidebar-mini">
-<jsp:include page="../public/student_header.jsp" flush="true" />
+<div class="wrapper">
+    <jsp:include page="../public/student_header.jsp" flush="true" />
 
-<jsp:include page="../public/student_nav.jsp" flush="true" >
-    <jsp:param name="homepage" value="activate"/>
-</jsp:include>
+    <jsp:include page="../public/student_nav.jsp" flush="true" >
+        <jsp:param name="homepage" value="active"/>
+    </jsp:include>
+
+    <div class="content-wrapper">
+
+    </div>
+
+    <jsp:include page="../public/footer.jsp" flush="true" />
+</div>
 
 <!-- jQuery 3 -->
 <script src="/static/jquery/dist/jquery.min.js"></script>
