@@ -39,6 +39,7 @@
 
     <div class="register-box-body">
         <p class="login-box-msg">注册成为新教学机构</p>
+        <p style="color: red">${error}</p>
 
         <form action="register" method="post">
             <div class="form-group has-feedback">
@@ -80,9 +81,8 @@
                 <!-- /.col -->
             </div>
         </form>
-        <p style="color: red">${error}</p>
 
-        <a href="index" class="text-center">我已经有账户了</a><br>
+        <a href="/index" class="text-center">我已经有账户了</a><br>
         <a href="/student/register" class="text-center">注册成为新学员</a>
     </div>
     <!-- /.form-box -->
@@ -93,15 +93,6 @@
 <script src="/static/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
-<script>
-    $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
-        });
-    });
-</script>
 </body>
 </html>
 

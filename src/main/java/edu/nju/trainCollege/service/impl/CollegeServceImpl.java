@@ -11,7 +11,7 @@ public class CollegeServceImpl implements CollegeService{
     @Autowired
     private CollegeDao collegeDao;
 
-    private static final String ID_FORMATTER = "%07";
+    private static final String ID_FORMATTER = "%07d";
 
     public College login(String id, String password) {
         if(id.length()<7)
@@ -27,8 +27,11 @@ public class CollegeServceImpl implements CollegeService{
     public String register(College college) {
         try{
             int id = collegeDao.save(college);
+            if(id==0)
+                return "";
             return String.format(ID_FORMATTER,id);
         }catch (Exception e){
+            e.printStackTrace();
             return "";
         }
 

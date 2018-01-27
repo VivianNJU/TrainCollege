@@ -100,14 +100,6 @@
 <script src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
 
 <script>
-    $(function () {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
-        });
-    });
-
     function chooose_student() {
         document.getElementById("typename").innerText="学员";
         node = document.getElementsByName("id").item(0);

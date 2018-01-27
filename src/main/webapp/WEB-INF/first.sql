@@ -15,3 +15,21 @@ engine=InnoDB
 ;
 -- 状态0：未验证，状态1：已验证，状态2：已取消
 INSERT INTO student (id, email, username, password) VALUES (1,222@www,lalala,343343);
+
+
+-- #################################################################################
+create table college
+(
+	id int auto_increment
+		primary key,
+	name varchar(255) not null,
+	password varchar(255) not null,
+	phone varchar(25) not null,
+	teacher text not null,
+	other text null,
+	state smallint(6) default '0' null,
+	location varchar(255) not null
+)
+engine=InnoDB
+;
+

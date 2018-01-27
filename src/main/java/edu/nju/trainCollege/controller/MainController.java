@@ -18,7 +18,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
-@SessionAttributes({"student"})
+@SessionAttributes({"student","college"})
 public class MainController {
 
     @Autowired
@@ -52,10 +52,34 @@ public class MainController {
 
             }else{
                 model.addAttribute("error"," * 用户名或密码不正确");
-                return "index";
+                return "/index";
             }
         }
-        return "faillll";
+//        机构登陆
+        else {
+            String id = request.getParameter("id");
+            String password = request.getParameter("password");
+            if(id.length()<7){
+                model.addAttribute("error","编码长度至少7位");
+                return "/index";
+            }
+            College college = collegeService.login(id,password);
+            switch (college.getState()){
+                case 0:
+                    model.addAttribute("error","该账号审查中，暂不能登陆");
+                    return "/index";
+                case 1:
+                    model.addAttribute("college",college);
+                    return "redirect:/college/homepage";
+                case 2:
+                    model.addAttribute("error","该账号已查封");
+                    return "/index";
+                case 3:
+                    model.addAttribute("error","该账号已注销，请重新注册");
+                    return "/index";
+            }
+        }
+        return "/index";
     }
 
     @RequestMapping(value = "student/register", method = RequestMethod.GET)
@@ -98,7 +122,7 @@ public class MainController {
         College college = new College();
         college.setName(request.getParameter("name"));
         college.setTeacher(request.getParameter("teacher"));
-        college.setLocation(request.getParameter("Location"));
+        college.setLocation(request.getParameter("location"));
         college.setOther(request.getParameter("other"));
         college.setPhone(request.getParameter("phone"));
         college.setPassword(password);
