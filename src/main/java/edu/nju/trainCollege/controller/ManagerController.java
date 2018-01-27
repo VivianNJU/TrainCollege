@@ -19,6 +19,16 @@ public class ManagerController {
     @Autowired
     private ManagerService managerService;
 
+    @RequestMapping(value = "all_colleges", method = RequestMethod.GET)
+    public String all_college(){
+        return "/manager/all_colleges";
+    }
+
+    @RequestMapping(value = "all_colleges", method = RequestMethod.POST)
+    public String getAllColleges(){
+        return "/manager/all_colleges";
+    }
+
     @RequestMapping("index")
     public String index(){
         return "/manager/index";
@@ -38,7 +48,7 @@ public class ManagerController {
         if(manager!=null){
 //             因为注解，该属性直接添加到session中
             model.addAttribute("manager",manager);
-            return "redirect:/manager/homepage";
+            return "redirect:/college_manager/homepage";
 
         }else{
             model.addAttribute("error"," * 用户名或密码不正确");

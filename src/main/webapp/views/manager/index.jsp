@@ -43,14 +43,15 @@
     <div class="login-box-body">
         <p class="login-box-msg">经理专属入口</p>
 
-        <form action="/manager/login" method="post">
+        <form action="/college_manager/login" method="post">
+            <p style="color: red">${error}</p>
 
             <div class="form-group has-feedback">
-                <input type="name" class="form-control" placeholder="用户名">
+                <input name="name" type="text" class="form-control" placeholder="用户名">
                 <span class="glyphicon glyphicon-user form-control-feedback"></span>
             </div>
             <div class="form-group has-feedback">
-                <input type="password" class="form-control" placeholder="密码">
+                <input name="password" type="password" class="form-control" placeholder="密码">
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
 

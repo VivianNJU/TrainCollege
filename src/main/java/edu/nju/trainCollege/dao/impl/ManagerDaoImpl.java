@@ -20,6 +20,7 @@ public class ManagerDaoImpl implements ManagerDao {
     }
     public Manager getByNamePwd(String name, String password) {
         Query query = getCurrentSession().createQuery(searchByIdPwd).setParameter("name",name).setParameter("password",password);
+        System.out.println("result: "+query.list().size());
         if(query.list().size()==0)
             return null;
         else{
