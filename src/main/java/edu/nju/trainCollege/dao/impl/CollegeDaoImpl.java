@@ -9,6 +9,9 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Repository
 public class CollegeDaoImpl implements CollegeDao {
     @Autowired
@@ -26,6 +29,21 @@ public class CollegeDaoImpl implements CollegeDao {
             return null;
         else{
             return (College) query.list().get(0);
+        }
+    }
+
+    public List<College> getCollegeByState(int state) {
+        Query query;
+        if(state<0){
+             query= getCurrentSession().createQuery("from College");
+        }else{
+            query= getCurrentSession().createQuery("from College where state =:state").setParameter("state",state);
+        }
+
+        if(query.list().size()==0)
+            return new ArrayList<College>();
+        else{
+            return query.list();
         }
     }
 

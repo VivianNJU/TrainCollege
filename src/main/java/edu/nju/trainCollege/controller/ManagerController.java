@@ -1,15 +1,19 @@
 package edu.nju.trainCollege.controller;
 
+import edu.nju.trainCollege.model.College;
 import edu.nju.trainCollege.model.Manager;
+import edu.nju.trainCollege.model.MyData;
 import edu.nju.trainCollege.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @RequestMapping("college_manager/")
@@ -25,8 +29,24 @@ public class ManagerController {
     }
 
     @RequestMapping(value = "all_colleges", method = RequestMethod.POST)
-    public String getAllColleges(){
-        return "/manager/all_colleges";
+    @ResponseBody
+    public MyData getAllColleges(){
+        MyData data = new MyData();
+        data.setData(managerService.getAllColleges());
+        return data;
+    }
+
+    @RequestMapping(value = "unchecked_colleges", method = RequestMethod.GET)
+    public String unchecked_college(){
+        return "/manager/unchecked_colleges";
+    }
+
+    @RequestMapping(value = "unchecked_colleges", method = RequestMethod.POST)
+    @ResponseBody
+    public MyData getUncheckedColleges(){
+        MyData data = new MyData();
+        data.setData(managerService.getUncheckedColleges());
+        return data;
     }
 
     @RequestMapping("index")

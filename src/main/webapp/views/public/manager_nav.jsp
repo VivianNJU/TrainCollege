@@ -53,7 +53,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="${param.all_college}"><a href="/college_manager/all_colleges"><i class="fa fa-circle-o"></i> 所有机构</a></li>
-                    <li class="${param.famous}"><a href="#"><i class="fa fa-circle-o"></i> 待审核机构</a></li>
+                    <li class="${param.unchecked_college}"><a href="/college_manager/unchecked_colleges"><i class="fa fa-circle-o"></i> 待审核机构</a></li>
                     <li class="${param.famous}"><a href="#"><i class="fa fa-circle-o"></i> 机构统计</a></li>
                 </ul>
             </li>

@@ -33,6 +33,7 @@
         <hibernateVersion>5.2.12.Final</hibernateVersion>
         <jstlVersion>1.2</jstlVersion>
         <jspVersion>2.0</jspVersion>
+        <jsonVersion>2.9.4</jsonVersion>
         <taglibVersion>1.1.2</taglibVersion>
         <elVersion>2.2</elVersion>
         <servletVersion>2.5</servletVersion>
@@ -76,6 +77,27 @@
             <artifactId>javax.mail</artifactId>
             <version>1.5.4</version>
         </dependency>
+
+
+        <!-- 添加对json的支持 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jsonVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jsonVersion}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jsonVersion}</version>
+        </dependency>
+
 
 
 

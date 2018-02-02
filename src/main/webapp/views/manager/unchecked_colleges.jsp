@@ -1,14 +1,15 @@
 <%--
   Created by IntelliJ IDEA.
   User: DELL
-  Date: 2018/1/27
-  Time: 21:32
+  Date: 2018/2/2
+  Time: 15:25
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Train COLLEGE | All Colleges</title>
+    <title>Train COLLEGE | Unchecked Colleges</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -29,7 +30,7 @@
 
     <jsp:include page="../public/manager_nav.jsp" flush="true" >
         <jsp:param name="colleges" value="active menu-open"/>
-        <jsp:param name="all_college" value="active"/>
+        <jsp:param name="unchecked_college" value="active"/>
     </jsp:include>
 
     <div class="content-wrapper">
@@ -37,11 +38,11 @@
         <section class="content-header">
             <h1>
                 机构信息
-                <small>所有机构</small>
+                <small>待审核机构</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/college_manager/homepage"><i class="fa fa-home"></i> 主页</a></li>
-                <li class="active">所有机构</li>
+                <li class="active">待审核机构</li>
             </ol>
         </section>
 
@@ -92,7 +93,7 @@
     $(function () {
         $('#college_table').DataTable({
             "ajax": {
-                "url": "/college_manager/all_colleges",
+                "url": "/college_manager/unchecked_colleges",
                 "type": "POST"
             },
             "columns"     : [
@@ -117,6 +118,7 @@
                     "defaultContent": "<a id=‘more’ onclick='more(this)' href='#'>查看详情</a>"
                 }
             ],
+
             //每行回调函数
             "fnRowCallback": function( nRow, aData ) {
                 //每行中的状态列  该状态进行判断 并设置相关的列值
@@ -137,7 +139,6 @@
                 }
 
             },
-
             'paging'      : true,
             'lengthChange': false,
             'searching'   : true,
