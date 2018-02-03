@@ -64,6 +64,53 @@
                 <!-- /.col -->
             </div>
             <!-- /.row -->
+            <div class="modal fade" id="college-more">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title">机构信息</h4>
+                        </div>
+                        <div class="modal-body">
+
+                            <div class="box-body box-profile">
+                                <img class="profile-user-img img-responsive img-circle" src="/image/college.png" alt="User profile picture">
+                                <h3 id="college_name" class="profile-username text-center"></h3>
+                                <p id="college_id" class="text-muted text-center"></p>
+
+                                <ul class="list-group list-group-unbordered">
+                                    <li class="list-group-item">
+                                        <i class="fa fa-phone margin-r-5"></i><b> 联系方式</b> <a class="pull-right" id="college_phone"></a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fa fa-map-marker margin-r-5"></i><b> 地理位置</b> <a class="pull-right" id="college_loc"></a>
+                                    </li>
+                                </ul>
+
+                                <i class="fa fa-user margin-r-5"></i><b> 师资力量</b>
+
+                                <p id="college_teacher"></p>
+
+                                <hr>
+
+                                <i class="fa fa-file-text-o margin-r-5"></i><b> 其它信息</b>
+
+                                <p id="college_other"></p>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button id="dismiss-button" type="button" class="btn btn-danger pull-left" onclick="dismiss()">驳回</button>
+                            <button id="college_state" type="button" class="btn btn-primary">验证通过</button>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <!-- /.modal -->
+
         </section>
         <!-- /.content -->
 
@@ -90,6 +137,23 @@
 <!-- AdminLTE for demo purposes -->
 <script src="/js/demo.js"></script>
 <script>
+    function dismiss() {
+        $('#college-more').modal('hide');
+        $.post("/college_manager/dismiss_college",
+            {
+                id:document.getElementById("college_id").innerText
+            },
+            function(data,status){
+                if(data==true){
+                    alert("成功");
+                    location.reload();
+                }
+                else{
+                    alert("失败");
+                }
+            });
+    }
+
     $(function () {
         $('#college_table').DataTable({
             "ajax": {
@@ -121,6 +185,9 @@
 
             //每行回调函数
             "fnRowCallback": function( nRow, aData ) {
+                //为id前面补0
+                var id = aData.id;
+                $('td:eq(0)', nRow).html(( "0000000" + id ).substr( -7 ));
                 //每行中的状态列  该状态进行判断 并设置相关的列值
                 var state = aData.state;
                 switch (state){
@@ -176,7 +243,59 @@
      */
     function more(node) {
         var id = node.parentNode.parentNode.firstChild.textContent;
-        alert("查看详情："+id );
+        $.post("/college_manager/get_college",
+            {
+                id:id
+            },
+            function(data,status){
+                if(!data)
+                    alert("查询失败,数据库未连接");
+                else{
+                    $('#college_id').text(( "0000000" + data.id ).substr( -7 ));
+                    $('#college_name').text(data.name);
+                    $('#college_teacher').text(data.teacher);
+                    $('#college_other').text(data.other);
+                    $('#college_phone').text(data.phone);
+                    $('#college_loc').text(data.location);
+                    switch (data.state){
+                        case 0:
+                            $('#dismiss-button').show();
+                            $('#college_state').attr("class", "btn btn-primary").text("通过认证").attr("disabled",false);
+                            $('#college_state').click(function () {
+                                $('#college-more').modal('hide');
+                                $.post("/college_manager/check_college",
+                                    {
+                                        id:id
+                                    },
+                                    function(data,status){
+                                        if(data==true){
+                                            alert("成功");
+                                            location.reload();
+                                        }
+                                        else{
+                                            alert("失败");
+                                        }
+                                    });
+                            });
+                            break;
+                        case 1:
+                            $('#dismiss-button').hide();
+                            $('#college_state').attr("class", "btn btn-success").text("已认证").attr("disabled",true);
+                            break;
+                        case 2:
+                            $('#dismiss-button').hide();
+                            $('#college_state').attr("class", "btn btn-danger").text("已驳回");
+                            break;
+                        case 3:
+                            $('#dismiss-button').hide();
+                            $('#college_state').attr("class", "btn btn-danger").text("已注销");
+                            break;
+                    }
+
+                    $('#college-more').modal('show');
+                }
+            });
+
     }
 </script>
 </body>

@@ -3,6 +3,7 @@ package edu.nju.trainCollege.controller;
 import edu.nju.trainCollege.model.College;
 import edu.nju.trainCollege.model.Manager;
 import edu.nju.trainCollege.model.MyData;
+import edu.nju.trainCollege.model.Student;
 import edu.nju.trainCollege.service.ManagerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 @RequestMapping("college_manager/")
@@ -22,6 +22,26 @@ public class ManagerController {
 
     @Autowired
     private ManagerService managerService;
+
+    @RequestMapping(value = "all_students", method = RequestMethod.GET)
+    public String all_student(){
+        return "/manager/all_students";
+    }
+
+    @RequestMapping(value = "all_students", method = RequestMethod.POST)
+    @ResponseBody
+    public MyData getAllStudent(){
+        MyData data = new MyData();
+        data.setData(managerService.getAllStudents());
+        return data;
+    }
+
+    @RequestMapping(value = "get_student", method = RequestMethod.POST)
+    @ResponseBody
+    public Student getStudentById(HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("id"));
+        return managerService.getStudent(id);
+    }
 
     @RequestMapping(value = "all_colleges", method = RequestMethod.GET)
     public String all_college(){
@@ -47,6 +67,27 @@ public class ManagerController {
         MyData data = new MyData();
         data.setData(managerService.getUncheckedColleges());
         return data;
+    }
+
+    @RequestMapping(value = "get_college", method = RequestMethod.POST)
+    @ResponseBody
+    public College getCollegeById(HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("id"));
+        return managerService.getCollege(id);
+    }
+
+    @RequestMapping(value = "check_college", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean checkCollegeById(HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("id"));
+        return managerService.changeCollegeState(id,1);
+    }
+
+    @RequestMapping(value = "dismiss_college", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean dismissCollegeById(HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("id"));
+        return managerService.changeCollegeState(id,2);
     }
 
     @RequestMapping("index")

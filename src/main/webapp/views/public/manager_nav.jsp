@@ -60,7 +60,7 @@
 
             <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
-            <li class="treeview ${course_more}">
+            <li class="treeview ${param.students}">
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
                     <span>学员浏览</span>
@@ -69,7 +69,7 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="${course_introduction}"><a href="#"><i class="fa fa-circle-o"></i> 所有学员</a></li>
+                    <li class="${param.all_students}"><a href="/college_manager/all_students"><i class="fa fa-circle-o"></i> 所有学员</a></li>
                     <li class="${attendence}"><a href="#"><i class="fa fa-circle-o"></i> 学员统计</a></li>
                 </ul>
             </li>

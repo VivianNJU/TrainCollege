@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: DELL
-  Date: 2018/1/27
-  Time: 21:32
+  Date: 2018/2/3
+  Time: 18:12
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -28,20 +28,20 @@
     <jsp:include page="../public/manager_header.jsp" flush="true" />
 
     <jsp:include page="../public/manager_nav.jsp" flush="true" >
-        <jsp:param name="colleges" value="active menu-open"/>
-        <jsp:param name="all_college" value="active"/>
+        <jsp:param name="students" value="active menu-open"/>
+        <jsp:param name="all_students" value="active"/>
     </jsp:include>
 
     <div class="content-wrapper">
         <!-- 大标题 -->
         <section class="content-header">
             <h1>
-                机构信息
-                <small>所有机构</small>
+                学员信息
+                <small>所有学员</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/college_manager/homepage"><i class="fa fa-home"></i> 主页</a></li>
-                <li class="active">所有机构</li>
+                <li class="active">所有学员</li>
             </ol>
         </section>
 
@@ -64,45 +64,40 @@
             </div>
             <!-- /.row -->
 
-            <div class="modal fade" id="college-more">
+            <div class="modal fade" id="student-more">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title">机构信息</h4>
+                            <h4 class="modal-title">学员信息</h4>
                         </div>
                         <div class="modal-body">
 
                             <div class="box-body box-profile">
-                                <img class="profile-user-img img-responsive img-circle" src="/image/college.png" alt="User profile picture">
-                                <h3 id="college_name" class="profile-username text-center"></h3>
-                                <p id="college_id" class="text-muted text-center"></p>
+                                <img class="profile-user-img img-responsive img-circle" src="/image/user.jpg" alt="User profile picture">
+                                <h3 id="stu_name" class="profile-username text-center"></h3>
+                                <p id="stu_id" class="text-muted text-center"></p>
 
                                 <ul class="list-group list-group-unbordered">
                                     <li class="list-group-item">
-                                        <i class="fa fa-phone margin-r-5"></i><b> 联系方式</b> <a class="pull-right" id="college_phone"></a>
+                                        <i class="fa fa-email margin-r-5"></i><b> 电子邮箱</b> <a class="pull-right" id="stu_email"></a>
                                     </li>
                                     <li class="list-group-item">
-                                        <i class="fa fa-map-marker margin-r-5"></i><b> 地理位置</b> <a class="pull-right" id="college_loc"></a>
+                                        <i class="fa fa-phone margin-r-5"></i><b> 联系方式</b> <a class="pull-right" id="stu_phone"></a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fa fa-user margin-r-5"></i><b> 用户状态</b> <a class="pull-right" id="stu_state"></a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <i class="fa fa-star-half-o margin-r-5"></i><b> 经验值</b> <a class="pull-right" id="stu_expr"></a>
                                     </li>
                                 </ul>
-
-                                <i class="fa fa-user margin-r-5"></i><b> 师资力量</b>
-
-                                <p id="college_teacher"></p>
-
-                                <hr>
-
-                                <i class="fa fa-file-text-o margin-r-5"></i><b> 其它信息</b>
-
-                                <p id="college_other"></p>
                             </div>
 
                         </div>
                         <div class="modal-footer">
-                            <button id="dismiss-button" type="button" class="btn btn-danger pull-left" onclick="dismiss()">驳回</button>
-                            <button id="college_state" type="button" class="btn btn-primary">验证通过</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                         </div>
                     </div>
                     <!-- /.modal-content -->
@@ -135,36 +130,19 @@
 <!-- AdminLTE for demo purposes -->
 <script src="/js/demo.js"></script>
 <script>
-    function dismiss() {
-        $('#college-more').modal('hide');
-        $.post("/college_manager/dismiss_college",
-            {
-                id:document.getElementById("college_id").innerText
-            },
-            function(data,status){
-                if(data==true){
-                    alert("成功");
-                    location.reload();
-                }
-                else{
-                    alert("失败");
-                }
-            });
-    }
-
     $(function () {
         $('#college_table').DataTable({
             "ajax": {
-                "url": "/college_manager/all_colleges",
+                "url": "/college_manager/all_students",
                 "type": "POST"
             },
             "columns"     : [
-                { "title": "机构编号",
+                { "title": "ID",
                     "data":"id"},
-                { "title": "机构名称",
-                    "data":"name"},
-                { "title": "地理位置",
-                    "data":"location"},
+                { "title": "名称",
+                    "data":"username"},
+                { "title": "电子邮箱",
+                    "data":"email"},
                 { "title": "联系电话",
                     "data":"phone"},
                 { "title": "状态",
@@ -182,22 +160,16 @@
             ],
             //每行回调函数
             "fnRowCallback": function( nRow, aData ) {
-                //为id前面补0
-                var id = aData.id;
-                $('td:eq(0)', nRow).html(( "0000000" + id ).substr( -7 ));
                 //每行中的状态列  该状态进行判断 并设置相关的列值
                 var state = aData.state;
                 switch (state){
                     case 0:
-                        $('td:eq(4)', nRow).html("未认证");
+                        $('td:eq(4)', nRow).html("未验证");
                         break;
                     case 1:
-                        $('td:eq(4)', nRow).html("已认证");
+                        $('td:eq(4)', nRow).html("已验证");
                         break;
                     case 2:
-                        $('td:eq(4)', nRow).html("已驳回");
-                        break;
-                    case 3:
                         $('td:eq(4)', nRow).html("已注销");
                         break;
                 }
@@ -249,48 +221,24 @@
                 if(!data)
                     alert("查询失败,数据库未连接");
                 else{
-                    $('#college_id').text(( "0000000" + data.id ).substr( -7 ));
-                    $('#college_name').text(data.name);
-                    $('#college_teacher').text(data.teacher);
-                    $('#college_other').text(data.other);
-                    $('#college_phone').text(data.phone);
-                    $('#college_loc').text(data.location);
+                    $('#stu_id').text(data.id);
+                    $('#stu_username').text(data.username);
+                    $('#stu_email').text(data.email);
+                    $('#stu_expr').text(data.expr);
+                    $('#stu_phone').text(data.phone);
                     switch (data.state){
                         case 0:
-                            $('#dismiss-button').show();
-                            $('#college_state').attr("class", "btn btn-primary").text("通过认证").attr("disabled",false);
-                            $('#college_state').click(function () {
-                                $('#college-more').modal('hide');
-                                $.post("/college_manager/check_college",
-                                    {
-                                        id:id
-                                    },
-                                    function(data,status){
-                                        if(data==true){
-                                            alert("成功");
-                                            location.reload();
-                                        }
-                                        else{
-                                            alert("失败");
-                                        }
-                                    });
-                            });
+                            $('#stu_state').text("未验证");
                             break;
                         case 1:
-                            $('#dismiss-button').hide();
-                            $('#college_state').attr("class", "btn btn-success").text("已认证").attr("disabled",true);
+                            $('#stu_state').text("已验证");
                             break;
                         case 2:
-                            $('#dismiss-button').hide();
-                            $('#college_state').attr("class", "btn btn-danger").text("已驳回");
-                            break;
-                        case 3:
-                            $('#dismiss-button').hide();
-                            $('#college_state').attr("class", "btn btn-danger").text("已注销");
+                            $('#stu_state').text("已注销");
                             break;
                     }
 
-                    $('#college-more').modal('show');
+                    $('#student-more').modal('show');
                 }
             });
 

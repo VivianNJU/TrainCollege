@@ -19,6 +19,7 @@ public class Student {
 
     private int expr;
 
+//    状态0：未验证，状态1：已验证，状态2：已注销
     private int state;
 
     public int getExpr() {

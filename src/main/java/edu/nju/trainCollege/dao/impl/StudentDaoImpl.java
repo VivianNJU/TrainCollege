@@ -9,6 +9,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class StudentDaoImpl implements StudentDao {
     @Autowired
@@ -70,6 +72,15 @@ public class StudentDaoImpl implements StudentDao {
             return null;
         else{
             return (Student) query.list().get(0);
+        }
+    }
+
+    public List<Student> getStudent() {
+        Query query = getCurrentSession().createQuery("from Student");
+        if(query.list().size()==0)
+            return null;
+        else{
+            return query.list();
         }
     }
 }
