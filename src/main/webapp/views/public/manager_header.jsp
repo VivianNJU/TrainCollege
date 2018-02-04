@@ -128,14 +128,14 @@
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-right">
-                                <a href="/logout" class="btn btn-default btn-flat"> 退出 </a>
+                                <a href="/college_manager/logout" class="btn btn-default btn-flat"> 退出 </a>
                             </div>
                         </li>
                     </ul>
                 </li>
                 <!-- Control Sidebar Toggle Button -->
                 <li>
-                    <a href="/logout">
+                    <a href="/college_manager/logout">
                         <i class="fa fa-sign-out"></i>
                     </a>
                 </li>

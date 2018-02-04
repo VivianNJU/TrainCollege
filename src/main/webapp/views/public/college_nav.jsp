@@ -34,7 +34,7 @@
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="${param.homepage}">
-                <a href="/student/homepage">
+                <a href="/college/homepage">
                     <i class="fa fa-home"></i> <span>主 页</span>
                     <span class="pull-right-container">
             </span>
@@ -60,7 +60,7 @@
 
             <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
-            <li class="treeview ${course_more}">
+            <li class="treeview ${param.lesson_more}">
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
                     <span>课程详情</span>
@@ -69,7 +69,7 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="${course_introduction}"><a href="#"><i class="fa fa-circle-o"></i> 新增课程</a></li>
+                    <li class="${param.new_lesson}"><a href="/college/create_lesson"><i class="fa fa-circle-o"></i> 新增课程</a></li>
                     <li class="${attendence}"><a href="#"><i class="fa fa-circle-o"></i> 考勤录入</a></li>
                     <li class="${grade}"><a href="#"><i class="fa fa-circle-o"></i> 成绩录入</a></li>
                 </ul>

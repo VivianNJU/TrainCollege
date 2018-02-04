@@ -43,9 +43,9 @@
 <!-- Bootstrap 3.3.7 -->
 <script src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
 <%--<!-- SlimScroll -->--%>
-<%--<script src="../../bower_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>--%>
+<script src="/static/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <%--<!-- FastClick -->--%>
-<%--<script src="../../bower_components/fastclick/lib/fastclick.js"></script>--%>
+<script src="/static/fastclick/lib/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->

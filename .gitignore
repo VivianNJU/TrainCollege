@@ -14,7 +14,7 @@
 
 # Resources File #
 /src/main/webapp/resources/*
-/src/main/java/edu/nju/trainCollege/tools/*
+/src/main/java/edu/nju/trainCollege/tools/SendEmail.java
 
 # IDEA File #
 .idea/*

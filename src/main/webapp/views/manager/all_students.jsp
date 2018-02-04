@@ -81,7 +81,7 @@
 
                                 <ul class="list-group list-group-unbordered">
                                     <li class="list-group-item">
-                                        <i class="fa fa-email margin-r-5"></i><b> 电子邮箱</b> <a class="pull-right" id="stu_email"></a>
+                                        <i class="fa fa-envelope margin-r-5"></i><b> 电子邮箱</b> <a class="pull-right" id="stu_email"></a>
                                     </li>
                                     <li class="list-group-item">
                                         <i class="fa fa-phone margin-r-5"></i><b> 联系方式</b> <a class="pull-right" id="stu_phone"></a>
@@ -213,7 +213,7 @@
      */
     function more(node) {
         var id = node.parentNode.parentNode.firstChild.textContent;
-        $.post("/college_manager/get_college",
+        $.post("/college_manager/get_student",
             {
                 id:id
             },

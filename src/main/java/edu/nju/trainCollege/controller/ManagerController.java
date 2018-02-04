@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -93,6 +94,12 @@ public class ManagerController {
     @RequestMapping("index")
     public String index(){
         return "/manager/index";
+    }
+
+    @RequestMapping("logout")
+    public String logout(SessionStatus status){
+        status.setComplete();
+        return "redirect:/college_manager/index";
     }
 
     @RequestMapping("homepage")
