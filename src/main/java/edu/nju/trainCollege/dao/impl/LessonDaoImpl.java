@@ -78,10 +78,17 @@ public class LessonDaoImpl implements LessonDao {
     public Integer save(Lesson entity) {
         Session session = getCurrentSession();
         Transaction tx=session.beginTransaction();
-        Integer id = (Integer) session.save(entity);
+        session.save(entity);
         tx.commit();
 
-        return id;
+        Query query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId+" and name= :name and type= :type" +
+                " and startDay= :start and endDay= :end").setParameter("name",entity.getName()).setParameter("cid",entity.getCid())
+                .setParameter("end",entity.getEndDay()).setParameter("start",entity.getStartDay()).setParameter("type",entity.getType());;
+        if(query.list().size()==0)
+            return 0;
+        else{
+            return ((Lesson) query.list().get(0)).getId();
+        }
     }
 
     public void saveOrUpdate(Lesson entity) {

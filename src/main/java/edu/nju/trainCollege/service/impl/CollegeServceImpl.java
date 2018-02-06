@@ -1,15 +1,25 @@
 package edu.nju.trainCollege.service.impl;
 
+import edu.nju.trainCollege.dao.ClassesDao;
 import edu.nju.trainCollege.dao.CollegeDao;
+import edu.nju.trainCollege.dao.LessonDao;
+import edu.nju.trainCollege.model.Classes;
 import edu.nju.trainCollege.model.College;
+import edu.nju.trainCollege.model.Lesson;
 import edu.nju.trainCollege.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class CollegeServceImpl implements CollegeService{
     @Autowired
     private CollegeDao collegeDao;
+    @Autowired
+    private ClassesDao classesDao;
+    @Autowired
+    private LessonDao lessonDao;
 
     private static final String ID_FORMATTER = "%07d";
 
@@ -35,5 +45,48 @@ public class CollegeServceImpl implements CollegeService{
             return "";
         }
 
+    }
+
+    public int createLessonClass(Lesson lesson, List<Classes> classes) {
+        int lid = lessonDao.save(lesson);
+        if(lid==0)
+            return 0;
+        else{
+            for(Classes c:classes){
+                c.setLid(lid);
+                classesDao.save(c);
+            }
+        }
+        return lid;
+    }
+
+    public void saveLesson(Lesson lesson) {
+        if(lesson.getId()<1){
+            return;
+        }
+        lessonDao.saveOrUpdate(lesson);
+    }
+
+    public void saveClass(Classes c) {
+        if(c.getLid()<1){
+            return;
+        }
+        classesDao.saveOrUpdate(c);
+    }
+
+    public void deleteClass(int cid) {
+        classesDao.delete(cid);
+    }
+
+    public Lesson getLessonByLid(int lid) {
+        return lessonDao.get(lid);
+    }
+
+    public Classes getClassesById(int id) {
+        return classesDao.get(id);
+    }
+
+    public List<Classes> getClassesByLid(int lid) {
+        return classesDao.getByLessonId(lid);
     }
 }

@@ -23,7 +23,6 @@ public class MainController {
 
     @Autowired
     private StudentService studentService;
-
     @Autowired
     private CollegeService collegeService;
 

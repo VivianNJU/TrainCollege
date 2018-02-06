@@ -12,16 +12,13 @@ public class Lesson {
     private int id;
 //    所属的机构ID
     private int cid;
-
     private Date startDay;
-
     private Date endDay;
-
     private String name;
-
     private String type;
-
     private String intro;
+    //    状态0，保存未发布；状态1，发布可报名；状态2，发布报名截至；状态3，已结束
+    private int state;
 
 //    每周多少个课时
     private int timePerWeek;
@@ -102,5 +99,13 @@ public class Lesson {
 
     public void setCid(int cid) {
         this.cid = cid;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 }

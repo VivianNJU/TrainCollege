@@ -31,22 +31,6 @@ public class ClassesDaoImpl implements ClassesDao{
         }
     }
 
-    public int saveClasses(List<Classes> classes) {
-        Session session = getCurrentSession();
-        Transaction tx=session.beginTransaction();
-        int result = 0;
-        for(Classes c:classes){
-            try{
-                session.save(c);
-                result++;
-            }catch (Exception ex){
-                ex.printStackTrace();
-            }
-        }
-        tx.commit();
-        return result;
-    }
-
     public Classes get(Integer id) {
         return getCurrentSession().get(Classes.class,id);
     }
@@ -72,7 +56,11 @@ public class ClassesDaoImpl implements ClassesDao{
     }
 
     public void delete(Integer id) {
-
+        Classes c = get(id);
+        Session session = getCurrentSession();
+        Transaction tx=session.beginTransaction();
+        session.delete(c);
+        tx.commit();
     }
 
     public void flush() {

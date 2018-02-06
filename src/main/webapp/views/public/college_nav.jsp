@@ -52,9 +52,9 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="${param.famous}"><a href="#"><i class="fa fa-circle-o"></i> 所有课程</a></li>
-                    <li class="${param.famous}"><a href="#"><i class="fa fa-circle-o"></i> 已开课程</a></li>
-                    <li class="${param.latest}"><a href="#"><i class="fa fa-circle-o"></i> 未开课程</a></li>
+                    <li class="${param.all_lessons}"><a href="/college/all_lessons"><i class="fa fa-circle-o"></i> 所有课程</a></li>
+                    <li class="${param.release_lessons}"><a href="/college/release_lessons"><i class="fa fa-circle-o"></i> 已发布课程</a></li>
+                    <li class="${param.unrelease_lessons}"><a href="/college/unrelease_lessons"><i class="fa fa-circle-o"></i> 未发布课程</a></li>
                 </ul>
             </li>
 

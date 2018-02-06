@@ -43,6 +43,7 @@
             <h1>
                 新建课程计划
                 <small>添加不同的班级</small>
+                <small style="color: red">${error}</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/college/homepage"><i class="fa fa-home"></i> 主页</a></li>
@@ -52,7 +53,7 @@
 
         <!-- Main content -->
         <section class="content">
-
+            <form action="/college/create_lesson" method="post">
             <div class="row">
 
                 <%--课程计划部分--%>
@@ -80,7 +81,7 @@
 
                             <div class="form-group">
                                 <label>课程类型（可多选）：</label>
-                                <select class="form-control select2" multiple="multiple" data-placeholder="选择类型"
+                                <select name="type" class="form-control select2" multiple="multiple" data-placeholder="选择类型"
                                         style="width: 100%;">
                                     <option>语文</option>
                                     <option>数学</option>
@@ -106,21 +107,35 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input type="text" class="form-control pull-right" id="date-range" required>
+                                    <input name="date_range" type="text" class="form-control pull-right" id="date-range" required>
                                 </div>
                                 <!-- /.input group -->
                             </div>
                             <!-- /.form group -->
 
-                            <!-- （课时/周*周次） -->
+                            <!-- 课时 -->
                             <div class="form-group">
-                                <label>课时次数：</label>
+                                <label>课时数量（每周）：</label>
 
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         <i class="fa fa-files-o"></i>
                                     </div>
-                                    <input type="text" class="form-control" data-inputmask='"mask": "9[9]课时/周 × 9[9]周次"' data-mask>
+                                    <input name="times" type="number" class="form-control" placeholder="2">
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                            <!-- /.form group -->
+
+                            <!-- 周次 -->
+                            <div class="form-group">
+                                <label>周次数量：</label>
+
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-files-o"></i>
+                                    </div>
+                                    <input name="weeks" type="number" class="form-control" placeholder="12">
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -134,6 +149,11 @@
 
                         </div>
                         <!-- /.box-body -->
+
+                        <div class="box-footer">
+                            <button class="btn btn-info pull-right" type="submit">保存信息</button>
+                        </div>
+                        <!-- /.box-footer -->
                     </div>
                     <!-- /.box -->
 
@@ -142,8 +162,8 @@
 
                 <%--班级详情--%>
                 <div class="col-md-6" id="classes-more">
-                    <input name="class_num" type="hidden" id="class_num" value="1">
-                    <div class="box box-primary" id="class0">
+                    <input name="class_num" type="hidden" id="class-num" value="1">
+                    <div class="box box-primary">
                         <div class="box-header">
                             <h3 class="box-title"><i class="fa fa-angle-double-right"></i> 填写班级信息</h3>
                         </div>
@@ -191,15 +211,29 @@
                             </div>
                             <!-- /.form group -->
 
-                            <!-- （人/班*班级个数） -->
+                            <!-- 每班人数 -->
                             <div class="form-group">
                                 <label>班级规格：</label>
 
                                 <div class="input-group">
                                     <div class="input-group-addon">
-                                        <i class="fa fa-files-o"></i>
+                                        <i class="fa fa-info"></i>
                                     </div>
-                                    <input name="size1" type="text" class="form-control" data-inputmask='"mask": "9[99]人/班 × 9[9]个班"' data-mask>
+                                    <input name="size1" type="number" class="form-control" placeholder="45">
+                                </div>
+                                <!-- /.input group -->
+                            </div>
+                            <!-- /.form group -->
+
+                            <!-- 班级个数 -->
+                            <div class="form-group">
+                                <label>班级个数：</label>
+
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-info"></i>
+                                    </div>
+                                    <input name="amount1" type="number" class="form-control" placeholder="1">
                                 </div>
                                 <!-- /.input group -->
                             </div>
@@ -209,8 +243,7 @@
                         <!-- /.box-body -->
 
                         <div class="box-footer">
-                            <button class="btn btn-danger">删除</button>
-                            <button class="btn btn-info pull-right">新增</button>
+                            <button type="button" class="btn btn-info pull-right" onclick="addClass()">新增班级</button>
                         </div>
                         <!-- /.box-footer -->
                     </div>
@@ -219,7 +252,7 @@
 
                 </div>
                 <!-- /.col (right) -->
-            </div>
+            </div</form>
             <!-- /.row -->
 
         </section>
@@ -238,9 +271,6 @@
 <script src="/static/bootstrap-daterangepicker/daterangepicker.js"></script>
 <!-- Select2 -->
 <script src="/static/select2/dist/js/select2.full.min.js"></script>
-<!-- InputMask -->
-<script src="/js/input-mask/jquery.inputmask.js"></script>
-<script src="/js/input-mask/jquery.inputmask.extensions.js"></script>
 <%--<!-- SlimScroll -->--%>
 <script src="/static/jquery-slimscroll/jquery.slimscroll.min.js"></script>
 <%--<!-- FastClick -->--%>
@@ -253,11 +283,12 @@
     $(function () {
         //Initialize Select2 Elements
         $('.select2').select2();
-        //Money Euro
-        $('[data-mask]').inputmask();
         //Date range picker
         $('#date-range').daterangepicker({
             locale : {
+                format: 'YYYY-MM-DD',
+                separator: ' ~ ',
+                minDate:[moment(), moment()],
                 applyLabel : '确定',
                 cancelLabel : '取消',
                 fromLabel : '起始时间',
@@ -271,7 +302,96 @@
     })
 
     function addClass() {
+        var id = parseInt(document.getElementById("class-num").value)+1;
+        $('#class-num').val(id);
+        $('#classes-more').prepend('<div class="box box-primary">\n' +
+            '                        <div class="box-header">\n' +
+            '                            <h3 class="box-title"><i class="fa fa-angle-double-right"></i> 填写班级信息</h3>\n' +
+            '                        </div>\n' +
+            '                        <div class="box-body">\n' +
+            '\n' +
+            '                            <!-- 班级名称 -->\n' +
+            '                            <div class="form-group">\n' +
+            '                                <label>班级名称：</label>\n' +
+            '\n' +
+            '                                <div class="input-group">\n' +
+            '                                    <div class="input-group-addon">\n' +
+            '                                        <i class="fa fa-tag"></i>\n' +
+            '                                    </div>\n' +
+            '                                    <input name="classname'+id+'" type="text" class="form-control pull-right" placeholder="班级名称" required>\n' +
+            '                                </div>\n' +
+            '                                <!-- /.input group -->\n' +
+            '                            </div>\n' +
+            '                            <!-- /.form group -->\n' +
+            '\n' +
+            '                            <!-- 教师名称 -->\n' +
+            '                            <div class="form-group">\n' +
+            '                                <label>教师名称：</label>\n' +
+            '\n' +
+            '                                <div class="input-group">\n' +
+            '                                    <div class="input-group-addon">\n' +
+            '                                        <i class="fa fa-user"></i>\n' +
+            '                                    </div>\n' +
+            '                                    <input name="teacher'+id+'" type="text" class="form-control pull-right" placeholder="教师姓名" required>\n' +
+            '                                </div>\n' +
+            '                                <!-- /.input group -->\n' +
+            '                            </div>\n' +
+            '                            <!-- /.form group -->\n' +
+            '\n' +
+            '                            <!-- 班级价格 -->\n' +
+            '                            <div class="form-group">\n' +
+            '                                <label>收费标准：</label>\n' +
+            '\n' +
+            '                                <div class="input-group">\n' +
+            '                                    <div class="input-group-addon">\n' +
+            '                                        <i class="fa fa-rmb"></i>\n' +
+            '                                    </div>\n' +
+            '                                    <input name="price'+id+'" type="number" class="form-control pull-right" placeholder="2000" required>\n' +
+            '                                </div>\n' +
+            '                                <!-- /.input group -->\n' +
+            '                            </div>\n' +
+            '                            <!-- /.form group -->\n' +
+            '\n' +
+            '                            <div class="form-group">\n' +
+            '                                <label>班级规格：</label>\n' +
+            '\n' +
+            '                                <div class="input-group">\n' +
+            '                                    <div class="input-group-addon">\n' +
+            '                                        <i class="fa fa-info"></i>\n' +
+            '                                    </div>\n' +
+            '                                    <input name="size'+id+'" type="number" class="form-control" placeholder="45">\n' +
+            '                                </div>\n' +
+            '                                <!-- /.input group -->\n' +
+            '                            </div>\n' +
+            '                            <!-- /.form group -->\n' +
+            '                            <div class="form-group">\n' +
+            '                                <label>班级个数：</label>\n' +
+            '\n' +
+            '                                <div class="input-group">\n' +
+            '                                    <div class="input-group-addon">\n' +
+            '                                        <i class="fa fa-info"></i>\n' +
+            '                                    </div>\n' +
+            '                                    <input name="amount'+id+'" type="number" class="form-control" placeholder="1">\n' +
+            '                                </div>\n' +
+            '                                <!-- /.input group -->\n' +
+            '                            </div>\n' +
+            '                            <!-- /.form group -->\n' +
+            '\n' +
+            '                        </div>\n' +
+            '                        <!-- /.box-body -->\n' +
+            '\n' +
+            '                        <div class="box-footer">\n' +
+            '                            <button class="btn btn-danger" onclick="deleteClass(this)">删除</button>\n' +
+            '                        </div>\n' +
+            '                        <!-- /.box-footer -->\n' +
+            '                    </div>');
+    }
 
+    function deleteClass(node) {
+        $('#class-num').value = parseInt(document.getElementById("class-num").value)-1;
+
+        var child = node.parentNode.parentNode;
+        child.parentNode.removeChild(child);
     }
 </script>
 </body>
