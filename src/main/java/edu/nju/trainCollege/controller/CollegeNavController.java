@@ -3,6 +3,7 @@ package edu.nju.trainCollege.controller;
 import edu.nju.trainCollege.model.Classes;
 import edu.nju.trainCollege.model.College;
 import edu.nju.trainCollege.model.Lesson;
+import edu.nju.trainCollege.model.MyData;
 import edu.nju.trainCollege.service.CollegeService;
 import edu.nju.trainCollege.tools.NumberTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,28 +48,12 @@ public class CollegeNavController {
         return "/college/unrelease_lessons";
     }
 
-    @RequestMapping(value = "print_lesson",method = RequestMethod.GET)
-    public String printLesson(HttpServletRequest request,ModelMap model){
-        if(request.getParameter("lid")==null){
-            return "redirect:/college/homepage";
-        }
-        int lid = Integer.parseInt(request.getParameter("lid"));
-        model.addAttribute("lesson",collegeService.getLessonByLid(lid));
-        model.addAttribute("classList",collegeService.getClassesByLid(lid));
-        model.addAttribute("command","print");
-        return "/college/lesson_print";
-    }
-
-    @RequestMapping(value = "download_lesson",method = RequestMethod.GET)
-    public String downloadLesson(HttpServletRequest request,ModelMap model){
-        if(request.getParameter("lid")==null){
-            return "redirect:/college/homepage";
-        }
-        int lid = Integer.parseInt(request.getParameter("lid"));
-        model.addAttribute("lesson",collegeService.getLessonByLid(lid));
-        model.addAttribute("classList",collegeService.getClassesByLid(lid));
-        model.addAttribute("command","download");
-        return "/college/lesson_print";
+    @RequestMapping(value = "get_lessons_by_state",method = RequestMethod.POST)
+    @ResponseBody
+    public MyData getLessonsByState(HttpServletRequest request){
+        int state = Integer.parseInt(request.getParameter("state"));
+        int cid = ((College)request.getSession().getAttribute("college")).getId();
+        return new MyData(collegeService.getLessonByStateCid(cid,state));
     }
 
     @RequestMapping(value = "show_lesson",method = RequestMethod.GET)
@@ -86,7 +71,7 @@ public class CollegeNavController {
                 model.addAttribute("lesson_state","已发布，报名中");
                 break;
             case 2:
-                model.addAttribute("lesson_state","报名截止");
+                model.addAttribute("lesson_state","报名截止，已开课");
                 break;
             case 3:
                 model.addAttribute("lesson_state","已结束");
@@ -168,6 +153,7 @@ public class CollegeNavController {
         for(String t:request.getParameterValues("type")){
             builder.append(t).append("/");
         }
+        builder.deleteCharAt(builder.lastIndexOf("/"));
         lesson.setType(builder.toString());
 
         try {
@@ -194,13 +180,13 @@ public class CollegeNavController {
         lesson.setName(request.getParameter("name"));
         lesson.setWeekNum(Integer.parseInt(request.getParameter("weeks")));
         lesson.setTimePerWeek(Integer.parseInt(request.getParameter("times")));
-//        lesson.setCid(((College)request.getSession().getAttribute("college")).getId());
-        lesson.setCid(1);
+        lesson.setCid(((College)request.getSession().getAttribute("college")).getId());
 
         StringBuilder builder = new StringBuilder();
         for(String t:request.getParameterValues("type")){
             builder.append(t).append("/");
         }
+        builder.deleteCharAt(builder.lastIndexOf("/"));
         lesson.setType(builder.toString());
 
         try {

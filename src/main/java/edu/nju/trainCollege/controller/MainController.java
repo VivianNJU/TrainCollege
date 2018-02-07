@@ -2,6 +2,7 @@ package edu.nju.trainCollege.controller;
 
 import com.sun.deploy.util.SessionState;
 import edu.nju.trainCollege.model.College;
+import edu.nju.trainCollege.model.Lesson;
 import edu.nju.trainCollege.model.Student;
 import edu.nju.trainCollege.service.CollegeService;
 import edu.nju.trainCollege.service.StudentService;
@@ -30,6 +31,34 @@ public class MainController {
     public String index(ModelMap model){
         model.addAttribute("error","<br>");
         return "index";
+    }
+
+    @RequestMapping(value = "print_lesson",method = RequestMethod.GET)
+    public String printLesson(HttpServletRequest request,ModelMap model){
+        if(request.getParameter("lid")==null){
+            return "redirect:/index";
+        }
+        int lid = Integer.parseInt(request.getParameter("lid"));
+        Lesson lesson = studentService.getLessonByLid(lid);
+        model.addAttribute("college",studentService.getCollegeById(lesson.getCid()));
+        model.addAttribute("lesson",lesson);
+        model.addAttribute("classList",collegeService.getClassesByLid(lid));
+        model.addAttribute("command","print");
+        return "/lesson_print";
+    }
+
+    @RequestMapping(value = "download_lesson",method = RequestMethod.GET)
+    public String downloadLesson(HttpServletRequest request,ModelMap model){
+        if(request.getParameter("lid")==null){
+            return "redirect:/index";
+        }
+        int lid = Integer.parseInt(request.getParameter("lid"));
+        Lesson lesson = studentService.getLessonByLid(lid);
+        model.addAttribute("college",studentService.getCollegeById(lesson.getCid()));
+        model.addAttribute("lesson",lesson);
+        model.addAttribute("classList",collegeService.getClassesByLid(lid));
+        model.addAttribute("command","download");
+        return "/lesson_print";
     }
 
     @RequestMapping(value = "login", method = RequestMethod.POST)

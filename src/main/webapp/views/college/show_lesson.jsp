@@ -47,7 +47,7 @@
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/college/homepage"><i class="fa fa-home"></i> 主页</a></li>
-                <li><a href="#"> 所有课程计划</a></li>
+                <li><a href="/college/all_lessons"> 所有课程计划</a></li>
                 <li class="active">${lesson.name}</li>
             </ol>
         </section>
@@ -113,7 +113,7 @@
                             <th>班级个数</th>
                             <th>授课教师</th>
                             <th>价格</th>
-                            <c:if test="${lesson.state == 0} ">
+                            <c:if test="${lesson.state == '0'}">
                                 <th>操作</th>
                             </c:if>
                         </tr>
@@ -126,7 +126,7 @@
                                 <td><c:out value="${item.num}"/></td>
                                 <td><c:out value="${item.teacher}"/></td>
                                 <td>￥<c:out value="${item.price}"/></td>
-                                <c:if test="${lesson.state == 0} ">
+                                <c:if test="${lesson.state == 0}">
                                     <td id="<c:out value="${item.id}"/>">
                                         <button class="btn btn-default" title="删除" onclick="delete_class(this.parentNode.id)"><i class="fa fa-trash"></i></button>
                                         <button class="btn btn-default" title="修改" onclick="modify_class(this.parentNode.id)"><i class="fa fa-edit"></i></button>
@@ -145,9 +145,9 @@
             <!-- 不被打印的按钮们 -->
             <div class="row no-print">
                 <div class="col-xs-12">
-                    <a href="/college/print_lesson?lid=${lesson.id}" target="_blank" class="btn btn-default"><i
+                    <a href="/print_lesson?lid=${lesson.id}" target="_blank" class="btn btn-default"><i
                             class="fa fa-print"></i> 打印</a>
-                    <a href="/college/download_lesson?lid=${lesson.id}" target="_blank" class="btn btn-primary" style="margin-left: 5px"><i
+                    <a href="/download_lesson?lid=${lesson.id}" target="_blank" class="btn btn-primary" style="margin-left: 5px"><i
                             class="fa fa-download"></i> 下载 PDF</a>
 
                     <button id="release-button" onclick="release_lesson()" class="btn btn-success pull-right"><i
@@ -157,7 +157,7 @@
                             style="margin-right: 5px;"><i class="fa fa-edit"></i> 修改计划
                     </button>
                     <button id="stop-enroll-button" onclick="stop_enroll()" class="btn btn-primary pull-right"
-                            style="margin-right: 5px;"><i class="fa fa-hourglass-end"></i> 截止报名
+                            style="margin-right: 5px;"><i class="fa fa-hourglass-end"></i> 开课
                     </button>
                     <button id="cancel-button" onclick="cancel_lesson()" class="btn btn-danger pull-right"
                             style="margin-right: 5px;"><i class="fa fa-close"></i> 撤回发布
@@ -532,7 +532,7 @@
     }
 
     function stop_enroll() {
-        if (confirm("你确定要结束该课程计划的报名吗？如果结束，则无法继续报名。")) {
+        if (confirm("你确定要开始该课程计划吗？如果开课，将无法继续报名。")) {
             $.post("/college/change_lesson_state",
                 {
                     lid:${lesson.id},
@@ -540,7 +540,7 @@
                 },
                 function (data, status) {
                     if (data == true) {
-                        alert("成功截止报名");
+                        alert("报名截止，开课成功");
                         location.reload();
                     }
                     else {

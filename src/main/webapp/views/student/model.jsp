@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: DELL
-  Date: 2018/1/25
-  Time: 10:05
+  Date: 2018/2/7
+  Time: 16:51
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -28,10 +28,29 @@
     <jsp:include page="../public/student_header.jsp" flush="true" />
 
     <jsp:include page="../public/student_nav.jsp" flush="true" >
-        <jsp:param name="homepage" value="active"/>
+        <jsp:param name="browse" value="active"/>
     </jsp:include>
 
     <div class="content-wrapper">
+
+        <!-- 大标题 -->
+        <section class="content-header">
+            <h1>
+                所有课程计划
+                <small>查看详情，进一步了解</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="/student/homepage"><i class="fa fa-home"></i> 主页</a></li>
+                <li><a href="/student/homepage"> 主页</a></li>
+                <li class="active">所有课程计划</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+
+        </section>
 
     </div>
 
@@ -52,3 +71,4 @@
 <script src="/js/demo.js"></script>
 </body>
 </html>
+

@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: DELL
-  Date: 2018/2/6
-  Time: 22:07
+  Date: 2018/2/7
+  Time: 16:46
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -25,11 +25,10 @@
 </head>
 <body class="skin-green-light sidebar-mini">
 <div class="wrapper">
-    <jsp:include page="../public/college_header.jsp" flush="true" />
+    <jsp:include page="../public/student_header.jsp" flush="true" />
 
-    <jsp:include page="../public/college_nav.jsp" flush="true" >
-        <jsp:param name="browse" value="active menu-open"/>
-        <jsp:param name="release_lessons" value="active"/>
+    <jsp:include page="../public/student_nav.jsp" flush="true" >
+        <jsp:param name="browse" value="active"/>
     </jsp:include>
 
     <div class="content-wrapper">
@@ -37,12 +36,12 @@
         <!-- 大标题 -->
         <section class="content-header">
             <h1>
-                未发布课程
-                <small>可以进行修改</small>
+                所有课程计划
+                <small>查看详情，进一步了解</small>
             </h1>
             <ol class="breadcrumb">
-                <li><a href="/college/homepage"><i class="fa fa-home"></i> 主页</a></li>
-                <li class="active">未发布课程</li>
+                <li><a href="/student/homepage"><i class="fa fa-home"></i> 主页</a></li>
+                <li class="active">所有课程计划</li>
             </ol>
         </section>
 
@@ -92,11 +91,8 @@
     $(function () {
         $('#lesson-table').DataTable({
             "ajax": {
-                "url": "/college/get_lessons_by_state",
-                "type": "POST",
-                "data": {
-                    "state": 234
-                }
+                "url": "/student/all_lessons",
+                "type": "POST"
             },
             "columns"     : [
                 { "title": "课程名称",
@@ -146,7 +142,7 @@
                 $('td:eq(3)', nRow).html(end.toLocaleDateString());
 
                 var id = aData.id;
-                $('td:eq(6)', nRow).html('<a href="/college/show_lesson?lid='+id+'">查看详情</a>');
+                $('td:eq(6)', nRow).html('<a href="/student/show_lesson?lid='+id+'">查看详情</a>');
 
             },
 

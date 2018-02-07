@@ -35,7 +35,7 @@
         <ul class="sidebar-menu" data-widget="tree">
             <li class="${param.homepage}">
                 <a href="/student/homepage">
-                    <i class="fa fa-home"></i> <span>主 页</span>
+                    <i class="fa fa-home"></i> <span> 主页</span>
                     <span class="pull-right-container">
             </span>
                 </a>
@@ -43,18 +43,29 @@
 
 <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
-            <li class="treeview ${param.browse}">
+            <li class="${param.browse}">
+                <a href="/student/all_lessons">
+                    <i class="fa fa-home"></i> <span> 课程浏览</span>
+                    <span class="pull-right-container">
+            </span>
+                </a>
+            </li>
+
+<%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
+
+            <li class="treeview ${my_course}">
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
-                    <span>课程浏览</span>
+                    <span>我的订单</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="${param.famous}"><a href="#"><i class="fa fa-circle-o"></i> 热门课程</a></li>
-                    <li class="${param.latest}"><a href="#"><i class="fa fa-circle-o"></i> 最新课程</a></li>
-                    <li class="${param.collect}"><a href="#"><i class="fa fa-circle-o"></i> 收藏课程</a></li>
+                    <li class="${all}"><a href="#"><i class="fa fa-circle-o"></i> 所有订单</a></li>
+                    <li class="${not_pay}"><a href="#"><i class="fa fa-circle-o"></i> 未支付订单</a></li>
+                    <li class="${has_started}"><a href="#"><i class="fa fa-circle-o"></i> 已支付订单</a></li>
+                    <li class="${famous}"><a href="#"><i class="fa fa-circle-o"></i> 退订订单</a></li>
                 </ul>
             </li>
 
@@ -70,26 +81,8 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="${all}"><a href="#"><i class="fa fa-circle-o"></i> 所有课程</a></li>
-                    <li class="${not_pay}"><a href="#"><i class="fa fa-circle-o"></i> 未支付课程</a></li>
-                    <li class="${has_started}"><a href="#"><i class="fa fa-circle-o"></i> 已购课程</a></li>
-                    <li class="${famous}"><a href="#"><i class="fa fa-circle-o"></i> 退订课程</a></li>
-                </ul>
-            </li>
-
-<%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
-
-            <li class="treeview ${course_more}">
-                <a href="#">
-                    <i class="fa fa-pie-chart"></i>
-                    <span>课程详情</span>
-                    <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-                </a>
-                <ul class="treeview-menu">
-                    <li class="${course_introduction}"><a href="#"><i class="fa fa-circle-o"></i> 课程介绍</a></li>
-                    <li class="${attendence}"><a href="#"><i class="fa fa-circle-o"></i> 课程考勤</a></li>
-                    <li class="${grade}"><a href="#"><i class="fa fa-circle-o"></i> 课程成绩</a></li>
+                    <li class="${not_pay}"><a href="#"><i class="fa fa-circle-o"></i> 课程考勤</a></li>
+                    <li class="${not_pay}"><a href="#"><i class="fa fa-circle-o"></i> 我要退课</a></li>
                 </ul>
             </li>
 

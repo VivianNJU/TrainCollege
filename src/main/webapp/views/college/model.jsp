@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: DELL
-  Date: 2018/1/25
-  Time: 10:05
+  Date: 2018/2/7
+  Time: 10:43
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -25,13 +25,33 @@
 </head>
 <body class="skin-green-light sidebar-mini">
 <div class="wrapper">
-    <jsp:include page="../public/student_header.jsp" flush="true" />
+    <jsp:include page="../public/college_header.jsp" flush="true" />
 
-    <jsp:include page="../public/student_nav.jsp" flush="true" >
-        <jsp:param name="homepage" value="active"/>
+    <jsp:include page="../public/college_nav.jsp" flush="true" >
+        <jsp:param name="browse" value="active menu-open"/>
+        <jsp:param name="all_lessons" value="active"/>
     </jsp:include>
 
     <div class="content-wrapper">
+
+        <!-- 大标题 -->
+        <section class="content-header">
+            <h1>
+                课程计划
+                <small>包含不同的班级</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="/college/homepage"><i class="fa fa-home"></i> 主页</a></li>
+                <li><a href="#"> 所有课程计划</a></li>
+                <li class="active">${lesson.name}</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+
+
+        </section>
 
     </div>
 
@@ -50,5 +70,6 @@
 <script src="/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="/js/demo.js"></script>
+
 </body>
 </html>

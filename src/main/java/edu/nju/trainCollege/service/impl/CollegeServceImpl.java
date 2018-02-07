@@ -10,6 +10,7 @@ import edu.nju.trainCollege.service.CollegeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -58,6 +59,14 @@ public class CollegeServceImpl implements CollegeService{
             }
         }
         return lid;
+    }
+
+    public List<Lesson> getLessonByStateCid(int cid, int state) {
+        List<Lesson> result =lessonDao.getByLessonStateCid(cid,state);
+        if(result==null){
+            return new ArrayList<Lesson>(0);
+        }else
+            return result;
     }
 
     public void saveLesson(Lesson lesson) {

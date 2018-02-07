@@ -17,7 +17,7 @@ public class Lesson {
     private String name;
     private String type;
     private String intro;
-    //    状态0，保存未发布；状态1，发布可报名；状态2，发布报名截至；状态3，已结束
+    //    状态0，保存未发布；状态1，发布可报名；状态2，报名截至，开课；状态3，已结束
     private int state;
 
 //    每周多少个课时

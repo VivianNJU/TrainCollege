@@ -37,9 +37,16 @@ public class LessonDaoImpl implements LessonDao {
         }
     }
 
-    public List<Lesson> getByName(String name) {
-        name = "%"+name+"%";
-        Query query = getCurrentSession().createQuery(fromDatabase+searchByName).setParameter("name",name);
+    public List<Lesson> getByState(int state) {
+        Query query;
+        if(state<0){
+            query = getCurrentSession().createQuery(fromDatabase);
+        }else if(state>10){
+            query = getCurrentSession().createQuery(fromDatabase+"where state <> :state").setParameter("state",0);
+        }else{
+            query = getCurrentSession().createQuery(fromDatabase+"where state = :state").setParameter("state",state);
+        }
+
         if(query.list().size()==0)
             return null;
         else{
@@ -47,19 +54,16 @@ public class LessonDaoImpl implements LessonDao {
         }
     }
 
-    public List<Lesson> getByLessonType(String type) {
-        type = "%"+type+"%";
-        Query query = getCurrentSession().createQuery(fromDatabase+searchByType).setParameter("type",type);
-        if(query.list().size()==0)
-            return null;
-        else{
-            return query.list();
+    public List<Lesson> getByLessonStateCid(int cid,int state) {
+        Query query;
+        if(state<0){
+            query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId).setParameter("cid",cid);
+        }else if(state>10){
+            query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId+" and state <> :state").setParameter("cid",cid).setParameter("state",0);
+        }else{
+            query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId+" and state = :state").setParameter("cid",cid).setParameter("state",state);
         }
-    }
 
-    public List<Lesson> getBetweenDates(Date start, Date end) {
-        Query query = getCurrentSession().createQuery(fromDatabase+searchBetweenDates).setParameter("start",start)
-                .setParameter("end",end);
         if(query.list().size()==0)
             return null;
         else{

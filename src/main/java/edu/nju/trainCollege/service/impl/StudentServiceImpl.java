@@ -1,6 +1,12 @@
 package edu.nju.trainCollege.service.impl;
 
+import edu.nju.trainCollege.dao.ClassesDao;
+import edu.nju.trainCollege.dao.CollegeDao;
+import edu.nju.trainCollege.dao.LessonDao;
 import edu.nju.trainCollege.dao.StudentDao;
+import edu.nju.trainCollege.model.Classes;
+import edu.nju.trainCollege.model.College;
+import edu.nju.trainCollege.model.Lesson;
 import edu.nju.trainCollege.model.Student;
 import edu.nju.trainCollege.service.StudentService;
 import edu.nju.trainCollege.tools.SendEmail;
@@ -10,11 +16,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.internet.ParseException;
+import java.util.List;
 
 @Service
 public class StudentServiceImpl implements StudentService {
     @Autowired
     private StudentDao studentDao;
+    @Autowired
+    private LessonDao lessonDao;
+    @Autowired
+    private CollegeDao collegeDao;
+    @Autowired
+    private ClassesDao classesDao;
 
     public Student login(String email, String password) {
         return studentDao.getByEmailPwd(email,password);
@@ -60,6 +73,22 @@ public class StudentServiceImpl implements StudentService {
         }else{
             throw new ServiceException("该邮箱未注册（邮箱地址不存在）！");
         }
+    }
+
+    public List<Lesson> getLessons() {
+        return lessonDao.getByState(123);
+    }
+
+    public College getCollegeById(int cid) {
+        return collegeDao.get(cid);
+    }
+
+    public Lesson getLessonByLid(int lid) {
+        return lessonDao.get(lid);
+    }
+
+    public List<Classes> getClassesByLid(int lid) {
+        return classesDao.getByLessonId(lid);
     }
 
 }

@@ -13,6 +13,8 @@ public interface CollegeService {
 
     public int createLessonClass(Lesson lesson,List<Classes> classes);
 
+    public List<Lesson> getLessonByStateCid(int cid,int state);
+
     public void saveLesson(Lesson lesson);
 
     public void saveClass(Classes c);
