@@ -13,14 +13,12 @@ public class LessonProgress {
 //    如果是x开头，则不是会员
     private String uid;
     private int oid;
-//    机构id
+//    机构id，方便机构查询
     private int cid;
     private int classId;
 
     //班号,如果为0,则系统分配
     private int classNo;
-//    付费的银行卡号
-    private String bankCardID;
 //    打折后的实际价格
     private int payment;
 
@@ -67,14 +65,6 @@ public class LessonProgress {
         this.classNo = classNo;
     }
 
-    public String getBankCardID() {
-        return bankCardID;
-    }
-
-    public void setBankCardID(String bankCardID) {
-        this.bankCardID = bankCardID;
-    }
-
     public int getPayment() {
         return payment;
     }
@@ -89,5 +79,13 @@ public class LessonProgress {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public int getCid() {
+        return cid;
+    }
+
+    public void setCid(int cid) {
+        this.cid = cid;
     }
 }

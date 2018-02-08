@@ -76,7 +76,7 @@
 
                             <div class="box-body box-profile">
                                 <img class="profile-user-img img-responsive img-circle" src="/image/college.png" alt="User profile picture">
-                                <h3 id="college_name" class="profile-username text-center"></h3>
+                                <h3 id="college_name" class="profile-name text-center"></h3>
                                 <p id="college_id" class="text-muted text-center"></p>
 
                                 <ul class="list-group list-group-unbordered">

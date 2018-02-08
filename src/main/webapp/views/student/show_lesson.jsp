@@ -173,8 +173,8 @@
                         <!-- /.modal-content -->
 
                         <div class="modal-footer">
-                            <a href="/student/enroll_lesson_without?lid=${lesson.id}" target="_blank" class="btn btn-success pull-left">自动配班</a>
-                            <a href="/student/enroll_lesson_with_class?lid=${lesson.id}" target="_blank" class="btn btn-primary">手动选班</a>
+                            <a href="/student/enroll_lesson_without?lid=${lesson.id}" class="btn btn-success pull-left">自动配班</a>
+                            <a href="/student/enroll_lesson_with_class?lid=${lesson.id}" class="btn btn-primary">手动选班</a>
                         </div>
                     </div>
                     <!-- /.modal-dialog -->

@@ -1,6 +1,7 @@
 package edu.nju.trainCollege.dao.impl;
 
 import edu.nju.trainCollege.dao.StudentDao;
+import edu.nju.trainCollege.model.NormalStudent;
 import edu.nju.trainCollege.model.Student;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -18,6 +19,7 @@ public class StudentDaoImpl implements StudentDao {
 
     private static final String searchByEmailPwd = "from Student where email = :email and password = :password";
     private static final String searchByEmail = "from Student where email = :email";
+    private static final String searchByNamePhone = "from NormalStudent where username = :username and phone= :phone";
 
     private Session getCurrentSession() {
         return this.sessionFactory.openSession();
@@ -81,6 +83,29 @@ public class StudentDaoImpl implements StudentDao {
             return null;
         else{
             return query.list();
+        }
+    }
+
+    public Integer saveNmStudent(NormalStudent student) {
+        Session session = getCurrentSession();
+        Transaction tx=session.beginTransaction();
+        session.save(student);
+        tx.commit();
+
+        return getNmStudentByNamePhone(student.getUsername(),student.getPhone()).getId();
+    }
+
+    public NormalStudent getNormalStudent(int id) {
+        return getCurrentSession().get(NormalStudent.class,id);
+    }
+
+    public NormalStudent getNmStudentByNamePhone(String name, String phone) {
+        Query query = getCurrentSession().createQuery(searchByNamePhone).setParameter("username",name)
+                .setParameter("phone",phone);
+        if(query.list().size()==0)
+            return null;
+        else{
+            return (NormalStudent) query.list().get(0);
         }
     }
 }

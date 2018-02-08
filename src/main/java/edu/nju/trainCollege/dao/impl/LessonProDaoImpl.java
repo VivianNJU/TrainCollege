@@ -60,11 +60,7 @@ public class LessonProDaoImpl implements LessonProDao {
             query = getCurrentSession().createQuery(fromDatabase+searchByClassId+" and classNo =:classNo").setParameter("classNo",classNo);
         }
 
-        if(query.list().size()==0)
-            return null;
-        else{
-            return query.list();
-        }
+        return query.list();
     }
 
     public LessonProgress get(Integer id) {

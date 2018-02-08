@@ -1,21 +1,15 @@
 package edu.nju.trainCollege.service.impl;
 
-import edu.nju.trainCollege.dao.ClassesDao;
-import edu.nju.trainCollege.dao.CollegeDao;
-import edu.nju.trainCollege.dao.LessonDao;
-import edu.nju.trainCollege.dao.StudentDao;
-import edu.nju.trainCollege.model.Classes;
-import edu.nju.trainCollege.model.College;
-import edu.nju.trainCollege.model.Lesson;
-import edu.nju.trainCollege.model.Student;
+import edu.nju.trainCollege.dao.*;
+import edu.nju.trainCollege.model.*;
 import edu.nju.trainCollege.service.StudentService;
+import edu.nju.trainCollege.tools.LevelDiscount;
 import edu.nju.trainCollege.tools.SendEmail;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.mail.internet.ParseException;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,6 +22,10 @@ public class StudentServiceImpl implements StudentService {
     private CollegeDao collegeDao;
     @Autowired
     private ClassesDao classesDao;
+    @Autowired
+    private LessonProDao lessonProDao;
+    @Autowired
+    private OrderDao orderDao;
 
     public Student login(String email, String password) {
         return studentDao.getByEmailPwd(email,password);
@@ -75,8 +73,51 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    public void enrollLesson(Orders orders, List<LessonProgress> progresses) throws ServiceException {
+        if(progresses==null||progresses.size()==0)
+            throw new ServiceException("报名人数至少一人");
+        int expr = studentDao.get(orders.getUid()).getExpr();
+        double discount = LevelDiscount.getDiscount(expr);
+
+        orders.setOrderTime(new Date());
+        int lid = classesDao.get(progresses.get(0).getClassId()).getLid();
+        orders.setLid(lid);
+
+        int cid = lessonDao.get(lid).getCid();
+        orders.setCid(cid);
+
+        int totalPay = 0;
+        for(LessonProgress lp:progresses){
+            lp.setCid(cid);
+            Classes classes = classesDao.get(lp.getClassId());
+            lp.setPayment(new Double(classes.getPrice()*discount).intValue());
+            totalPay+=lp.getPayment();
+
+            int studentNum = lessonProDao.getByClassIdNo(classes.getId(),-1).size();
+            if(studentNum>=classes.getNum()*classes.getSize()){
+                throw new ServiceException(classes.getName()+" 报名人数已达上限，请重新选班");
+            }else{
+                int classNo = studentNum / classes.getSize()+1;
+                lp.setClassNo(classNo);
+            }
+        }
+        orders.setTotalPay(totalPay);
+
+//        保存order，获得它的ID
+        int oid = orderDao.save(orders);
+
+        for(LessonProgress lp:progresses){
+            lp.setOid(oid);
+            lessonProDao.save(lp);
+        }
+    }
+
     public List<Lesson> getLessons() {
         return lessonDao.getByState(123);
+    }
+
+    public Student getStudentByEmail(String email) {
+        return studentDao.getByEmail(email);
     }
 
     public College getCollegeById(int cid) {
@@ -89,6 +130,17 @@ public class StudentServiceImpl implements StudentService {
 
     public List<Classes> getClassesByLid(int lid) {
         return classesDao.getByLessonId(lid);
+    }
+
+    public NormalStudent getNmStudent(String name, String phone) {
+        NormalStudent ns = studentDao.getNmStudentByNamePhone(name,phone);
+        if(ns==null) {
+            ns = new NormalStudent();
+            ns.setPhone(phone);
+            ns.setUsername(name);
+            ns.setId(studentDao.saveNmStudent(ns));
+        }
+        return ns;
     }
 
 }

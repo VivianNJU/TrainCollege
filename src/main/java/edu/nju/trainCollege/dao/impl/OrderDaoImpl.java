@@ -55,9 +55,9 @@ public class OrderDaoImpl implements OrderDao {
         session.save(entity);
         tx.commit();
 
-        Query query = getCurrentSession().createQuery(fromDatabase+searchByUserId+" and cid= :cid and lid= :lid" +
-                " and orderTime= :time").setParameter("uid",entity.getUid()).setParameter("cid",entity.getCid())
-                .setParameter("lid",entity.getLid()).setParameter("time",entity.getOrderTime());
+        Query query = getCurrentSession().createQuery(fromDatabase+searchByUserId+" order by orderTime DESC")
+                .setParameter("uid",entity.getUid());
+
         if(query.list().size()==0)
             return 0;
         else{

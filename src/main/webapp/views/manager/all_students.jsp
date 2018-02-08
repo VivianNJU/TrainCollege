@@ -76,7 +76,7 @@
 
                             <div class="box-body box-profile">
                                 <img class="profile-user-img img-responsive img-circle" src="/image/user.jpg" alt="User profile picture">
-                                <h3 id="stu_name" class="profile-username text-center"></h3>
+                                <h3 id="stu_name" class="profile-name text-center"></h3>
                                 <p id="stu_id" class="text-muted text-center"></p>
 
                                 <ul class="list-group list-group-unbordered">
@@ -140,7 +140,7 @@
                 { "title": "ID",
                     "data":"id"},
                 { "title": "名称",
-                    "data":"username"},
+                    "data":"name"},
                 { "title": "电子邮箱",
                     "data":"email"},
                 { "title": "联系电话",
@@ -222,7 +222,7 @@
                     alert("查询失败,数据库未连接");
                 else{
                     $('#stu_id').text(data.id);
-                    $('#stu_username').text(data.username);
+                    $('#stu_username').text(data.name);
                     $('#stu_email').text(data.email);
                     $('#stu_expr').text(data.expr);
                     $('#stu_phone').text(data.phone);
