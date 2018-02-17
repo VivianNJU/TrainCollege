@@ -55,7 +55,7 @@ public class LessonProDaoImpl implements LessonProDao {
     public List<LessonProgress> getByClassIdNo(int classId, int classNo) {
         Query query;
         if(classNo<0){
-            query = getCurrentSession().createQuery(fromDatabase+searchByClassId).setParameter("classId",classId);
+            query = getCurrentSession().createQuery(fromDatabase+searchByClassId+" and state=1").setParameter("classId",classId);
         }else{
             query = getCurrentSession().createQuery(fromDatabase+searchByClassId+" and classNo =:classNo").setParameter("classNo",classNo);
         }

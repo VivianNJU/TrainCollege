@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "student")
-public class Student {
+public class Student{
 
     @Id
     private int id;
@@ -17,6 +17,7 @@ public class Student {
 
     private String phone;
 
+//    实付金额/100
     private int expr;
 
 //    状态0：未验证，状态1：已验证，状态2：已注销

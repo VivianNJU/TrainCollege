@@ -27,30 +27,46 @@
 <div class="wrapper">
     <jsp:include page="../public/student_header.jsp" flush="true" />
 
-    <jsp:include page="../public/student_nav.jsp" flush="true" >
-        <jsp:param name="browse" value="active"/>
-    </jsp:include>
+    <jsp:include page="../public/student_nav.jsp" flush="true" />
+        <%--<jsp:param name="browse" value="active"/>--%>
+
+        <%--<jsp:param name="browse" value="active menu-open"/>--%>
+        <%--<jsp:param name="all_lessons" value="active"/>--%>
+    <%--</jsp:include>--%>
 
     <div class="content-wrapper">
 
         <!-- 大标题 -->
         <section class="content-header">
             <h1>
-                所有课程计划
-                <small>查看详情，进一步了解</small>
+                异常报告
+                <small>到底发生了什么</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/student/homepage"><i class="fa fa-home"></i> 主页</a></li>
-                <li><a href="/student/homepage"> 主页</a></li>
-                <li class="active">所有课程计划</li>
+                <li class="active">异常报告</li>
             </ol>
         </section>
 
         <!-- Main content -->
         <section class="content">
+            <div class="error-page">
+                <h2 class="headline text-yellow"> 出错啦</h2>
 
+                <div class="error-content">
+                    <h3><i class="fa fa-warning text-yellow"></i> 你大概有一些操作不当</h3>
 
+                    <p>
+                        ${reason}
+                        你可以选择 <a href="/student/homepage">回到主页</a>
+                            或者 <a href="javascript:history.go(-1);">回到刚刚的页面</a>.
+                    </p>
+                </div>
+                <!-- /.error-content -->
+            </div>
+            <!-- /.error-page -->
         </section>
+        <!-- /.content -->
 
     </div>
 

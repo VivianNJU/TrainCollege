@@ -14,6 +14,13 @@ public class NormalStudent {
 
     private String phone;
 
+    public NormalStudent(){}
+
+    public NormalStudent(Student student){
+        this.username = student.getUsername();
+        this.phone = student.getPhone();
+    }
+
 
     public int getId() {
         return id;

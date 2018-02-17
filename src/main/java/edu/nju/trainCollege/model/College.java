@@ -14,6 +14,8 @@ public class College {
     private String phone;
     private String other;
     private String teacher;
+    private String cardNo;
+
 //    状态0：注册未认证##状态1：已认证##状态2：审核不通过##状态3：主动关门
     private int state;
 
@@ -80,5 +82,13 @@ public class College {
 
     public void setTeacher(String teacher) {
         this.teacher = teacher;
+    }
+
+    public String getCardNo() {
+        return cardNo;
+    }
+
+    public void setCardNo(String cardNo) {
+        this.cardNo = cardNo;
     }
 }

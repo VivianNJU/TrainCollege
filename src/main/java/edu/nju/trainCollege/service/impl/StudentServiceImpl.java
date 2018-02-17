@@ -26,6 +26,8 @@ public class StudentServiceImpl implements StudentService {
     private LessonProDao lessonProDao;
     @Autowired
     private OrderDao orderDao;
+    @Autowired
+    private BankDao bankDao;
 
     public Student login(String email, String password) {
         return studentDao.getByEmailPwd(email,password);
@@ -112,8 +114,97 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
+    public void payOrder(int oid, String bankCardID, String password) throws ServiceException {
+        Orders order = orderDao.get(oid);
+        if(order.getState()!=0)
+            throw new ServiceException("订单状态已发生变化，请刷新后重试");
+
+        BankCard card = bankDao.findByCardIDPwd(bankCardID,password);
+        if(card==null)
+            throw new ServiceException("银行卡密码输入不正确，支付失败");
+        else if(card.getBalance()<order.getTotalPay())
+            throw new ServiceException("银行卡余额不足，支付失败");
+
+        PayRecord payRecord = new PayRecord();
+        payRecord.setCid(order.getCid());
+        payRecord.setUid(order.getUid());
+        payRecord.setBankCardID(bankCardID);
+        payRecord.setPayment(order.getTotalPay());
+        payRecord.setType(0);
+        payRecord.setEmail(studentDao.get(order.getUid()).getEmail());
+        payRecord.setCollegeName(collegeDao.get(order.getCid()).getName());
+        payRecord.setOid(oid);
+        payRecord.setPaytime(new Date());
+
+        bankDao.save(payRecord);
+
+        changeOrderState(oid,1);
+        Student student = studentDao.get(order.getUid());
+        student.setExpr(student.getExpr()+order.getTotalPay()/100);
+        studentDao.saveOrUpdate(student);
+        bankDao.saveCard("00000000",order.getTotalPay());
+        bankDao.saveCard(card.getCardNo(),-order.getTotalPay());
+    }
+
+    public double retrieve(int oid) {
+        Orders order = orderDao.get(oid);
+        PayRecord before = bankDao.findByOrderId(oid);
+        if(before==null||order==null)
+            return 0;
+
+        Lesson lesson = lessonDao.get(order.getLid());
+        double result = order.getTotalPay()*LevelDiscount.getCompensation(lesson.getStartDay());
+        Student student = studentDao.get(order.getUid());
+        student.setExpr(student.getExpr()-order.getTotalPay()/100);
+        studentDao.saveOrUpdate(student);
+
+        PayRecord payRecord = new PayRecord();
+        payRecord.setCid(order.getCid());
+        payRecord.setUid(order.getUid());
+        payRecord.setBankCardID("00000000");
+        payRecord.setPayment(result);
+        payRecord.setType(1);
+        payRecord.setEmail(studentDao.get(order.getUid()).getEmail());
+        payRecord.setCollegeName(collegeDao.get(order.getCid()).getName());
+        payRecord.setOid(oid);
+        payRecord.setPaytime(new Date());
+        bankDao.save(payRecord);
+
+        changeOrderState(oid,2);
+        bankDao.saveCard("00000000",-result);
+        bankDao.saveCard(before.getBankCardID(),result);
+        return result;
+    }
+
+    public void changeOrderState(int oid, int state) {
+        List<LessonProgress> progresses = lessonProDao.getByOrderId(oid);
+        for(LessonProgress lp:progresses){
+            lp.setState(state);
+            lessonProDao.saveOrUpdate(lp);
+        }
+        Orders order = orderDao.get(oid);
+        order.setState(state);
+        orderDao.saveOrUpdate(order);
+    }
+
     public List<Lesson> getLessons() {
         return lessonDao.getByState(123);
+    }
+
+    public Orders getOrderById(int oid) {
+        return orderDao.get(oid);
+    }
+
+    public List<LessonProgress> getLessonProByOid(int oid) {
+        return lessonProDao.getByOrderId(oid);
+    }
+
+    public NormalStudent getStudentById(String id) {
+        if(id.startsWith("x")){
+            return studentDao.getNormalStudent(Integer.parseInt(id.substring(1)));
+        }else{
+            return new NormalStudent(studentDao.get(Integer.parseInt(id)));
+        }
     }
 
     public Student getStudentByEmail(String email) {
@@ -130,6 +221,10 @@ public class StudentServiceImpl implements StudentService {
 
     public List<Classes> getClassesByLid(int lid) {
         return classesDao.getByLessonId(lid);
+    }
+
+    public Classes getClassesById(int id) {
+        return classesDao.get(id);
     }
 
     public NormalStudent getNmStudent(String name, String phone) {

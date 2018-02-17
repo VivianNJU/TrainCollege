@@ -16,8 +16,6 @@ public class Orders {
     private int cid;
 //    课程ID
     private int lid;
-    //    支付的银行卡
-    private String bankCardID;
     private Date orderTime;
     private int totalPay;
 //    状态0，未付款；状态1，已付款；状态2，已退订；状态3，未支付，已取消
@@ -45,14 +43,6 @@ public class Orders {
 
     public void setLid(int lid) {
         this.lid = lid;
-    }
-
-    public String getBankCardID() {
-        return bankCardID;
-    }
-
-    public void setBankCardID(String bankCardID) {
-        this.bankCardID = bankCardID;
     }
 
     public int getTotalPay() {

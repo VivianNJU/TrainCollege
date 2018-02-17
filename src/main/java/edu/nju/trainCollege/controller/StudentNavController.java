@@ -23,57 +23,6 @@ public class StudentNavController {
         return "/student/homepage";
     }
 
-    @RequestMapping(value = "enroll_lesson_with_class",method = RequestMethod.POST)
-    public String enrollLesson(HttpServletRequest request){
-        int studentNum = Integer.parseInt(request.getParameter("studentNum"));
-        Orders orders = new Orders();
-//        orders.setUid(((Student) request.getSession().getAttribute("student")).getId());
-        orders.setUid(1);
-        List<LessonProgress> progresses = new ArrayList<LessonProgress>(studentNum);
-
-        for(int i = 1;i<=studentNum;i++){
-            LessonProgress lp = new LessonProgress();
-            if(request.getParameter("type"+i).equals("1")){
-//                是会员
-                lp.setUid(Integer.toString(studentService.getStudentByEmail(request.getParameter("id"+i)).getId()));
-            }else{
-                NormalStudent ns = studentService.getNmStudent(request.getParameter("id"+i),request.getParameter("phone"+i));
-                lp.setUid("x"+ns.getId());
-            }
-            lp.setClassId(Integer.parseInt(request.getParameter("classId"+i)));
-            progresses.add(lp);
-        }
-
-        studentService.enrollLesson(orders,progresses);
-        return "/student/homepage";
-    }
-
-    @RequestMapping(value = "enroll_lesson_with_class",method = RequestMethod.GET)
-    public String enrollLessonWithClassView(HttpServletRequest request,ModelMap model){
-        if(request.getParameter("lid")==null){
-            return "redirect:/student/all_lessons";
-        }
-        int lid = Integer.parseInt(request.getParameter("lid"));
-        Lesson lesson = studentService.getLessonByLid(lid);
-        model.addAttribute("lesson",lesson);
-        model.addAttribute("classList",studentService.getClassesByLid(lid));
-
-        return "student/enroll_lesson_with_class";
-    }
-
-    @RequestMapping(value = "enroll_lesson_without",method = RequestMethod.GET)
-    public String enrollLessonWithoutView(HttpServletRequest request,ModelMap model){
-        if(request.getParameter("lid")==null){
-            return "redirect:/student/all_lessons";
-        }
-        int lid = Integer.parseInt(request.getParameter("lid"));
-        Lesson lesson = studentService.getLessonByLid(lid);
-        model.addAttribute("lesson",lesson);
-        model.addAttribute("classList",studentService.getClassesByLid(lid));
-
-        return "student/enroll_lesson_without";
-    }
-
     @RequestMapping(value = "get_student_by_email",method = RequestMethod.POST)
     @ResponseBody
     public boolean getStudentByEmail(HttpServletRequest request){

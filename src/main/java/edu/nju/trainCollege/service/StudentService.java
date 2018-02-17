@@ -15,7 +15,24 @@ public interface StudentService {
 
     public void enrollLesson(Orders orders,List<LessonProgress> progresses)throws ServiceException;
 
+    public void payOrder(int oid, String bankCardID, String password) throws ServiceException;
+
+    public double retrieve(int oid);
+
+    public void changeOrderState(int oid,int state);
+
     public List<Lesson> getLessons();
+
+    public Orders getOrderById(int oid);
+
+    public List<LessonProgress> getLessonProByOid(int oid);
+
+    /**
+     * 如果ID以"x"开头，那么是普通学员，如果不是，则为会员
+     * @param id LessonProgress中的uid
+     * @return 学员
+     */
+    public NormalStudent getStudentById(String id);
 
     public Student getStudentByEmail(String email);
 
@@ -24,6 +41,8 @@ public interface StudentService {
     public Lesson getLessonByLid(int lid);
 
     public List<Classes> getClassesByLid(int lid);
+
+    public Classes getClassesById(int id);
 
     /**
      * 如果非会员的信息不存在，就新建一条保存

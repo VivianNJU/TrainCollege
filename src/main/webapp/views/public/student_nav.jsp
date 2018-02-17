@@ -53,7 +53,7 @@
 
 <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
-            <li class="treeview ${my_course}">
+            <li class="treeview ${param.my_orders}">
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
                     <span>我的订单</span>
@@ -62,10 +62,10 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="${all}"><a href="#"><i class="fa fa-circle-o"></i> 所有订单</a></li>
-                    <li class="${not_pay}"><a href="#"><i class="fa fa-circle-o"></i> 未支付订单</a></li>
-                    <li class="${has_started}"><a href="#"><i class="fa fa-circle-o"></i> 已支付订单</a></li>
-                    <li class="${famous}"><a href="#"><i class="fa fa-circle-o"></i> 退订订单</a></li>
+                    <li class="${param.all_orders}"><a href="#"><i class="fa fa-circle-o"></i> 所有订单</a></li>
+                    <li class="${param.not_pay}"><a href="#"><i class="fa fa-circle-o"></i> 未支付订单</a></li>
+                    <li class="${param.has_pay}"><a href="#"><i class="fa fa-circle-o"></i> 已支付订单</a></li>
+                    <li class="${param.cancel_order}"><a href="#"><i class="fa fa-circle-o"></i> 退订订单</a></li>
                 </ul>
             </li>
 
