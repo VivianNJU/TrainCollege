@@ -62,10 +62,10 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="${param.all_orders}"><a href="#"><i class="fa fa-circle-o"></i> 所有订单</a></li>
-                    <li class="${param.not_pay}"><a href="#"><i class="fa fa-circle-o"></i> 未支付订单</a></li>
-                    <li class="${param.has_pay}"><a href="#"><i class="fa fa-circle-o"></i> 已支付订单</a></li>
-                    <li class="${param.cancel_order}"><a href="#"><i class="fa fa-circle-o"></i> 退订订单</a></li>
+                    <li class="${param.all_orders}"><a href="/student/all_orders"><i class="fa fa-circle-o"></i> 所有订单</a></li>
+                    <li class="${param.not_pay}"><a href="/student/not_pay_orders"><i class="fa fa-circle-o"></i> 未支付订单</a></li>
+                    <li class="${param.has_pay}"><a href="/student/has_pay_orders"><i class="fa fa-circle-o"></i> 已支付订单</a></li>
+                    <li class="${param.cancel_order}"><a href="/student/retrieve_orders"><i class="fa fa-circle-o"></i> 退订订单</a></li>
                 </ul>
             </li>
 

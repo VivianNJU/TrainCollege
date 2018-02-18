@@ -25,5 +25,7 @@ public interface CollegeService {
 
     public Classes getClassesById(int id);
 
+    public College getCollegeById(int cid);
+
     public List<Classes> getClassesByLid(int lid);
 }

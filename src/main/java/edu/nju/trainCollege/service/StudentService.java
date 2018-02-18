@@ -23,6 +23,8 @@ public interface StudentService {
 
     public List<Lesson> getLessons();
 
+    public List<Orders> getOrdersByStateUid(int uid,int state);
+
     public Orders getOrderById(int oid);
 
     public List<LessonProgress> getLessonProByOid(int oid);

@@ -44,7 +44,7 @@
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/student/homepage"><i class="fa fa-home"></i> 主页</a></li>
-                <li><a href="/student/not_pay_orders"> 待支付订单</a></li>
+                <li><a href="/student/not_pay_orders"> 未支付订单</a></li>
                 <li class="active">${lesson.name}</li>
             </ol>
         </section>

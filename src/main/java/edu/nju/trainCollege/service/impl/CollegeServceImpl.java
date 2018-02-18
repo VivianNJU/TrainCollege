@@ -95,6 +95,10 @@ public class CollegeServceImpl implements CollegeService{
         return classesDao.get(id);
     }
 
+    public College getCollegeById(int cid) {
+        return collegeDao.get(cid);
+    }
+
     public List<Classes> getClassesByLid(int lid) {
         return classesDao.getByLessonId(lid);
     }

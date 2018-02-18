@@ -179,6 +179,22 @@ public class MainController {
         return "student/activate";
     }
 
+    @RequestMapping(value = "/datadb/college_by_cid",method = RequestMethod.POST)
+    @ResponseBody
+    public College getCollegeById(HttpServletRequest request){
+        int cid = Integer.parseInt(request.getParameter("cid"));
+        College c = collegeService.getCollegeById(cid);
+        c.setPassword(null);
+        return c;
+    }
+
+    @RequestMapping(value = "/datadb/lesson_by_lid",method = RequestMethod.POST)
+    @ResponseBody
+    public Lesson getLessonById(HttpServletRequest request){
+        int lid = Integer.parseInt(request.getParameter("lid"));
+        return collegeService.getLessonByLid(lid);
+    }
+
     @RequestMapping(value = "logout")
     public String logout(SessionStatus status){
         status.setComplete();

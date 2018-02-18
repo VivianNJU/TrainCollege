@@ -8,7 +8,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -42,6 +42,37 @@ public class StudentNavController {
         model.addAttribute("classList",studentService.getClassesByLid(lid));
 
         return "/student/show_lesson";
+    }
+
+    @RequestMapping(value = "all_orders",method = RequestMethod.GET)
+    public String allOrdersView(){
+        return "/student/all_orders";
+    }
+
+    @RequestMapping(value = "retrieve_orders",method = RequestMethod.GET)
+    public String retrieveOrdersView(){
+        return "student/retrieve_orders";
+    }
+
+    @RequestMapping(value = "has_pay_orders",method = RequestMethod.GET)
+    public String haspayOrdersView(){
+        return "student/has_pay_orders";
+    }
+
+    @RequestMapping(value = "not_pay_orders",method = RequestMethod.GET)
+    public String notpayOrdersView(){
+        return "/student/not_pay_orders";
+    }
+
+    @RequestMapping(value = "get_order_by_state",method = RequestMethod.POST)
+    @ResponseBody
+    public MyData getOrdersByState(HttpServletRequest request){
+        int state = Integer.parseInt(request.getParameter("state"));
+        int uid = ((Student) request.getSession().getAttribute("student")).getId();
+        List<Orders> orders= studentService.getOrdersByStateUid(uid,state);
+        if(orders==null)
+            orders = new LinkedList<Orders>();
+        return new MyData(orders);
     }
 
     @RequestMapping(value = "all_lessons",method = RequestMethod.GET)

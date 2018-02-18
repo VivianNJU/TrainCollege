@@ -23,8 +23,15 @@ public class OrderDaoImpl implements OrderDao {
     private Session getCurrentSession() {
         return this.sessionFactory.openSession();
     }
-    public List<Orders> getByUserId(int uid) {
-        Query query = getCurrentSession().createQuery(fromDatabase+searchByUserId).setParameter("uid",uid);
+
+    public List<Orders> getByStateUid(int uid,int state) {
+        Query query;
+        if(state>=0){
+            query = getCurrentSession().createQuery(fromDatabase+searchByUserId+" and state =:state")
+                    .setParameter("uid",uid).setParameter("state",state);
+        }else{
+            query = getCurrentSession().createQuery(fromDatabase+searchByUserId).setParameter("uid",uid);
+        }
         if(query.list().size()==0)
             return null;
         else{

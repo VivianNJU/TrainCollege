@@ -191,6 +191,10 @@ public class StudentServiceImpl implements StudentService {
         return lessonDao.getByState(123);
     }
 
+    public List<Orders> getOrdersByStateUid(int uid, int state) {
+        return orderDao.getByStateUid(uid,state);
+    }
+
     public Orders getOrderById(int oid) {
         return orderDao.get(oid);
     }
