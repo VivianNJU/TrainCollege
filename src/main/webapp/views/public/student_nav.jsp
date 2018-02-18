@@ -45,7 +45,7 @@
 
             <li class="${param.browse}">
                 <a href="/student/all_lessons">
-                    <i class="fa fa-home"></i> <span> 课程浏览</span>
+                    <i class="fa fa-send"></i> <span> 课程浏览</span>
                     <span class="pull-right-container">
             </span>
                 </a>
@@ -55,7 +55,7 @@
 
             <li class="treeview ${param.my_orders}">
                 <a href="#">
-                    <i class="fa fa-pie-chart"></i>
+                    <i class="fa fa-list-ul"></i>
                     <span>我的订单</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -71,25 +71,41 @@
 
 <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
-            <li class="treeview ${my_course}">
+            <li class="treeview ${param.my_progress}">
                 <a href="#">
-                    <i class="fa fa-pie-chart"></i>
+                    <i class="fa fa-calendar"></i>
                     <span>我的课程</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="${all}"><a href="#"><i class="fa fa-circle-o"></i> 所有课程</a></li>
-                    <li class="${not_pay}"><a href="#"><i class="fa fa-circle-o"></i> 课程考勤</a></li>
-                    <li class="${not_pay}"><a href="#"><i class="fa fa-circle-o"></i> 我要退课</a></li>
+                    <li class="${param.all_progress}"><a href="/student/all_progress"><i class="fa fa-circle-o"></i> 所有课程</a></li>
+                    <li class="${param.has_pay_progress}"><a href="/student/has_pay_progress"><i class="fa fa-circle-o"></i> 已付课程</a></li>
+                    <li class="${param.retrieve_progress}"><a href="/student/retrieve_progress"><i class="fa fa-circle-o"></i> 已退课程</a></li>
+                </ul>
+            </li>
+
+<%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
+
+            <li class="treeview ${param.data}">
+                <a href="#">
+                    <i class="fa fa-pie-chart"></i>
+                    <span>数据查看</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="${param.payment}"><a href="/student/payment"><i class="fa fa-circle-o"></i> 交易记录</a></li>
+                    <li class="${param.a}"><a href="#"><i class="fa fa-circle-o"></i> 考勤记录</a></li>
                 </ul>
             </li>
 
 <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
             <li class="${help}">
                 <a href="#">
-                    <i class="fa fa-home"></i> <span> 网站说明</span>
+                    <i class="fa fa-question"></i> <span> 网站说明</span>
                     <span class="pull-right-container">
             </span>
                 </a>

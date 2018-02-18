@@ -131,12 +131,41 @@ public class StudentOrderController {
         return "/student/show_order_not_pay";
     }
 
-    @RequestMapping(value = "enroll_lesson_with_class",method = RequestMethod.POST)
-    public String enrollLesson(HttpServletRequest request){
+    @RequestMapping(value = "enroll_lesson_without",method = RequestMethod.POST)
+    public String enrollWithoutClass(HttpServletRequest request){
         int studentNum = Integer.parseInt(request.getParameter("studentNum"));
         Orders orders = new Orders();
-//        orders.setUid(((Student) request.getSession().getAttribute("student")).getId());
-        orders.setUid(1);
+        orders.setUid(((Student) request.getSession().getAttribute("student")).getId());
+        orders.setLid(Integer.parseInt(request.getParameter("lid")));
+        List<LessonProgress> progresses = new ArrayList<LessonProgress>(studentNum);
+
+        for(int i = 1;i<=studentNum;i++){
+            LessonProgress lp = new LessonProgress();
+            if(request.getParameter("type"+i).equals("1")){
+//                是会员
+                lp.setUid(Integer.toString(studentService.getStudentByEmail(request.getParameter("id"+i)).getId()));
+            }else{
+                NormalStudent ns = studentService.getNmStudent(request.getParameter("id"+i),request.getParameter("phone"+i));
+                lp.setUid("x"+ns.getId());
+            }
+            progresses.add(lp);
+        }
+
+        try {
+            int oid = studentService.enrollLesson(orders,progresses);
+            return "redirect:/student/show_order_not_pay?oid="+oid;
+        }catch (ServiceException ex){
+            return "redirect:/student/error?reason="+ex.getMessage();
+        }
+
+    }
+
+    @RequestMapping(value = "enroll_lesson_with_class",method = RequestMethod.POST)
+    public String enrollWithClass(HttpServletRequest request){
+        int studentNum = Integer.parseInt(request.getParameter("studentNum"));
+        Orders orders = new Orders();
+        orders.setUid(((Student) request.getSession().getAttribute("student")).getId());
+        orders.setLid(Integer.parseInt(request.getParameter("lid")));
         List<LessonProgress> progresses = new ArrayList<LessonProgress>(studentNum);
 
         for(int i = 1;i<=studentNum;i++){
@@ -152,8 +181,12 @@ public class StudentOrderController {
             progresses.add(lp);
         }
 
-        studentService.enrollLesson(orders,progresses);
-        return "/student/homepage";
+        try {
+            int oid = studentService.enrollLesson(orders,progresses);
+            return "redirect:/student/show_order_not_pay?oid="+oid;
+        }catch (ServiceException ex){
+            return "redirect:/student/error?reason="+ex.getMessage();
+        }
     }
 
     @RequestMapping(value = "enroll_lesson_with_class",method = RequestMethod.GET)
@@ -177,7 +210,6 @@ public class StudentOrderController {
         int lid = Integer.parseInt(request.getParameter("lid"));
         Lesson lesson = studentService.getLessonByLid(lid);
         model.addAttribute("lesson",lesson);
-        model.addAttribute("classList",studentService.getClassesByLid(lid));
 
         return "student/enroll_lesson_without";
     }

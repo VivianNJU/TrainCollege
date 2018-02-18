@@ -71,6 +71,7 @@
                         <input type="hidden" value="with" name="with_class">
                         <input id="student-num" type="hidden" value="1" name="studentNum">
                         <input type="hidden" name="type1" value="1">
+                        <input type="hidden" name="lid" value="${lesson.id}">
 
                         <div class="form-group">
                             <label>会员邮箱：</label>
@@ -112,8 +113,8 @@
 
                             <div class="modal-footer">
                                 <button class="btn btn-default pull-left" data-dismiss="modal">我再想想</button>
-                                <button class="btn btn-success" onclick="add_student(false)">不是会员</button>
-                                <button class="btn btn-primary" onclick="add_student(true)">是会员</button>
+                                <button class="btn btn-success" onclick="add_student(false)" type="button">不是会员</button>
+                                <button class="btn btn-primary" onclick="add_student(true)" type="button">是会员</button>
                             </div>
                         </div>
                         <!-- /.modal-dialog -->

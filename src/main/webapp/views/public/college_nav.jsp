@@ -45,7 +45,7 @@
 
             <li class="treeview ${param.browse}">
                 <a href="#">
-                    <i class="fa fa-pie-chart"></i>
+                    <i class="fa fa-list-ul"></i>
                     <span>课程浏览</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -62,7 +62,7 @@
 
             <li class="treeview ${param.lesson_more}">
                 <a href="#">
-                    <i class="fa fa-pie-chart"></i>
+                    <i class="fa fa-file-text-o"></i>
                     <span>课程详情</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -77,24 +77,24 @@
 
             <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
-            <li class="treeview ${course_more}">
+            <li class="treeview ${param.offline}">
                 <a href="#">
-                    <i class="fa fa-pie-chart"></i>
+                    <i class="fa fa-edit"></i>
                     <span>线下登记</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="${course_introduction}"><a href="#"><i class="fa fa-circle-o"></i> 报名课程</a></li>
-                    <li class="${attendence}"><a href="#"><i class="fa fa-circle-o"></i> 退订课程</a></li>
+                    <li class="${param.enroll}"><a href="/college/enroll_lesson"><i class="fa fa-circle-o"></i> 报名课程</a></li>
+                    <li class="${param.retrieve}"><a href="#"><i class="fa fa-circle-o"></i> 退订课程</a></li>
                 </ul>
             </li>
 
             <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
             <li class="${help}">
                 <a href="#">
-                    <i class="fa fa-home"></i> <span> 网站说明</span>
+                    <i class="fa fa-question"></i> <span> 网站说明</span>
                     <span class="pull-right-container">
             </span>
                 </a>

@@ -44,6 +44,28 @@ public class StudentNavController {
         return "/student/show_lesson";
     }
 
+    @RequestMapping(value = "payment",method = RequestMethod.GET)
+    public String paymentView(HttpServletRequest request,ModelMap model){
+        int uid = ((Student) request.getSession().getAttribute("student")).getId();
+        model.addAttribute("paymentList",studentService.getPayRecordByUid(uid));
+        return "/student/payment";
+    }
+
+    @RequestMapping(value = "all_progress",method = RequestMethod.GET)
+    public String allProgressView(){
+        return "/student/all_progresses";
+    }
+
+    @RequestMapping(value = "retrieve_progress",method = RequestMethod.GET)
+    public String retrieveProgressView(){
+        return "student/retrieve_progress";
+    }
+
+    @RequestMapping(value = "has_pay_progress",method = RequestMethod.GET)
+    public String haspayProgressView(){
+        return "student/has_pay_progress";
+    }
+
     @RequestMapping(value = "all_orders",method = RequestMethod.GET)
     public String allOrdersView(){
         return "/student/all_orders";
@@ -73,6 +95,14 @@ public class StudentNavController {
         if(orders==null)
             orders = new LinkedList<Orders>();
         return new MyData(orders);
+    }
+
+    @RequestMapping(value = "get_progress_by_state",method = RequestMethod.POST)
+    @ResponseBody
+    public MyData getProgressByState(HttpServletRequest request){
+        int state = Integer.parseInt(request.getParameter("state"));
+        String uid = Integer.toString(((Student) request.getSession().getAttribute("student")).getId());
+        return new MyData(studentService.getLessonProByUidState(uid,state));
     }
 
     @RequestMapping(value = "all_lessons",method = RequestMethod.GET)

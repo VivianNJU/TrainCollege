@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -75,32 +76,46 @@ public class StudentServiceImpl implements StudentService {
         }
     }
 
-    public void enrollLesson(Orders orders, List<LessonProgress> progresses) throws ServiceException {
+    public int enrollLesson(Orders orders, List<LessonProgress> progresses) throws ServiceException {
         if(progresses==null||progresses.size()==0)
             throw new ServiceException("报名人数至少一人");
         int expr = studentDao.get(orders.getUid()).getExpr();
         double discount = LevelDiscount.getDiscount(expr);
 
         orders.setOrderTime(new Date());
-        int lid = classesDao.get(progresses.get(0).getClassId()).getLid();
-        orders.setLid(lid);
-
-        int cid = lessonDao.get(lid).getCid();
+        int cid = lessonDao.get(orders.getLid()).getCid();
         orders.setCid(cid);
 
         int totalPay = 0;
-        for(LessonProgress lp:progresses){
-            lp.setCid(cid);
-            Classes classes = classesDao.get(lp.getClassId());
-            lp.setPayment(new Double(classes.getPrice()*discount).intValue());
-            totalPay+=lp.getPayment();
+        if(progresses.get(0).getClassId()==0){
+//            不分配班级
+            List<Classes> classes = classesDao.getByLessonId(orders.getLid());
+            double payment = classes.get(0).getPrice();
+            for(Classes c:classes){
+                if(payment>c.getPrice())
+                    payment = c.getPrice();
+            }
 
-            int studentNum = lessonProDao.getByClassIdNo(classes.getId(),-1).size();
-            if(studentNum>=classes.getNum()*classes.getSize()){
-                throw new ServiceException(classes.getName()+" 报名人数已达上限，请重新选班");
-            }else{
-                int classNo = studentNum / classes.getSize()+1;
-                lp.setClassNo(classNo);
+            totalPay = new Double(progresses.size()*payment).intValue();
+            for(LessonProgress lp:progresses){
+                lp.setCid(cid);
+                lp.setPayment(new Double(payment).intValue());
+                lp.setClassNo(0);
+            }
+        }else{
+            for(LessonProgress lp:progresses){
+                lp.setCid(cid);
+                Classes classes = classesDao.get(lp.getClassId());
+                lp.setPayment(new Double(classes.getPrice()*discount).intValue());
+                totalPay+=lp.getPayment();
+
+                int studentNum = lessonProDao.getByClassIdNo(classes.getId(),-1).size();
+                if(studentNum>=classes.getNum()*classes.getSize()){
+                    throw new ServiceException(classes.getName()+" 报名人数已达上限，请重新选班");
+                }else{
+                    int classNo = studentNum / classes.getSize()+1;
+                    lp.setClassNo(classNo);
+                }
             }
         }
         orders.setTotalPay(totalPay);
@@ -112,6 +127,7 @@ public class StudentServiceImpl implements StudentService {
             lp.setOid(oid);
             lessonProDao.save(lp);
         }
+        return oid;
     }
 
     public void payOrder(int oid, String bankCardID, String password) throws ServiceException {
@@ -187,6 +203,10 @@ public class StudentServiceImpl implements StudentService {
         orderDao.saveOrUpdate(order);
     }
 
+    public List<PayRecord> getPayRecordByUid(int uid) {
+        return bankDao.findByUid(uid);
+    }
+
     public List<Lesson> getLessons() {
         return lessonDao.getByState(123);
     }
@@ -197,6 +217,13 @@ public class StudentServiceImpl implements StudentService {
 
     public Orders getOrderById(int oid) {
         return orderDao.get(oid);
+    }
+
+    public List<LessonProgress> getLessonProByUidState(String uid, int state) {
+        List<LessonProgress> progresses = lessonProDao.getByUidState(uid,state);
+        if(progresses==null)
+            progresses = new LinkedList<LessonProgress>();
+        return progresses;
     }
 
     public List<LessonProgress> getLessonProByOid(int oid) {

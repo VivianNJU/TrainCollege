@@ -10,6 +10,8 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class BankDaoImpl implements BankDao {
     @Autowired
@@ -18,6 +20,7 @@ public class BankDaoImpl implements BankDao {
     private static final String fromRecordDb = "from PayRecord ";
     private static final String searchByIdPwd = "where cardNo = :id and password = :password";
     private static final String searchByOid = "where oid = :oid";
+    private static final String searchByUid = "where uid = :uid";
 
     private Session getCurrentSession() {
         return this.sessionFactory.openSession();
@@ -29,6 +32,15 @@ public class BankDaoImpl implements BankDao {
             return null;
         else{
             return (PayRecord) query.list().get(0);
+        }
+    }
+
+    public List<PayRecord> findByUid(int uid) {
+        Query query = getCurrentSession().createQuery(fromRecordDb+searchByUid+" order by paytime DESC").setParameter("uid",uid);
+        if(query.list().size()==0)
+            return null;
+        else{
+            return query.list();
         }
     }
 

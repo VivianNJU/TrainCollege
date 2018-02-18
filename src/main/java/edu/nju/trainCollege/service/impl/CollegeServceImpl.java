@@ -1,26 +1,33 @@
 package edu.nju.trainCollege.service.impl;
 
-import edu.nju.trainCollege.dao.ClassesDao;
-import edu.nju.trainCollege.dao.CollegeDao;
-import edu.nju.trainCollege.dao.LessonDao;
-import edu.nju.trainCollege.model.Classes;
-import edu.nju.trainCollege.model.College;
-import edu.nju.trainCollege.model.Lesson;
+import edu.nju.trainCollege.dao.*;
+import edu.nju.trainCollege.model.*;
 import edu.nju.trainCollege.service.CollegeService;
+import edu.nju.trainCollege.tools.LevelDiscount;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class CollegeServceImpl implements CollegeService{
     @Autowired
+    private StudentDao studentDao;
+    @Autowired
+    private LessonDao lessonDao;
+    @Autowired
     private CollegeDao collegeDao;
     @Autowired
     private ClassesDao classesDao;
     @Autowired
-    private LessonDao lessonDao;
+    private LessonProDao lessonProDao;
+    @Autowired
+    private OrderDao orderDao;
+    @Autowired
+    private BankDao bankDao;
 
     private static final String ID_FORMATTER = "%07d";
 
@@ -59,6 +66,41 @@ public class CollegeServceImpl implements CollegeService{
             }
         }
         return lid;
+    }
+
+    public void enrollLesson(Orders order, LessonProgress lp) throws ServiceException {
+        if(lp==null)
+            throw new ServiceException("报名人数至少一人");
+        order.setOrderTime(new Date());
+        order.setState(1);
+
+        Classes classes = classesDao.get(lp.getClassId());
+        if(order.getUid()==0){
+            lp.setPayment(new Double(classes.getPrice()).intValue());
+        }else{
+            int expr = studentDao.get(order.getUid()).getExpr();
+            double discount = LevelDiscount.getDiscount(expr);
+            lp.setPayment(new Double(classes.getPrice()*discount).intValue());
+        }
+
+        int studentNum = lessonProDao.getByClassIdNo(lp.getClassId(),-1).size();
+        if(studentNum>=classes.getNum()*classes.getSize()){
+            throw new ServiceException(classes.getName()+" 报名人数已达上限，请重新选班");
+        }else{
+            int classNo = studentNum / classes.getSize()+1;
+            lp.setClassNo(classNo);
+        }
+        order.setTotalPay(lp.getPayment());
+
+//        保存order，获得它的ID
+        lp.setOid(orderDao.save(order));
+        lp.setState(1);
+
+        if(order.getUid()!=0){
+            Student student = studentDao.get(order.getUid());
+            student.setExpr(student.getExpr()+order.getTotalPay()/100);
+            studentDao.saveOrUpdate(student);
+        }
     }
 
     public List<Lesson> getLessonByStateCid(int cid, int state) {

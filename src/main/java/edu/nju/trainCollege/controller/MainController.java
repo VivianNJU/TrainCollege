@@ -1,6 +1,7 @@
 package edu.nju.trainCollege.controller;
 
 import com.sun.deploy.util.SessionState;
+import edu.nju.trainCollege.model.Classes;
 import edu.nju.trainCollege.model.College;
 import edu.nju.trainCollege.model.Lesson;
 import edu.nju.trainCollege.model.Student;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 @SessionAttributes({"student","college"})
@@ -193,6 +195,20 @@ public class MainController {
     public Lesson getLessonById(HttpServletRequest request){
         int lid = Integer.parseInt(request.getParameter("lid"));
         return collegeService.getLessonByLid(lid);
+    }
+
+    @RequestMapping(value = "/datadb/class_by_id",method = RequestMethod.POST)
+    @ResponseBody
+    public Classes getClassById(HttpServletRequest request){
+        int id = Integer.parseInt(request.getParameter("id"));
+        return collegeService.getClassesById(id);
+    }
+
+    @RequestMapping(value = "/datadb/classes_by_lid",method = RequestMethod.POST)
+    @ResponseBody
+    public List<Classes> getClassesByLid(HttpServletRequest request){
+        int lid = Integer.parseInt(request.getParameter("lid"));
+        return collegeService.getClassesByLid(lid);
     }
 
     @RequestMapping(value = "logout")

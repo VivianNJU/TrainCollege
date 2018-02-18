@@ -3,9 +3,13 @@ package edu.nju.trainCollege.dao;
 import edu.nju.trainCollege.model.BankCard;
 import edu.nju.trainCollege.model.PayRecord;
 
+import java.util.List;
+
 public interface BankDao extends BaseDao<PayRecord,Integer> {
 
     public PayRecord findByOrderId(int oid);
+
+    public List<PayRecord> findByUid(int uid);
 
     public BankCard findByCardIDPwd(String bankCardID, String password);
 

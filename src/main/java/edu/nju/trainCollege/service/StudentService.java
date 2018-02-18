@@ -13,7 +13,7 @@ public interface StudentService {
 
     public void processActivate(String email , String validateCode)throws ServiceException;
 
-    public void enrollLesson(Orders orders,List<LessonProgress> progresses)throws ServiceException;
+    public int enrollLesson(Orders orders,List<LessonProgress> progresses)throws ServiceException;
 
     public void payOrder(int oid, String bankCardID, String password) throws ServiceException;
 
@@ -21,11 +21,15 @@ public interface StudentService {
 
     public void changeOrderState(int oid,int state);
 
+    public List<PayRecord> getPayRecordByUid(int uid);
+
     public List<Lesson> getLessons();
 
     public List<Orders> getOrdersByStateUid(int uid,int state);
 
     public Orders getOrderById(int oid);
+
+    public List<LessonProgress> getLessonProByUidState(String uid,int state);
 
     public List<LessonProgress> getLessonProByOid(int oid);
 

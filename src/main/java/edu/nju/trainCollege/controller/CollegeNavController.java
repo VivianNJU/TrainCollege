@@ -1,17 +1,17 @@
 package edu.nju.trainCollege.controller;
 
-import edu.nju.trainCollege.model.Classes;
-import edu.nju.trainCollege.model.College;
-import edu.nju.trainCollege.model.Lesson;
-import edu.nju.trainCollege.model.MyData;
+import edu.nju.trainCollege.model.*;
 import edu.nju.trainCollege.service.CollegeService;
+import edu.nju.trainCollege.service.StudentService;
 import edu.nju.trainCollege.tools.NumberTool;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
@@ -21,12 +21,15 @@ import java.util.Date;
 import java.util.List;
 
 @Controller
+@SessionAttributes({"student","college"})
 @RequestMapping("college/")
 public class CollegeNavController {
 
     @Autowired
     private CollegeService collegeService;
-    private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+
+    @Autowired
+    private StudentService studentService;
 
     @RequestMapping("homepage")
     public String homepage(ModelMap model){
@@ -56,165 +59,39 @@ public class CollegeNavController {
         return new MyData(collegeService.getLessonByStateCid(cid,state));
     }
 
-    @RequestMapping(value = "show_lesson",method = RequestMethod.GET)
-    public String showLesson(HttpServletRequest request,ModelMap model){
-        if(request.getParameter("lid")==null){
+    @RequestMapping(value = "enroll_lesson",method = RequestMethod.GET)
+    public String enrollLessonView(HttpServletRequest request,ModelMap model){
+        int cid = ((College)request.getSession().getAttribute("college")).getId();
+        model.addAttribute("lessonList",collegeService.getLessonByStateCid(cid,1));
+        return "/college/enroll_lesson";
+    }
+
+    @RequestMapping(value = "enroll_offline",method = RequestMethod.POST)
+    public String enrollWithClass(HttpServletRequest request){
+        Orders orders = new Orders();
+        orders.setLid(Integer.parseInt(request.getParameter("lid")));
+        LessonProgress lp = new LessonProgress();
+
+        if(request.getParameter("type").equals("1")){
+//                是会员
+            int uid = studentService.getStudentByEmail(request.getParameter("id")).getId();
+            lp.setUid(Integer.toString(uid));
+            orders.setUid(uid);
+        }else{
+            NormalStudent ns = studentService.getNmStudent(request.getParameter("id"),request.getParameter("phone"));
+            lp.setUid("x"+ns.getId());
+            orders.setUid(0);
+        }
+        orders.setCid(((College) request.getSession().getAttribute("college")).getId());
+        lp.setClassId(Integer.parseInt(request.getParameter("classId")));
+        lp.setCid(orders.getCid());
+
+//        try {
+            collegeService.enrollLesson(orders,lp);
             return "redirect:/college/homepage";
-        }
-        int lid = Integer.parseInt(request.getParameter("lid"));
-        Lesson lesson = collegeService.getLessonByLid(lid);
-        switch (lesson.getState()){
-            case 0:
-                model.addAttribute("lesson_state","未发布");
-                break;
-            case 1:
-                model.addAttribute("lesson_state","已发布，报名中");
-                break;
-            case 2:
-                model.addAttribute("lesson_state","报名截止，已开课");
-                break;
-            case 3:
-                model.addAttribute("lesson_state","已结束");
-                break;
-        }
-        model.addAttribute("lesson",lesson);
-        model.addAttribute("classList",collegeService.getClassesByLid(lid));
-        return "/college/show_lesson";
+//        }catch (ServiceException ex){
+//            return "redirect:/college/error?reason="+ex.getMessage();
+//        }
     }
 
-    @RequestMapping(value = "change_lesson_state",method = RequestMethod.POST)
-    @ResponseBody
-    public boolean changeLessonState(HttpServletRequest request){
-        try {
-            int lid = Integer.parseInt(request.getParameter("lid"));
-            Lesson lesson = collegeService.getLessonByLid(lid);
-            lesson.setState(Integer.parseInt(request.getParameter("state")));
-            collegeService.saveLesson(lesson);
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @RequestMapping(value = "get_class_by_id",method = RequestMethod.POST)
-    @ResponseBody
-    public Classes getClassById(HttpServletRequest request){
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            return collegeService.getClassesById(id);
-        }catch (Exception e){
-            e.printStackTrace();
-            return new Classes();
-        }
-    }
-
-    @RequestMapping(value = "delete_class",method = RequestMethod.POST)
-    @ResponseBody
-    public boolean deleteClass(HttpServletRequest request){
-        try {
-            int id = Integer.parseInt(request.getParameter("id"));
-            collegeService.deleteClass(id);
-            return true;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @RequestMapping(value = "modify_class",method = RequestMethod.POST)
-    public String modifyClass(HttpServletRequest request){
-        int id = Integer.parseInt(request.getParameter("id"));
-        Classes c;
-        if(id>0){
-            c = collegeService.getClassesById(id);
-        }else{
-            c = new Classes();
-            c.setLid(Integer.parseInt(request.getParameter("lid")));
-        }
-        c.setName(request.getParameter("classname"));
-        c.setTeacher(request.getParameter("teacher"));
-        c.setPrice(Integer.parseInt(request.getParameter("price")));
-        c.setNum(Integer.parseInt(request.getParameter("amount")));
-        c.setSize(Integer.parseInt(request.getParameter("size")));
-        collegeService.saveClass(c);
-        return "redirect:/college/show_lesson?lid="+c.getLid();
-    }
-
-    @RequestMapping(value = "modify_lesson",method = RequestMethod.POST)
-    public String modifyLesson(HttpServletRequest request){
-        Lesson lesson = collegeService.getLessonByLid(Integer.parseInt(request.getParameter("lid")));
-        lesson.setIntro(request.getParameter("intro"));
-        lesson.setName(request.getParameter("name"));
-        lesson.setWeekNum(Integer.parseInt(request.getParameter("weeks")));
-        lesson.setTimePerWeek(Integer.parseInt(request.getParameter("times")));
-
-        StringBuilder builder = new StringBuilder();
-        for(String t:request.getParameterValues("type")){
-            builder.append(t).append("/");
-        }
-        builder.deleteCharAt(builder.lastIndexOf("/"));
-        lesson.setType(builder.toString());
-
-        try {
-            lesson.setStartDay(df.parse(request.getParameter("date_range").substring(0,10)));
-            lesson.setEndDay(df.parse(request.getParameter("date_range").substring(13,23)));
-        }catch (ParseException ex){
-            ex.printStackTrace();
-            lesson.setStartDay(new Date());
-            lesson.setEndDay(new Date());
-        }
-        collegeService.saveLesson(lesson);
-        return "redirect:/college/show_lesson?lid="+lesson.getId();
-    }
-
-    @RequestMapping(value = "create_lesson",method = RequestMethod.GET)
-    public String createLessonView(){
-        return "/college/create_lesson";
-    }
-
-    @RequestMapping(value = "create_lesson",method = RequestMethod.POST)
-    public String createLesson(HttpServletRequest request,ModelMap model){
-        Lesson lesson = new Lesson();
-        lesson.setIntro(request.getParameter("intro"));
-        lesson.setName(request.getParameter("name"));
-        lesson.setWeekNum(Integer.parseInt(request.getParameter("weeks")));
-        lesson.setTimePerWeek(Integer.parseInt(request.getParameter("times")));
-        lesson.setCid(((College)request.getSession().getAttribute("college")).getId());
-
-        StringBuilder builder = new StringBuilder();
-        for(String t:request.getParameterValues("type")){
-            builder.append(t).append("/");
-        }
-        builder.deleteCharAt(builder.lastIndexOf("/"));
-        lesson.setType(builder.toString());
-
-        try {
-            lesson.setStartDay(df.parse(request.getParameter("date_range").substring(0,10)));
-            lesson.setEndDay(df.parse(request.getParameter("date_range").substring(13,23)));
-        }catch (ParseException ex){
-            ex.printStackTrace();
-            lesson.setStartDay(new Date());
-            lesson.setEndDay(new Date());
-        }
-
-        List<Classes> classes = new ArrayList<Classes>(1);
-        for(int i = 1;i<=Integer.parseInt(request.getParameter("class_num"));i++){
-            Classes c = new Classes();
-            c.setName(request.getParameter("classname"+i));
-            c.setTeacher(request.getParameter("teacher"+i));
-            c.setPrice(Integer.parseInt(request.getParameter("price"+i)));
-            c.setNum(Integer.parseInt(request.getParameter("amount"+i)));
-            c.setSize(Integer.parseInt(request.getParameter("size"+i)));
-            classes.add(c);
-        }
-
-        int lid = collegeService.createLessonClass(lesson,classes);
-        if(lid!=0){
-            return "redirect:/college/show_lesson?lid="+lid;
-        }else{
-            model.addAttribute("error"," * 填写信息有误，请重新填写");
-            return "/college/create_lesson";
-        }
-    }
 }

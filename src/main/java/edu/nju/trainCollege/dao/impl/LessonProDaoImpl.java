@@ -34,8 +34,14 @@ public class LessonProDaoImpl implements LessonProDao {
         }
     }
 
-    public List<LessonProgress> getByUserId(String uid) {
-        Query query = getCurrentSession().createQuery(fromDatabase+searchByUserId).setParameter("uid",uid);
+    public List<LessonProgress> getByUidState(String uid,int state) {
+        Query query;
+        if(state>=0){
+            query = getCurrentSession().createQuery(fromDatabase+searchByUserId+" and state = :state")
+                    .setParameter("uid",uid).setParameter("state",state);
+        }else{
+            query = getCurrentSession().createQuery(fromDatabase+searchByUserId).setParameter("uid",uid);
+        }
         if(query.list().size()==0)
             return null;
         else{
