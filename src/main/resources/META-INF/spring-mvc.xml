@@ -39,15 +39,15 @@
     </bean>
 
     <mvc:interceptors>
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/student/**"/>-->
-            <!--<bean id="studentLoginInterceptor" class="edu.nju.trainCollege.tools.StudentLoginInterceptor"/>-->
-        <!--</mvc:interceptor>-->
-
         <mvc:interceptor>
-            <mvc:mapping path="/college/**"/>
-            <bean id="collegeLoginInterceptor" class="edu.nju.trainCollege.tools.CollegeLoginInterceptor"/>
+            <mvc:mapping path="/student/**"/>
+            <bean id="studentLoginInterceptor" class="edu.nju.trainCollege.tools.StudentLoginInterceptor"/>
         </mvc:interceptor>
+
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/college/**"/>-->
+            <!--<bean id="collegeLoginInterceptor" class="edu.nju.trainCollege.tools.CollegeLoginInterceptor"/>-->
+        <!--</mvc:interceptor>-->
 
         <mvc:interceptor>
             <mvc:mapping path="/college_manager/**"/>

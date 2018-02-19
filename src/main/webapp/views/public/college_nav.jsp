@@ -70,8 +70,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="${param.new_lesson}"><a href="/college/create_lesson"><i class="fa fa-circle-o"></i> 新增课程</a></li>
-                    <li class="${attendence}"><a href="#"><i class="fa fa-circle-o"></i> 考勤录入</a></li>
-                    <li class="${grade}"><a href="#"><i class="fa fa-circle-o"></i> 成绩录入</a></li>
+                    <li class="${param.attendance}"><a href="/college/begin_lessons"><i class="fa fa-circle-o"></i> 考勤/成绩录入</a></li>
                 </ul>
             </li>
 
@@ -87,7 +86,6 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="${param.enroll}"><a href="/college/enroll_lesson"><i class="fa fa-circle-o"></i> 报名课程</a></li>
-                    <li class="${param.retrieve}"><a href="#"><i class="fa fa-circle-o"></i> 退订课程</a></li>
                 </ul>
             </li>
 

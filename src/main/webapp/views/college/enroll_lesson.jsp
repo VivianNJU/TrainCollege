@@ -52,38 +52,7 @@
         <!-- Main content -->
         <section class="content">
             <form action="/college/enroll_offline" method="post">
-                <%--基础成员--%>
-                <div class="col-md-6">
-
-                    <div class="box box-info">
-                        <div class="box-header">
-                            <h3 class="box-title"><i class="fa fa-angle-right"></i> 选择课程</h3>
-                        </div>
-                        <div class="box-body">
-                            <div class="form-group">
-                                <label>课程计划选择：</label>
-                                <select id="lesson-select" onchange="selectLesson()" name="lid" class="form-control select2" style="width: 100%;" required>
-                                    <c:forEach items="${lessonList}" var="item" >
-                                        <option value="${item.id}">${item.name}</option>
-                                    </c:forEach>
-                                </select>
-                            </div>
-
-                            <div class="form-group">
-                                <label>班级选择：</label>
-                                <select readonly id="class-select" name="classId" class="form-control select2" style="width: 100%;" required>
-
-                                </select>
-                                <span class="help-block"></span>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- /.box -->
-                </div>
-                <!-- /.col (1) -->
-
-                <%--基础成员--%>
+                <%--学员信息--%>
                 <div class="col-md-6">
 
                     <div class="box box-info">
@@ -121,6 +90,37 @@
                             <button class="btn btn-success pull-right" type="submit">提交</button>
                         </div>
                         <!-- /.box-footer -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col (1) -->
+
+                <%--课程信息--%>
+                <div class="col-md-6">
+
+                    <div class="box box-info">
+                        <div class="box-header">
+                            <h3 class="box-title"><i class="fa fa-angle-right"></i> 选择课程</h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label>课程计划选择：</label>
+                                <select id="lesson-select" onchange="selectLesson()" name="lid" class="form-control select2" style="width: 100%;" required>
+                                    <c:forEach items="${lessonList}" var="item" >
+                                        <option value="${item.id}">${item.name}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>班级选择：</label>
+                                <select readonly id="class-select" name="classId" class="form-control select2" style="width: 100%;" required>
+
+                                </select>
+                                <span class="help-block"></span>
+                            </div>
+
+                        </div>
                     </div>
                     <!-- /.box -->
                 </div>

@@ -51,6 +51,11 @@ public class CollegeNavController {
         return "/college/unrelease_lessons";
     }
 
+    @RequestMapping(value = "begin_lessons",method = RequestMethod.GET)
+    public String beginLessonView(){
+        return "/college/begin_lessons";
+    }
+
     @RequestMapping(value = "get_lessons_by_state",method = RequestMethod.POST)
     @ResponseBody
     public MyData getLessonsByState(HttpServletRequest request){

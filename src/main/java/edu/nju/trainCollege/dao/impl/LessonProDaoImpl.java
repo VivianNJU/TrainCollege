@@ -1,6 +1,7 @@
 package edu.nju.trainCollege.dao.impl;
 
 import edu.nju.trainCollege.dao.LessonProDao;
+import edu.nju.trainCollege.model.Attendance;
 import edu.nju.trainCollege.model.LessonProgress;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -16,17 +17,19 @@ public class LessonProDaoImpl implements LessonProDao {
     @Autowired
     private SessionFactory sessionFactory;
 
-    private static final String fromDatabase = "from LessonProgress ";
+    private static final String fromLessonProDB = "from LessonProgress ";
+    private static final String fromAttdDB = "from Attendance ";
     private static final String searchByOrderId = "where oid = :oid";
+    private static final String searchByLessonProId = "where lessonProId = :lessonProId";
     private static final String searchByUserId = "where uid = :uid";
     private static final String searchByCollegeId = "where cid = :cid";
-    private static final String searchByClassId = "where classId = :classId";
+    private static final String searchByClassIdState = "where classId = :classId and state=1";
 
     private Session getCurrentSession() {
         return this.sessionFactory.openSession();
     }
     public List<LessonProgress> getByOrderId(int oid) {
-        Query query = getCurrentSession().createQuery(fromDatabase+searchByOrderId).setParameter("oid",oid);
+        Query query = getCurrentSession().createQuery(fromLessonProDB +searchByOrderId).setParameter("oid",oid);
         if(query.list().size()==0)
             return null;
         else{
@@ -37,10 +40,10 @@ public class LessonProDaoImpl implements LessonProDao {
     public List<LessonProgress> getByUidState(String uid,int state) {
         Query query;
         if(state>=0){
-            query = getCurrentSession().createQuery(fromDatabase+searchByUserId+" and state = :state")
+            query = getCurrentSession().createQuery(fromLessonProDB +searchByUserId+" and state = :state")
                     .setParameter("uid",uid).setParameter("state",state);
         }else{
-            query = getCurrentSession().createQuery(fromDatabase+searchByUserId).setParameter("uid",uid);
+            query = getCurrentSession().createQuery(fromLessonProDB +searchByUserId).setParameter("uid",uid);
         }
         if(query.list().size()==0)
             return null;
@@ -50,7 +53,7 @@ public class LessonProDaoImpl implements LessonProDao {
     }
 
     public List<LessonProgress> getByCollegeId(int cid) {
-        Query query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId).setParameter("cid",cid);
+        Query query = getCurrentSession().createQuery(fromLessonProDB +searchByCollegeId).setParameter("cid",cid);
         if(query.list().size()==0)
             return null;
         else{
@@ -58,12 +61,25 @@ public class LessonProDaoImpl implements LessonProDao {
         }
     }
 
+    public void saveAttendance(Attendance attendance) {
+        Session session = getCurrentSession();
+        Transaction tx=session.beginTransaction();
+        session.save(attendance);
+        tx.commit();
+    }
+
+    public List<Attendance> getAttdByLessonProId(int lessonProId) {
+        Query query = getCurrentSession().createQuery(fromLessonProDB +searchByLessonProId).setParameter("lessonProId",lessonProId);
+        return query.list();
+    }
+
     public List<LessonProgress> getByClassIdNo(int classId, int classNo) {
         Query query;
         if(classNo<0){
-            query = getCurrentSession().createQuery(fromDatabase+searchByClassId+" and state=1").setParameter("classId",classId);
+            query = getCurrentSession().createQuery(fromLessonProDB + searchByClassIdState).setParameter("classId",classId);
         }else{
-            query = getCurrentSession().createQuery(fromDatabase+searchByClassId+" and classNo =:classNo").setParameter("classNo",classNo);
+            query = getCurrentSession().createQuery(fromLessonProDB + searchByClassIdState +" and classNo =:classNo")
+                    .setParameter("classId",classId).setParameter("classNo",classNo);
         }
 
         return query.list();

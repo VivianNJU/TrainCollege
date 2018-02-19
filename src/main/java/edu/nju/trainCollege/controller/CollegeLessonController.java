@@ -28,6 +28,35 @@ public class CollegeLessonController {
     private CollegeService collegeService;
     private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 
+    @RequestMapping(value = "show_classes",method = RequestMethod.GET)
+    public String showClasses(HttpServletRequest request,ModelMap model){
+        if(request.getParameter("lid")==null){
+            return "redirect:/college/homepage";
+        }
+        int lid = Integer.parseInt(request.getParameter("lid"));
+        Lesson lesson = collegeService.getLessonByLid(lid);
+        model.addAttribute("lesson",lesson);
+        return "/college/show_classes";
+    }
+
+    @RequestMapping(value = "show_students",method = RequestMethod.GET)
+    public String showStudentsView(HttpServletRequest request,ModelMap model){
+        if(request.getParameter("classId")==null){
+            return "redirect:/college/homepage";
+        }
+        int classId = Integer.parseInt(request.getParameter("classId"));
+        Classes classes = collegeService.getClassesById(classId);
+        model.addAttribute("classes",classes);
+        model.addAttribute("lesson",collegeService.getLessonByLid(classes.getLid()));
+        if(request.getParameter("classNo").equals("all")){
+            model.addAttribute("classNo",-1);
+        }else{
+            model.addAttribute("classNo",Integer.parseInt(request.getParameter("classNo")));
+        }
+
+        return "/college/show_students";
+    }
+
     @RequestMapping(value = "show_lesson",method = RequestMethod.GET)
     public String showLesson(HttpServletRequest request,ModelMap model){
         if(request.getParameter("lid")==null){

@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: DELL
-  Date: 2018/2/6
-  Time: 22:07
+  Date: 2018/2/19
+  Time: 12:57
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -28,8 +28,8 @@
     <jsp:include page="../public/college_header.jsp" flush="true" />
 
     <jsp:include page="../public/college_nav.jsp" flush="true" >
-        <jsp:param name="browse" value="active menu-open"/>
-        <jsp:param name="release_lessons" value="active"/>
+        <jsp:param name="lesson_more" value="active menu-open"/>
+        <jsp:param name="attendance" value="active"/>
     </jsp:include>
 
     <div class="content-wrapper">
@@ -37,11 +37,13 @@
         <!-- 大标题 -->
         <section class="content-header">
             <h1>
-                已发布课程
+                班级信息
+                <small>查看学员信息，增加考勤记录</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/college/homepage"><i class="fa fa-home"></i> 主页</a></li>
-                <li class="active">已发布课程</li>
+                <li><a href="/college/begin_lessons"> 已截止课程</a></li>
+                <li class="active">班级信息</li>
             </ol>
         </section>
 
@@ -52,7 +54,7 @@
                     <div class="box">
 
                         <div class="box-body">
-                            <table id="lesson-table" class="table table-bordered table-hover">
+                            <table id="class-table" class="table table-bordered table-hover">
 
                             </table>
                         </div>
@@ -89,27 +91,25 @@
 <script src="/js/demo.js"></script>
 <script>
     $(function () {
-        $('#lesson-table').DataTable({
+        $('#class-table').DataTable({
             "ajax": {
-                "url": "/college/get_lessons_by_state",
+                "url": "/datadb/mydata/classes_by_lid",
                 "type": "POST",
                 "data": {
-                    "state": 234
+                    "lid": ${lesson.id}
                 }
             },
             "columns"     : [
-                { "title": "课程名称",
+                { "title": "班级名称",
                     "data":"name"},
-                { "title": "类型",
-                    "data":"type"},
-                { "title": "开始日期",
-                    "data":"startDay"},
-                { "title": "结束日期",
-                    "data":"endDay"},
-                { "title": "每周课时",
-                    "data":"timePerWeek"},
-                { "title": "状态",
-                    "data":"state"},
+                { "title": "班级大小",
+                    "data":"size"},
+                { "title": "班级数量",
+                    "data":"num"},
+                { "title": "已报名人数",
+                    "data":"size"},
+                { "title": "教师",
+                    "data":"teacher"},
                 { "title": "操作" }
             ],
             "aoColumnDefs":[//设置列的属性，此处设置最后一列
@@ -124,29 +124,15 @@
             //每行回调函数
             "fnRowCallback": function( nRow, aData ) {
                 //每行中的状态列  该状态进行判断 并设置相关的列值
-                var state = aData.state;
-                switch (state){
-                    case 0:
-                        $('td:eq(5)', nRow).html("未发布");
-                        break;
-                    case 1:
-                        $('td:eq(5)', nRow).html("已发布，报名中");
-                        break;
-                    case 2:
-                        $('td:eq(5)', nRow).html("报名截止，已开课");
-                        break;
-                    case 3:
-                        $('td:eq(5)', nRow).html("已结束");
-                        break;
-                }
-                var start = new Date(aData.startDay);
-                $('td:eq(2)', nRow).html(start.toLocaleDateString());
-                var end = new Date(aData.endDay);
-                $('td:eq(3)', nRow).html(end.toLocaleDateString());
-
-                var id = aData.id;
-                $('td:eq(6)', nRow).html('<a href="/college/show_lesson?lid='+id+'">查看详情</a>');
-
+                $.post("/datadb/progresses_by_classId_no",
+                    {
+                        classId: aData.id,
+                        classNo:-1
+                    },
+                    function (data) {
+                        $('td:eq(3)', nRow).html(data.length);
+                    });
+                $('td:eq(5)', nRow).html('<a href="/college/show_students?classId='+aData.id+'&classNo=all">查看名单</a>');
             },
 
             'paging'      : true,

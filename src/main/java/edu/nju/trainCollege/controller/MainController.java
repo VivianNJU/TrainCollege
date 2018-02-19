@@ -1,10 +1,6 @@
 package edu.nju.trainCollege.controller;
 
-import com.sun.deploy.util.SessionState;
-import edu.nju.trainCollege.model.Classes;
-import edu.nju.trainCollege.model.College;
-import edu.nju.trainCollege.model.Lesson;
-import edu.nju.trainCollege.model.Student;
+import edu.nju.trainCollege.model.*;
 import edu.nju.trainCollege.service.CollegeService;
 import edu.nju.trainCollege.service.StudentService;
 import org.hibernate.service.spi.ServiceException;
@@ -190,6 +186,12 @@ public class MainController {
         return c;
     }
 
+    @RequestMapping(value = "/datadb/normal_student_by_id",method = RequestMethod.POST)
+    @ResponseBody
+    public NormalStudent getNMStudentById(HttpServletRequest request){
+        return studentService.getStudentById(request.getParameter("id"));
+    }
+
     @RequestMapping(value = "/datadb/lesson_by_lid",method = RequestMethod.POST)
     @ResponseBody
     public Lesson getLessonById(HttpServletRequest request){
@@ -209,6 +211,29 @@ public class MainController {
     public List<Classes> getClassesByLid(HttpServletRequest request){
         int lid = Integer.parseInt(request.getParameter("lid"));
         return collegeService.getClassesByLid(lid);
+    }
+
+    @RequestMapping(value = "/datadb/progresses_by_classId_no",method = RequestMethod.POST)
+    @ResponseBody
+    public List<LessonProgress> getProgressByClassIdNo(HttpServletRequest request){
+        int classId = Integer.parseInt(request.getParameter("classId"));
+        int classNo = Integer.parseInt(request.getParameter("classNo"));
+        return collegeService.getLessonProByClassIdNo(classId,classNo);
+    }
+
+    @RequestMapping(value = "/datadb/mydata/classes_by_lid",method = RequestMethod.POST)
+    @ResponseBody
+    public MyData getDataClassesByLid(HttpServletRequest request){
+        int lid = Integer.parseInt(request.getParameter("lid"));
+        return new MyData(collegeService.getClassesByLid(lid));
+    }
+
+    @RequestMapping(value = "/datadb/mydata/progresses_by_classId_no",method = RequestMethod.POST)
+    @ResponseBody
+    public MyData getDataProgressByClassIdNo(HttpServletRequest request){
+        int classId = Integer.parseInt(request.getParameter("classId"));
+        int classNo = Integer.parseInt(request.getParameter("classNo"));
+        return new MyData(collegeService.getLessonProByClassIdNo(classId,classNo));
     }
 
     @RequestMapping(value = "logout")

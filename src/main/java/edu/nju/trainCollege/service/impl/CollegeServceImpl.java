@@ -95,12 +95,17 @@ public class CollegeServceImpl implements CollegeService{
 //        保存order，获得它的ID
         lp.setOid(orderDao.save(order));
         lp.setState(1);
+        lessonProDao.save(lp);
 
         if(order.getUid()!=0){
             Student student = studentDao.get(order.getUid());
             student.setExpr(student.getExpr()+order.getTotalPay()/100);
             studentDao.saveOrUpdate(student);
         }
+    }
+
+    public List<LessonProgress> getLessonProByClassIdNo(int classId, int classNo) {
+        return lessonProDao.getByClassIdNo(classId,classNo);
     }
 
     public List<Lesson> getLessonByStateCid(int cid, int state) {

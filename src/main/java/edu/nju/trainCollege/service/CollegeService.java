@@ -14,6 +14,8 @@ public interface CollegeService {
 
     public void enrollLesson(Orders order, LessonProgress progress)throws ServiceException;
 
+    public List<LessonProgress> getLessonProByClassIdNo(int classId, int classNo);
+
     public List<Lesson> getLessonByStateCid(int cid,int state);
 
     public void saveLesson(Lesson lesson);
