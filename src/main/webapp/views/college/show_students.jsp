@@ -70,8 +70,8 @@
                             <button class="btn btn-warning pull-right" data-toggle="modal"
                                     data-target="#class-choose-modal" style="margin-right: 10px">选择班号</button>
                             <c:if test="${classNo>0}">
-                                <button class="btn btn-success pull-right" style="margin-right: 10px">考勤签到</button>
-                                <button class="btn btn-info pull-right">成绩录入</button>
+                                <a href="/college/new_attendance?classId=${classes.id}&classNo=${classNo}" class="btn btn-success pull-right" style="margin-right: 10px">考勤签到</a>
+                                <a href="/college/new_grade?classId=${classes.id}&classNo=${classNo}" class="btn btn-info pull-right" style="margin-right: 10px">成绩录入</a>
                             </c:if>
                         </div>
                         <!-- /.box-footer -->

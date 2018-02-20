@@ -18,10 +18,17 @@ public class Attendance {
 //    类型为0，则为考勤；类型为1，则为成绩
     private int type;
 
-//    若是考勤，0为缺勤，1为出勤，2为迟到，3为早退；若为成绩，这就是分数
+//    若是考勤，0为缺勤，1为迟到，2为早退，3为出勤；若为成绩，这就是分数
     private int grade;
 
     private Date lessonDate;
+
+    public Attendance(int type) {
+        this.type = type;
+    }
+
+    public Attendance() {
+    }
 
     public int getId() {
         return id;

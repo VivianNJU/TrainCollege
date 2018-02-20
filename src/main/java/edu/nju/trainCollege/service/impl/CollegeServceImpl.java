@@ -104,6 +104,12 @@ public class CollegeServceImpl implements CollegeService{
         }
     }
 
+    public void newAttendance(List<Attendance> attds) {
+        for(Attendance attd:attds){
+            lessonProDao.saveAttendance(attd);
+        }
+    }
+
     public List<LessonProgress> getLessonProByClassIdNo(int classId, int classNo) {
         return lessonProDao.getByClassIdNo(classId,classNo);
     }

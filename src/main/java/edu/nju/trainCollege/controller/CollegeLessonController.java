@@ -1,11 +1,8 @@
 package edu.nju.trainCollege.controller;
 
-import edu.nju.trainCollege.model.Classes;
-import edu.nju.trainCollege.model.College;
-import edu.nju.trainCollege.model.Lesson;
-import edu.nju.trainCollege.model.MyData;
+import edu.nju.trainCollege.model.*;
 import edu.nju.trainCollege.service.CollegeService;
-import edu.nju.trainCollege.tools.NumberTool;
+import edu.nju.trainCollege.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,6 +15,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 @Controller
@@ -26,7 +24,10 @@ public class CollegeLessonController {
 
     @Autowired
     private CollegeService collegeService;
-    private static final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+    @Autowired
+    private StudentService studentService;
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     @RequestMapping(value = "show_classes",method = RequestMethod.GET)
     public String showClasses(HttpServletRequest request,ModelMap model){
@@ -39,6 +40,109 @@ public class CollegeLessonController {
         return "/college/show_classes";
     }
 
+    @RequestMapping(value = "new_grade",method = RequestMethod.POST)
+    public String newGrade(HttpServletRequest request){
+        int proSize = Integer.parseInt(request.getParameter("proSize"));
+        Date date;
+        try {
+            date = dateTimeFormat.parse(request.getParameter("date"));
+        }catch (Exception ex){
+            date = new Date();
+        }
+        List<Attendance> attdList = new LinkedList<Attendance>();
+        for(int i = 0;i<proSize;i++){
+            Attendance attd = new Attendance(1);
+            attd.setLessonProId(Integer.parseInt(request.getParameter("lessonProId"+i)));
+            attd.setUid(request.getParameter("uid"+i));
+            attd.setGrade(Integer.parseInt(request.getParameter("grade"+i)));
+            attd.setLessonDate(date);
+            attdList.add(attd);
+        }
+        collegeService.newAttendance(attdList);
+        return "redirect:/college/show_students?classId="+request.getParameter("classId");
+    }
+
+    @RequestMapping(value = "new_attendance",method = RequestMethod.POST)
+    public String newAttendance(HttpServletRequest request){
+        int proSize = Integer.parseInt(request.getParameter("proSize"));
+
+        Date date;
+        try {
+             date = dateTimeFormat.parse(request.getParameter("date"));
+        }catch (Exception ex){
+            date = new Date();
+        }
+        List<Attendance> attdList = new LinkedList<Attendance>();
+        for(int i = 0;i<proSize;i++){
+            Attendance attd = new Attendance(0);
+            attd.setLessonProId(Integer.parseInt(request.getParameter("lessonProId"+i)));
+            attd.setUid(request.getParameter("uid"+i));
+            attd.setGrade(Integer.parseInt(request.getParameter("grade"+i)));
+            attd.setLessonDate(date);
+            attdList.add(attd);
+        }
+        collegeService.newAttendance(attdList);
+        return "redirect:/college/show_students?classId="+request.getParameter("classId");
+    }
+
+    @RequestMapping(value = "new_grade",method = RequestMethod.GET)
+    public String newGradeView(HttpServletRequest request,ModelMap model){
+        if(request.getParameter("classId")==null){
+            return "redirect:/college/homepage";
+        }
+        int classId = Integer.parseInt(request.getParameter("classId"));
+        Classes classes = collegeService.getClassesById(classId);
+        model.addAttribute("classes",classes);
+        try{
+            int classNo = Integer.parseInt(request.getParameter("classNo"));
+            if(classNo>0&&classNo<=classes.getNum()){
+                model.addAttribute("classNo",classNo);
+                List<LessonProgress> progresses = collegeService.getLessonProByClassIdNo(classId,classNo);
+                List<NormalStudent> students = new LinkedList<NormalStudent>();
+                for(LessonProgress lp:progresses){
+                    students.add(studentService.getStudentById(lp.getUid()));
+                }
+                model.addAttribute("studentList",students);
+                model.addAttribute("progressList",progresses);
+                return "/college/new_grade";
+            }else{
+                return "redirect:/college/show_students?classId="+classId;
+            }
+
+        }catch (Exception ex){
+            return "redirect:/college/show_students?classId="+classId;
+        }
+    }
+
+    @RequestMapping(value = "new_attendance",method = RequestMethod.GET)
+    public String newAttendanceView(HttpServletRequest request,ModelMap model){
+        if(request.getParameter("classId")==null){
+            return "redirect:/college/homepage";
+        }
+        int classId = Integer.parseInt(request.getParameter("classId"));
+        Classes classes = collegeService.getClassesById(classId);
+        model.addAttribute("classes",classes);
+        try{
+            int classNo = Integer.parseInt(request.getParameter("classNo"));
+            if(classNo>0&&classNo<=classes.getNum()){
+                model.addAttribute("classNo",classNo);
+                List<LessonProgress> progresses = collegeService.getLessonProByClassIdNo(classId,classNo);
+                List<NormalStudent> students = new LinkedList<NormalStudent>();
+                for(LessonProgress lp:progresses){
+                    students.add(studentService.getStudentById(lp.getUid()));
+                }
+                model.addAttribute("studentList",students);
+                model.addAttribute("progressList",progresses);
+                return "/college/new_attendance";
+            }else{
+                return "redirect:/college/show_students?classId="+classId;
+            }
+
+        }catch (Exception ex){
+            return "redirect:/college/show_students?classId="+classId;
+        }
+    }
+
     @RequestMapping(value = "show_students",method = RequestMethod.GET)
     public String showStudentsView(HttpServletRequest request,ModelMap model){
         if(request.getParameter("classId")==null){
@@ -48,10 +152,15 @@ public class CollegeLessonController {
         Classes classes = collegeService.getClassesById(classId);
         model.addAttribute("classes",classes);
         model.addAttribute("lesson",collegeService.getLessonByLid(classes.getLid()));
-        if(request.getParameter("classNo").equals("all")){
+        if(request.getParameter("classNo")==null||request.getParameter("classNo").equals("all")){
             model.addAttribute("classNo",-1);
         }else{
-            model.addAttribute("classNo",Integer.parseInt(request.getParameter("classNo")));
+            try{
+                int classNo = Integer.parseInt(request.getParameter("classNo"));
+                model.addAttribute("classNo",classNo);
+            }catch (Exception ex){
+                model.addAttribute("classNo",-1);
+            }
         }
 
         return "/college/show_students";
@@ -158,8 +267,8 @@ public class CollegeLessonController {
         lesson.setType(builder.toString());
 
         try {
-            lesson.setStartDay(df.parse(request.getParameter("date_range").substring(0,10)));
-            lesson.setEndDay(df.parse(request.getParameter("date_range").substring(13,23)));
+            lesson.setStartDay(dateFormat.parse(request.getParameter("date_range").substring(0,10)));
+            lesson.setEndDay(dateFormat.parse(request.getParameter("date_range").substring(13,23)));
         }catch (ParseException ex){
             ex.printStackTrace();
             lesson.setStartDay(new Date());
@@ -191,8 +300,8 @@ public class CollegeLessonController {
         lesson.setType(builder.toString());
 
         try {
-            lesson.setStartDay(df.parse(request.getParameter("date_range").substring(0,10)));
-            lesson.setEndDay(df.parse(request.getParameter("date_range").substring(13,23)));
+            lesson.setStartDay(dateFormat.parse(request.getParameter("date_range").substring(0,10)));
+            lesson.setEndDay(dateFormat.parse(request.getParameter("date_range").substring(13,23)));
         }catch (ParseException ex){
             ex.printStackTrace();
             lesson.setStartDay(new Date());
