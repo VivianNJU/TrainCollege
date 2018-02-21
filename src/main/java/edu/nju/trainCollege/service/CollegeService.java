@@ -16,6 +16,8 @@ public interface CollegeService {
 
     public void newAttendance(List<Attendance> attds);
 
+    public List<Attendance> getAttendanceByLpidType(int lpid,int type);
+
     public List<LessonProgress> getLessonProByClassIdNo(int classId, int classNo);
 
     public List<Lesson> getLessonByStateCid(int cid,int state);

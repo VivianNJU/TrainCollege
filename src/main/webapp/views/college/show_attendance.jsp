@@ -1,12 +1,13 @@
 <%--
   Created by IntelliJ IDEA.
   User: DELL
-  Date: 2018/2/19
-  Time: 13:53
+  Date: 2018/2/20
+  Time: 15:57
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <head>
     <title>Train COLLEGE | Lesson List</title>
@@ -57,22 +58,22 @@
                     <div class="box">
 
                         <div class="box-body">
-                            <table id="progress-table" class="table table-bordered table-hover">
-
+                            <table id="attd-table" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <c:forEach items="${attdList}" var="item">
+                                        <th><fmt:formatDate value="${item.lessonDate}" pattern="yyyy-MM-dd hh:mm"/></th>
+                                    </c:forEach>
+                                </tr>
+                                </thead>
                             </table>
                         </div>
                         <!-- /.box-body -->
 
                         <div class="box-footer">
-                            <c:if test="${classNo<1}">
-                                <button class="btn btn-danger pull-right" style="margin-right: 10px">强制分班</button>
-                            </c:if>
-                            <button class="btn btn-warning pull-right" data-toggle="modal"
-                                    data-target="#class-choose-modal" style="margin-right: 10px">选择班号</button>
-                            <c:if test="${classNo>0}">
-                                <a href="/college/new_attendance?classId=${classes.id}&classNo=${classNo}" class="btn btn-success pull-right" style="margin-right: 10px">考勤签到</a>
-                                <a href="/college/new_grade?classId=${classes.id}&classNo=${classNo}" class="btn btn-info pull-right" style="margin-right: 10px">成绩录入</a>
-                            </c:if>
+                            <button type="button" class="btn btn-success pull-right" onclick="javascript:history.go(-1);"
+                                    style="margin-right: 10px">返回</button>
                         </div>
                         <!-- /.box-footer -->
                     </div>
@@ -146,7 +147,7 @@
 <script src="/js/demo.js"></script>
 <script>
     $(function () {
-        $('#progress-table').DataTable({
+        $('#attd-table').DataTable({
             "ajax": {
                 "url": "/datadb/mydata/progresses_by_classId_no",
                 "type": "POST",
@@ -155,38 +156,33 @@
                     "classNo":${classNo}
                 }
             },
-            "columns"     : [
-                { "title": "学员姓名",
-                    "data":"uid"},
-                { "title": "学员类型",
-                    "data":"uid"},
-                { "title": "联系电话",
-                    "data":"uid"},
-                { "title": "班号",
-                    "data":"classNo"}
-            ],
+            "aoColumnDefs": [
+                {
+                    "mData": null,//这是关键
+                    "aTargets": ["_all"]//第4列
+                }],
             //每行回调函数
             "fnRowCallback": function( nRow, aData ) {
                 //每行中的状态列  该状态进行判断 并设置相关的列值
-                if(aData.uid.substr(0,1)=='x'){
-                //    不是会员
-                    $('td:eq(1)', nRow).html("非会员");
-                }else{
-                    $('td:eq(1)', nRow).html("会员");
-                }
                 $.post("/datadb/normal_student_by_id",
                     {
                         id: aData.uid
                     },
                     function (data) {
                         $('td:eq(0)', nRow).html(data.username);
-                        $('td:eq(2)', nRow).html(data.phone);
                     });
-                if(aData.classNo==0){
-                    $('td:eq(3)', nRow).html("待分配");
-                }else{
-                    $('td:eq(3)', nRow).html(aData.classNo+" 班");
-                }
+                $.post("/datadb/attendance_by_lpid_type",
+                    {
+                        lpid: aData.id,
+                        type: 0
+                    },
+                    function (data) {
+                    console.log(data.length);
+                        for(var i = 1;i<=data.length;i++){
+                            $('td:eq('+i+')', nRow).html(data[i-1].grade);
+                        }
+                    });
+
             },
 
             'paging'      : true,
@@ -223,3 +219,4 @@
 </script>
 </body>
 </html>
+

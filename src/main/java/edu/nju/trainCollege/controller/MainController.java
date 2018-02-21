@@ -177,6 +177,15 @@ public class MainController {
         return "student/activate";
     }
 
+    @RequestMapping(value = "/datadb/attendance_by_lpid_type",method = RequestMethod.POST)
+    @ResponseBody
+    public List<Attendance> getAttdByIdType(HttpServletRequest request){
+        int lpid = Integer.parseInt(request.getParameter("lpid"));
+        int type = Integer.parseInt(request.getParameter("type"));
+        List<Attendance> attds = collegeService.getAttendanceByLpidType(lpid,type);
+        return attds;
+    }
+
     @RequestMapping(value = "/datadb/college_by_cid",method = RequestMethod.POST)
     @ResponseBody
     public College getCollegeById(HttpServletRequest request){

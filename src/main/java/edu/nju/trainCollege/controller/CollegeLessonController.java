@@ -143,6 +143,38 @@ public class CollegeLessonController {
         }
     }
 
+    @RequestMapping(value = "show_attendance",method = RequestMethod.GET)
+    public String showAttendanceView(HttpServletRequest request,ModelMap model){
+        if(request.getParameter("classId")==null){
+            return "redirect:/college/homepage";
+        }
+        int classId = Integer.parseInt(request.getParameter("classId"));
+        Classes classes = collegeService.getClassesById(classId);
+        model.addAttribute("classes",classes);
+        model.addAttribute("lesson",collegeService.getLessonByLid(classes.getLid()));
+        int classNo;
+        if(request.getParameter("classNo")==null||request.getParameter("classNo").equals("all")){
+            classNo = -1;
+        }else{
+            try{
+                classNo = Integer.parseInt(request.getParameter("classNo"));
+            }catch (Exception ex){
+                classNo= -1;
+            }
+        }
+        model.addAttribute("classNo",classNo);
+
+        List<LessonProgress> progresses = collegeService.getLessonProByClassIdNo(classId,classNo);
+        List<Attendance> attd;
+        if(progresses==null||progresses.size()==0)
+            attd = new LinkedList<Attendance>();
+        else{
+            attd = collegeService.getAttendanceByLpidType(progresses.get(0).getId(),0);
+        }
+        model.addAttribute("attdList",attd);
+        return "/college/show_attendance";
+    }
+
     @RequestMapping(value = "show_students",method = RequestMethod.GET)
     public String showStudentsView(HttpServletRequest request,ModelMap model){
         if(request.getParameter("classId")==null){

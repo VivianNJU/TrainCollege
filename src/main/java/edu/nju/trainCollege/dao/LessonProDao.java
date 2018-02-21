@@ -14,7 +14,7 @@ public interface LessonProDao extends BaseDao<LessonProgress,Integer> {
 
     public void saveAttendance(Attendance attendance);
 
-    public List<Attendance> getAttdByLessonProId(int lessonProId);
+    public List<Attendance> getAttdByLessonProIdType(int lessonProId,int type);
 
     /**
      * 默认搜索状态为已支付的报名，若班号为负，即为搜索所有班号

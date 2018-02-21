@@ -110,6 +110,10 @@ public class CollegeServceImpl implements CollegeService{
         }
     }
 
+    public List<Attendance> getAttendanceByLpidType(int lpid, int type) {
+        return lessonProDao.getAttdByLessonProIdType(lpid,type);
+    }
+
     public List<LessonProgress> getLessonProByClassIdNo(int classId, int classNo) {
         return lessonProDao.getByClassIdNo(classId,classNo);
     }
