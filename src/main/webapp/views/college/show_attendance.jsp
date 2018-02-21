@@ -159,7 +159,7 @@
             "aoColumnDefs": [
                 {
                     "mData": null,//这是关键
-                    "aTargets": ["_all"]//第4列
+                    "aTargets": ["_all"]
                 }],
             //每行回调函数
             "fnRowCallback": function( nRow, aData ) {
