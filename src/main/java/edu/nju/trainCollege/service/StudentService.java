@@ -21,6 +21,8 @@ public interface StudentService {
 
     public void changeOrderState(int oid,int state);
 
+    public void profileSave(Student student);
+
     public List<PayRecord> getPayRecordByUid(int uid);
 
     public List<Lesson> getLessons();

@@ -127,7 +127,7 @@
                     $('td:eq(2)', nRow).html("待分配");
 
                 var id = aData.id;
-                $('td:eq(5)', nRow).html('<a href="/student/show_progress?pid='+id+'">查看详情</a>');
+                $('td:eq(5)', nRow).html('<a href="/student/show_progress?lpid='+id+'">查看记录</a>');
 
                 $.post("/datadb/college_by_cid",
                     {
@@ -149,7 +149,7 @@
                                 lid: data.lid
                             },
                             function (data2) {
-                                $('td:eq(0)', nRow).html(data2.name);
+                                $('td:eq(0)', nRow).html('<a href="/student/show_lesson?lid='+data2.id+'">'+data2.name+'</a>');
                             });
                     });
             },

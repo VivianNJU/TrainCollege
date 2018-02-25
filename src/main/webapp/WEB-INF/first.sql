@@ -153,7 +153,17 @@ engine=InnoDB
 ;
 
 INSERT INTO student (email, username, password, phone, expr, state) VALUES
-  ("test@qq.com","test","test","1234567890",0,1);
+  ("test@qq.com","小明","test","1234567890",0,1);
+
+INSERT INTO student (email, username, password, phone, expr, state) VALUES
+	("test3@qq.com","老铁","test","1234567890",0,1);
+
+INSERT INTO student (email, username, password, phone, expr, state) VALUES
+	("test2@qq.com","小方","test","1234567890",0,1);
+
+INSERT INTO bank_card (cardNo, password, balance) VALUES ("1234567890","test",3000000);
+
+INSERT INTO bank_card (cardNo, password, balance) VALUES ("00000000","test",0);
 
 INSERT INTO manager (name, password) VALUES ("admin","test");
 

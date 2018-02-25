@@ -69,7 +69,7 @@ public class LessonProDaoImpl implements LessonProDao {
     }
 
     public List<Attendance> getAttdByLessonProIdType(int lessonProId,int type) {
-        Query query = getCurrentSession().createQuery(fromAttdDB +searchByLessonProId+" and type =:type")
+        Query query = getCurrentSession().createQuery(fromAttdDB +searchByLessonProId+" and type =:type order by lessonDate ASC")
                 .setParameter("lessonProId",lessonProId).setParameter("type",type);
         return query.list();
     }

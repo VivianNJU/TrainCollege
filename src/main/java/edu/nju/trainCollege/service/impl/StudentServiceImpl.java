@@ -203,6 +203,10 @@ public class StudentServiceImpl implements StudentService {
         orderDao.saveOrUpdate(order);
     }
 
+    public void profileSave(Student student) {
+        studentDao.saveOrUpdate(student);
+    }
+
     public List<PayRecord> getPayRecordByUid(int uid) {
         return bankDao.findByUid(uid);
     }

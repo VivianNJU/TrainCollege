@@ -28,7 +28,7 @@ public class LevelDiscount {
     }
 
     public static double getCompensation(Date startDay){
-        int days = new Long((new Date().getTime()-startDay.getTime())/(1000*60*60*24)).intValue();
+        int days = new Long((startDay.getTime()-new Date().getTime())/(1000*60*60*24)).intValue();
         int i ;
         for(i = 0;i<TIME_THRESHOLD.length;i++){
             if(days<TIME_THRESHOLD[i])

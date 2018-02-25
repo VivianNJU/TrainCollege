@@ -56,6 +56,7 @@ public class CollegeNavController {
         return "/college/begin_lessons";
     }
 
+
     @RequestMapping(value = "get_lessons_by_state",method = RequestMethod.POST)
     @ResponseBody
     public MyData getLessonsByState(HttpServletRequest request){

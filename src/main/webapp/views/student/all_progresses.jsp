@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Train COLLEGE | Home Page</title>
+    <title>Train COLLEGE | All Progresses</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -142,8 +142,9 @@
                 if(aData.classNo==0)
                     $('td:eq(2)', nRow).html("待分配");
 
-                var id = aData.id;
-                $('td:eq(5)', nRow).html('<a href="/student/show_progress?pid='+id+'">查看详情</a>');
+                if(state==1){
+                    $('td:eq(5)', nRow).html('<a href="/student/show_progress?lpid='+aData.id+'">查看记录</a>');
+                }
 
                 $.post("/datadb/college_by_cid",
                     {
@@ -164,7 +165,7 @@
                                 lid: data.lid
                             },
                             function (data2) {
-                                $('td:eq(0)', nRow).html(data2.name);
+                                $('td:eq(0)', nRow).html('<a href="/student/show_lesson?lid='+data2.id+'">'+data2.name+'</a>');
                             });
                     });
             },

@@ -163,6 +163,14 @@ public class MainController {
         return "college/register";
     }
 
+    @RequestMapping(value = "student/delete",method = RequestMethod.POST)
+    @ResponseBody
+    public void deleteStudent(HttpServletRequest request){
+        Student student = (Student) request.getSession().getAttribute("student");
+        student.setState(2);
+        studentService.profileSave(student);
+    }
+
 
     @RequestMapping(value = "student/activate")
     public String activateStudent(HttpServletRequest request, ModelMap model){
@@ -228,6 +236,15 @@ public class MainController {
         int classId = Integer.parseInt(request.getParameter("classId"));
         int classNo = Integer.parseInt(request.getParameter("classNo"));
         return collegeService.getLessonProByClassIdNo(classId,classNo);
+    }
+
+    @RequestMapping(value = "/datadb/mydata/attendance_by_lpid_type",method = RequestMethod.POST)
+    @ResponseBody
+    public MyData getDataAttdByIdType(HttpServletRequest request){
+        int lpid = Integer.parseInt(request.getParameter("lpid"));
+        int type = Integer.parseInt(request.getParameter("type"));
+        List<Attendance> attds = collegeService.getAttendanceByLpidType(lpid,type);
+        return new MyData(attds);
     }
 
     @RequestMapping(value = "/datadb/mydata/classes_by_lid",method = RequestMethod.POST)

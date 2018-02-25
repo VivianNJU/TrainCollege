@@ -107,26 +107,13 @@
                 { "title": "机构名称",
                     "data":"state"},
                 { "title": "教师",
-                    "data":"state"},
-                { "title": "操作" }
-            ],
-            "aoColumnDefs":[//设置列的属性，此处设置最后一列
-                {
-                    "targets": -1,
-                    "class": "but_xq",
-                    "data": null,
-                    "bSortable": false,
-                    "defaultContent": ""
-                }
+                    "data":"state"}
             ],
             //每行回调函数
             "fnRowCallback": function( nRow, aData ) {
                 //每行中的状态列  该状态进行判断 并设置相关的列值
                 if(aData.classNo==0)
                     $('td:eq(2)', nRow).html("待分配");
-
-                var id = aData.id;
-                $('td:eq(5)', nRow).html('<a href="/student/show_progress?pid='+id+'">查看详情</a>');
 
                 $.post("/datadb/college_by_cid",
                     {
@@ -148,7 +135,7 @@
                                 lid: data.lid
                             },
                             function (data2) {
-                                $('td:eq(0)', nRow).html(data2.name);
+                                $('td:eq(0)', nRow).html('<a href="/student/show_lesson?lid='+data2.id+'">'+data2.name+'</a>');
                             });
                     });
             },

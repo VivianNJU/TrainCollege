@@ -86,8 +86,8 @@ public class LessonDaoImpl implements LessonDao {
         tx.commit();
 
         Query query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId+" and name= :name and type= :type" +
-                " and startDay= :start and endDay= :end").setParameter("name",entity.getName()).setParameter("cid",entity.getCid())
-                .setParameter("end",entity.getEndDay()).setParameter("start",entity.getStartDay()).setParameter("type",entity.getType());;
+                " order by id DESC").setParameter("name",entity.getName()).setParameter("cid",entity.getCid())
+                .setParameter("type",entity.getType());;
         if(query.list().size()==0)
             return 0;
         else{

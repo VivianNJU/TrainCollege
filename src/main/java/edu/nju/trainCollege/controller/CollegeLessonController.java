@@ -81,6 +81,7 @@ public class CollegeLessonController {
             attd.setLessonDate(date);
             attdList.add(attd);
         }
+        System.out.println(new Date());
         collegeService.newAttendance(attdList);
         return "redirect:/college/show_students?classId="+request.getParameter("classId");
     }
@@ -112,6 +113,38 @@ public class CollegeLessonController {
         }catch (Exception ex){
             return "redirect:/college/show_students?classId="+classId;
         }
+    }
+
+    @RequestMapping(value = "show_grade",method = RequestMethod.GET)
+    public String showGradeView(HttpServletRequest request,ModelMap model){
+        if(request.getParameter("classId")==null){
+            return "redirect:/college/homepage";
+        }
+        int classId = Integer.parseInt(request.getParameter("classId"));
+        Classes classes = collegeService.getClassesById(classId);
+        model.addAttribute("classes",classes);
+        model.addAttribute("lesson",collegeService.getLessonByLid(classes.getLid()));
+        int classNo;
+        if(request.getParameter("classNo")==null||request.getParameter("classNo").equals("all")){
+            classNo = -1;
+        }else{
+            try{
+                classNo = Integer.parseInt(request.getParameter("classNo"));
+            }catch (Exception ex){
+                classNo= -1;
+            }
+        }
+        model.addAttribute("classNo",classNo);
+
+        List<LessonProgress> progresses = collegeService.getLessonProByClassIdNo(classId,classNo);
+        List<Attendance> attd;
+        if(progresses==null||progresses.size()==0)
+            attd = new LinkedList<Attendance>();
+        else{
+            attd = collegeService.getAttendanceByLpidType(progresses.get(0).getId(),1);
+        }
+        model.addAttribute("attdList",attd);
+        return "/college/show_grade";
     }
 
     @RequestMapping(value = "new_attendance",method = RequestMethod.GET)

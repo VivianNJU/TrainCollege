@@ -11,13 +11,13 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
-        <div class="user-panel">
+        <div class="user-panel" onclick="javascript:window.location.href='/student/profile'">
             <div class="pull-left image">
                 <img src="/image/user.jpg" class="img-circle" alt="User Image">
             </div>
             <div class="pull-left info">
                 <p>${student.username}</p>
-                <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
+                <a><i class="fa fa-circle text-success"></i> 在线</a>
             </div>
         </div>
         <!-- search form -->
@@ -88,17 +88,17 @@
 
 <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
-            <li class="treeview ${param.data}">
+            <li class="treeview ${param.personal}">
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
-                    <span>数据查看</span>
+                    <span>个人中心</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
+                    <li class="${param.profile}"><a href="/student/profile"><i class="fa fa-circle-o"></i> 用户信息</a></li>
                     <li class="${param.payment}"><a href="/student/payment"><i class="fa fa-circle-o"></i> 交易记录</a></li>
-                    <li class="${param.a}"><a href="#"><i class="fa fa-circle-o"></i> 考勤记录</a></li>
                 </ul>
             </li>
 

@@ -154,7 +154,7 @@
                         lid: aData.lid
                     },
                     function (data) {
-                        $('td:eq(2)', nRow).html(data.name);
+                        $('td:eq(2)', nRow).html('<a href="/student/show_lesson?lid='+data.id+'">'+data.name+'</a>');
                     });
             },
 

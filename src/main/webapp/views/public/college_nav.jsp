@@ -63,14 +63,14 @@
             <li class="treeview ${param.lesson_more}">
                 <a href="#">
                     <i class="fa fa-file-text-o"></i>
-                    <span>课程详情</span>
+                    <span>课程操作</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
                 <ul class="treeview-menu">
                     <li class="${param.new_lesson}"><a href="/college/create_lesson"><i class="fa fa-circle-o"></i> 新增课程</a></li>
-                    <li class="${param.attendance}"><a href="/college/begin_lessons"><i class="fa fa-circle-o"></i> 考勤/成绩录入</a></li>
+                    <li class="${param.attendance}"><a href="/college/begin_lessons"><i class="fa fa-circle-o"></i> 考勤/成绩</a></li>
                 </ul>
             </li>
 

@@ -10,7 +10,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <html>
 <head>
-    <title>Train COLLEGE | Lesson List</title>
+    <title>Train COLLEGE | Attendance</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -42,7 +42,7 @@
         <section class="content-header">
             <h1>
                 学员信息
-                <small>增加考勤记录/提前分配班级</small>
+                <small>查看考勤记录</small>
             </h1>
             <ol class="breadcrumb">
                 <li><a href="/college/homepage"><i class="fa fa-home"></i> 主页</a></li>
@@ -179,7 +179,22 @@
                     function (data) {
                     console.log(data.length);
                         for(var i = 1;i<=data.length;i++){
-                            $('td:eq('+i+')', nRow).html(data[i-1].grade);
+                            switch (data[i-1].grade){
+                                // 考勤，0为缺勤，1为迟到，2为早退，3为出勤；
+                                case 0:
+                                    $('td:eq('+i+')', nRow).html("<i class='fa fa-close' style='color:red;'></i>");
+                                    break;
+                                case 1:
+                                    $('td:eq('+i+')', nRow).html("迟到");
+                                    break;
+                                case 2:
+                                    $('td:eq('+i+')', nRow).html("早退");
+                                    break;
+                                case 3:
+                                    $('td:eq('+i+')', nRow).html("<i class='fa fa-check' style='color:green;'></i>");
+                                    break;
+                            }
+
                         }
                     });
 

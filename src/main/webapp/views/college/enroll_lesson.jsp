@@ -152,7 +152,7 @@
 <script>
     function selectLesson() {
         var lid = $('#lesson-select option:selected').val();
-        $("#class-select").val('');
+        $("#class-select").empty();
         if(lid!=undefined){
             $("#class-select").attr("readonly",false);
             $.post("/datadb/classes_by_lid",

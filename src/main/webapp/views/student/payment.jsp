@@ -30,7 +30,7 @@
     <jsp:include page="../public/student_header.jsp" flush="true" />
 
     <jsp:include page="../public/student_nav.jsp" flush="true" >
-        <jsp:param name="data" value="active menu-open"/>
+        <jsp:param name="personal" value="active menu-open"/>
         <jsp:param name="payment" value="active"/>
     </jsp:include>
 
@@ -84,7 +84,7 @@
 
                                     <h3 class="timeline-header"><b>${item.collegeName}</b> 与你进行交易</h3>
 
-                                    <div class="timeline-body">]
+                                    <div class="timeline-body">
                                         <c:choose>
                                             <c:when test="${item.type==0}">
                                                 你向 <b>${item.collegeName}</b> 转账${item.payment}元。

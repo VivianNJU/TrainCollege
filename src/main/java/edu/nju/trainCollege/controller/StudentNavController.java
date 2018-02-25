@@ -2,6 +2,7 @@ package edu.nju.trainCollege.controller;
 
 import edu.nju.trainCollege.model.*;
 import edu.nju.trainCollege.service.StudentService;
+import edu.nju.trainCollege.tools.LevelDiscount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,6 +29,47 @@ public class StudentNavController {
     public boolean getStudentByEmail(HttpServletRequest request){
         String email = request.getParameter("email");
         return (studentService.getStudentByEmail(email)!=null);
+    }
+
+    @RequestMapping(value = "profile",method = RequestMethod.GET)
+    public String profileView(HttpServletRequest request,ModelMap model){
+        Student student = (Student) request.getSession().getAttribute("student");
+        model.addAttribute("level", LevelDiscount.getLevel(student.getExpr()));
+        model.addAttribute("discount", 10*LevelDiscount.getDiscount(student.getExpr()));
+
+        return "/student/profile";
+    }
+
+    @RequestMapping(value = "profile_save",method = RequestMethod.POST)
+    public String profileSave(HttpServletRequest request){
+        Student student = (Student) request.getSession().getAttribute("student");
+        student.setPhone(request.getParameter("phone"));
+        studentService.profileSave(student);
+        return "redirect:/student/profile";
+    }
+
+    @RequestMapping(value = "pwd_save",method = RequestMethod.POST)
+    @ResponseBody
+    public boolean pwdSave(HttpServletRequest request){
+        Student student = (Student) request.getSession().getAttribute("student");
+        if(!request.getParameter("old").equals(student.getPassword())){
+            System.out.println(request.getParameter("old"));
+            return false;
+        }
+        student.setPassword(request.getParameter("password"));
+        studentService.profileSave(student);
+        return true;
+    }
+
+    @RequestMapping(value = "show_progress",method = RequestMethod.GET)
+    public String showProgressView(HttpServletRequest request,ModelMap model){
+        if(request.getParameter("lpid")==null){
+            return "redirect:/student/has_pay_progress";
+        }
+        int lpid = Integer.parseInt(request.getParameter("lpid"));
+        model.addAttribute("lpid",lpid);
+
+        return "/student/show_progress";
     }
 
     @RequestMapping(value = "show_lesson",method = RequestMethod.GET)
