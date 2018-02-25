@@ -88,7 +88,17 @@
                             <!-- /.tab-pane-->
 
                             <div class="tab-pane" id="charts">
-                                <%--TODO--%>
+                                <!-- DONUT CHART -->
+                                <div class="box">
+                                    <div class="box-header with-border">
+                                        <h3 class="box-title">出勤率统计环形图</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <canvas id="pieChart" style="height:250px"></canvas>
+                                    </div>
+                                    <!-- /.box-body -->
+                                </div>
+                                <!-- /.box -->
                             </div>
                             <!-- /.tab-pane-->
                         </div>
@@ -114,6 +124,8 @@
 <script src="/static/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
 <script src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- ChartJS -->
+<script src="/static/chart.js/Chart.js"></script>
 
 <!-- DataTables -->
 <script src="/static/datatables.net/js/jquery.dataTables.min.js"></script>
@@ -128,6 +140,56 @@
 <script src="/js/demo.js"></script>
 <script>
     $(function () {
+        //-------------
+        //- PIE CHART -
+        //-------------
+        // Get context with jQuery - using jQuery's .get() method.
+        var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
+        var pieChart       = new Chart(pieChartCanvas)
+        var PieData        = [
+            {
+                value    : ${state[3]},
+                color    : 'green',
+                label    : '出勤'
+            },
+            {
+                value    : ${state[0]},
+                color    : 'red',
+                label    : '缺勤'
+            },
+            {
+                value    : ${state[1]},
+                color    : 'blue',
+                label    : '迟到'
+            },
+            {
+                value    : ${state[2]},
+                color    : 'yellow',
+                label    : '早退'
+            }
+        ];
+        var pieOptions     = {
+            //Boolean - Whether we should show a stroke on each segment
+            segmentShowStroke    : true,
+            //String - The colour of each segment stroke
+            segmentStrokeColor   : '#fff',
+            //Number - The width of each segment stroke
+            segmentStrokeWidth   : 2,
+            //Number - The percentage of the chart that we cut out of the middle
+            percentageInnerCutout: 40, // This is 0 for Pie charts
+            //Number - Amount of animation steps
+            animationSteps       : 100,
+            //String - Animation easing effect
+            animationEasing      : 'easeOutBounce',
+            //Boolean - whether to make the chart responsive to window resizing
+            responsive           : false,
+            // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
+            maintainAspectRatio  : true
+        }
+        //Create pie or douhnut chart
+        // You can switch between pie and douhnut using the method below.
+        pieChart.Doughnut(PieData, pieOptions);
+
         $('#attendance-table').DataTable({
             "ajax": {
                 "url": "/datadb/mydata/attendance_by_lpid_type",

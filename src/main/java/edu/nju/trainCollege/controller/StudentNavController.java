@@ -69,6 +69,9 @@ public class StudentNavController {
         int lpid = Integer.parseInt(request.getParameter("lpid"));
         model.addAttribute("lpid",lpid);
 
+        int[] states = {1,4,8,9};
+
+        model.addAttribute("state",states);
         return "/student/show_progress";
     }
 

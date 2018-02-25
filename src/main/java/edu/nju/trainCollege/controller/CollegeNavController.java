@@ -65,6 +65,50 @@ public class CollegeNavController {
         return new MyData(collegeService.getLessonByStateCid(cid,state));
     }
 
+    @RequestMapping(value = "profile",method = RequestMethod.GET)
+    public String profileView(){
+        return "/college/profile";
+    }
+
+    @RequestMapping(value = "profile_save",method = RequestMethod.POST)
+    public String profileSave(HttpServletRequest request,ModelMap model){
+        College college = (College) request.getSession().getAttribute("college");
+        college.setTeacher(request.getParameter("teacher"));
+        college.setLocation(request.getParameter("location"));
+        college.setOther(request.getParameter("other"));
+        college.setPhone(request.getParameter("phone"));
+        college.setPhone(request.getParameter("name"));
+        college.setState(0);
+        collegeService.saveCollege(college);
+        return "redirect:/logout";
+    }
+
+    @RequestMapping(value = "bank_card_on",method = RequestMethod.POST)
+    @ResponseBody
+    public void bankCard(HttpServletRequest request,ModelMap model){
+        College college = (College) request.getSession().getAttribute("college");
+        college.setCardNo(request.getParameter("cardNo"));
+        collegeService.saveCollege(college);
+    }
+
+    @RequestMapping(value = "pwd_save",method = RequestMethod.POST)
+    @ResponseBody
+    public boolean savePwd(HttpServletRequest request){
+        College college = (College) request.getSession().getAttribute("college");
+        if(request.getParameter("old").equals(college.getPassword())){
+            college.setPassword(request.getParameter("password"));
+            collegeService.saveCollege(college);
+            return true;
+        }else
+            return false;
+    }
+
+    @RequestMapping(value = "check_bank_card",method = RequestMethod.POST)
+    @ResponseBody
+    public boolean checkBankCard(HttpServletRequest request){
+        return collegeService.checkCard(request.getParameter("cardNo"),request.getParameter("password"));
+    }
+
     @RequestMapping(value = "enroll_lesson",method = RequestMethod.GET)
     public String enrollLessonView(HttpServletRequest request,ModelMap model){
         int cid = ((College)request.getSession().getAttribute("college")).getId();

@@ -16,6 +16,10 @@ public interface CollegeService {
 
     public void newAttendance(List<Attendance> attds);
 
+    public boolean checkCard(String cardNo,String pwd);
+
+    public void saveCollege(College college);
+
     public List<Attendance> getAttendanceByLpidType(int lpid,int type);
 
     public List<LessonProgress> getLessonProByClassIdNo(int classId, int classNo);

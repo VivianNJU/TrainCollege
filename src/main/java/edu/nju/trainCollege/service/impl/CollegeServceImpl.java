@@ -110,6 +110,14 @@ public class CollegeServceImpl implements CollegeService{
         }
     }
 
+    public boolean checkCard(String cardNo, String pwd) {
+        return bankDao.findByCardIDPwd(cardNo,pwd)!=null;
+    }
+
+    public void saveCollege(College college) {
+        collegeDao.saveOrUpdate(college);
+    }
+
     public List<Attendance> getAttendanceByLpidType(int lpid, int type) {
         return lessonProDao.getAttdByLessonProIdType(lpid,type);
     }

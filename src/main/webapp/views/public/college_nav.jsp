@@ -11,7 +11,7 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
-        <div class="user-panel">
+        <div class="user-panel" onclick="javascript:window.location.href='/college/profile'">
             <div class="pull-left image">
                 <img src="/image/user.jpg" class="img-circle" alt="User Image">
             </div>
@@ -87,6 +87,16 @@
                 <ul class="treeview-menu">
                     <li class="${param.enroll}"><a href="/college/enroll_lesson"><i class="fa fa-circle-o"></i> 报名课程</a></li>
                 </ul>
+            </li>
+
+            <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
+
+
+            <li class="${param.profile}">
+                <a href="/college/profile">
+                    <i class="fa fa-info"></i> <span> 机构信息</span>
+                    <span class="pull-right-container"></span>
+                </a>
             </li>
 
             <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
