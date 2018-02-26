@@ -207,6 +207,57 @@ public class StudentServiceImpl implements StudentService {
         studentDao.saveOrUpdate(student);
     }
 
+    public int[] getHomepageData(int uid) {
+        int[] result = {0,0,0,0};
+//        订单数，课程数，出勤率，交易量
+        result[0] = orderDao.getByStateUid(uid,-1).size();
+        result[1] = lessonProDao.getByUidState(Integer.toString(uid),-1).size();
+        List<Attendance> attds = lessonProDao.getAttdByUidType(Integer.toString(uid),0) ;
+        for(Attendance attd:attds){
+            if(attd.getGrade()==3)
+                result[2]++;
+        }
+        if(attds==null||attds.size()==0){
+            result[2] = 0;
+        }else{
+            result[2] = 100*result[2]/attds.size();
+        }
+
+        result[3] = bankDao.findByUid(uid).size();
+        return result;
+    }
+
+    public int[] getAttdNums1(int lpid) {
+        int[] result = {0,0,0,0};
+
+        List<Attendance> attds = lessonProDao.getAttdByLessonProIdType(lpid,0);
+        for(Attendance attd:attds){
+            result[attd.getGrade()]++;
+        }
+
+        return result;
+    }
+
+    public int[] getAttdNums2(int lpid) {
+//        <60/60-80/80-90/90-100
+        int[] result = {0,0,0,0};
+
+        List<Attendance> attds = lessonProDao.getAttdByLessonProIdType(lpid,1);
+        for(Attendance attd:attds){
+            int grade = attd.getGrade();
+            if(grade<60)
+                result[0]++;
+            else if(grade<80)
+                result[1]++;
+            else if(grade<90)
+                result[2]++;
+            else
+                result[3]++;
+        }
+
+        return result;
+    }
+
     public List<PayRecord> getPayRecordByUid(int uid) {
         return bankDao.findByUid(uid);
     }

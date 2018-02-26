@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Repository
@@ -33,7 +34,7 @@ public class OrderDaoImpl implements OrderDao {
             query = getCurrentSession().createQuery(fromDatabase+searchByUserId).setParameter("uid",uid);
         }
         if(query.list().size()==0)
-            return null;
+            return new LinkedList<Orders>();
         else{
             return query.list();
         }
@@ -42,7 +43,7 @@ public class OrderDaoImpl implements OrderDao {
     public List<Orders> getByCollegeId(int cid) {
         Query query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId).setParameter("cid",cid);
         if(query.list().size()==0)
-            return null;
+            return new LinkedList<Orders>();
         else{
             return query.list();
         }

@@ -40,11 +40,8 @@ public class CollegeDaoImpl implements CollegeDao {
             query= getCurrentSession().createQuery("from College where state =:state").setParameter("state",state);
         }
 
-        if(query.list().size()==0)
-            return new ArrayList<College>();
-        else{
-            return query.list();
-        }
+        return query.list();
+
     }
 
     public College get(Integer id) {

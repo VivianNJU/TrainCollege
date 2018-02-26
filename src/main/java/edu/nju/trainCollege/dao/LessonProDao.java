@@ -14,6 +14,8 @@ public interface LessonProDao extends BaseDao<LessonProgress,Integer> {
 
     public void saveAttendance(Attendance attendance);
 
+    public List<Attendance> getAttdByUidType(String uid,int type);
+
     public List<Attendance> getAttdByLessonProIdType(int lessonProId,int type);
 
     /**

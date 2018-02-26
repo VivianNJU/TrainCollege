@@ -23,6 +23,12 @@ public interface StudentService {
 
     public void profileSave(Student student);
 
+    public int[] getHomepageData(int uid);
+
+    public int[] getAttdNums1(int lpid);
+
+    public int[] getAttdNums2(int lpid);
+
     public List<PayRecord> getPayRecordByUid(int uid);
 
     public List<Lesson> getLessons();

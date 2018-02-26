@@ -37,11 +37,7 @@ public class BankDaoImpl implements BankDao {
 
     public List<PayRecord> findByUid(int uid) {
         Query query = getCurrentSession().createQuery(fromRecordDb+searchByUid+" order by paytime DESC").setParameter("uid",uid);
-        if(query.list().size()==0)
-            return null;
-        else{
-            return query.list();
-        }
+        return query.list();
     }
 
     public BankCard findByCardIDPwd(String bankCardID, String password) {

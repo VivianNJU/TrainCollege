@@ -30,11 +30,7 @@ public class LessonProDaoImpl implements LessonProDao {
     }
     public List<LessonProgress> getByOrderId(int oid) {
         Query query = getCurrentSession().createQuery(fromLessonProDB +searchByOrderId).setParameter("oid",oid);
-        if(query.list().size()==0)
-            return null;
-        else{
-            return query.list();
-        }
+        return query.list();
     }
 
     public List<LessonProgress> getByUidState(String uid,int state) {
@@ -45,20 +41,12 @@ public class LessonProDaoImpl implements LessonProDao {
         }else{
             query = getCurrentSession().createQuery(fromLessonProDB +searchByUserId).setParameter("uid",uid);
         }
-        if(query.list().size()==0)
-            return null;
-        else{
-            return query.list();
-        }
+        return query.list();
     }
 
     public List<LessonProgress> getByCollegeId(int cid) {
         Query query = getCurrentSession().createQuery(fromLessonProDB +searchByCollegeId).setParameter("cid",cid);
-        if(query.list().size()==0)
-            return null;
-        else{
-            return query.list();
-        }
+        return query.list();
     }
 
     public void saveAttendance(Attendance attendance) {
@@ -66,6 +54,12 @@ public class LessonProDaoImpl implements LessonProDao {
         Transaction tx=session.beginTransaction();
         session.save(attendance);
         tx.commit();
+    }
+
+    public List<Attendance> getAttdByUidType(String uid, int type) {
+        Query query = getCurrentSession().createQuery(fromAttdDB +searchByUserId+" and type =:type order by lessonDate ASC")
+                .setParameter("uid",uid).setParameter("type",type);
+        return query.list();
     }
 
     public List<Attendance> getAttdByLessonProIdType(int lessonProId,int type) {

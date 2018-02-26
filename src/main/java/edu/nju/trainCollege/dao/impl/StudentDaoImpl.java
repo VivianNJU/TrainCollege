@@ -10,6 +10,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Repository
@@ -80,7 +81,7 @@ public class StudentDaoImpl implements StudentDao {
     public List<Student> getStudent() {
         Query query = getCurrentSession().createQuery("from Student");
         if(query.list().size()==0)
-            return null;
+            return new LinkedList<Student>();
         else{
             return query.list();
         }

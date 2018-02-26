@@ -30,11 +30,7 @@ public class LessonDaoImpl implements LessonDao {
 
     public List<Lesson> getByCollegeId(int cid) {
         Query query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId).setParameter("cid",cid);
-        if(query.list().size()==0)
-            return null;
-        else{
-            return query.list();
-        }
+        return query.list();
     }
 
     public List<Lesson> getByState(int state) {
@@ -64,11 +60,7 @@ public class LessonDaoImpl implements LessonDao {
             query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId+" and state = :state").setParameter("cid",cid).setParameter("state",state);
         }
 
-        if(query.list().size()==0)
-            return null;
-        else{
-            return query.list();
-        }
+        return query.list();
     }
 
     public Lesson get(Integer id) {

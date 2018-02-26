@@ -89,16 +89,34 @@
 
                             <div class="tab-pane" id="charts">
                                 <!-- DONUT CHART -->
-                                <div class="box">
-                                    <div class="box-header with-border">
-                                        <h3 class="box-title">出勤率统计环形图</h3>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="box">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">出勤率统计环形图</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                <canvas id="attdChart" style="height:250px"></canvas>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                        <!-- /.box -->
                                     </div>
-                                    <div class="box-body">
-                                        <canvas id="pieChart" style="height:250px"></canvas>
+
+                                    <!-- DONUT CHART -->
+                                    <div class="col-sm-6">
+                                        <div class="box">
+                                            <div class="box-header with-border">
+                                                <h3 class="box-title">分数区间柱状图</h3>
+                                            </div>
+                                            <div class="box-body">
+                                                <canvas id="gradeChart" style="height:250px"></canvas>
+                                            </div>
+                                            <!-- /.box-body -->
+                                        </div>
+                                        <!-- /.box -->
                                     </div>
-                                    <!-- /.box-body -->
                                 </div>
-                                <!-- /.box -->
                             </div>
                             <!-- /.tab-pane-->
                         </div>
@@ -141,54 +159,56 @@
 <script>
     $(function () {
         //-------------
-        //- PIE CHART -
+        //- 出勤统计 CHART -
         //-------------
         // Get context with jQuery - using jQuery's .get() method.
-        var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-        var pieChart       = new Chart(pieChartCanvas)
-        var PieData        = [
-            {
-                value    : ${state[3]},
-                color    : 'green',
-                label    : '出勤'
-            },
-            {
-                value    : ${state[0]},
-                color    : 'red',
-                label    : '缺勤'
-            },
-            {
-                value    : ${state[1]},
-                color    : 'blue',
-                label    : '迟到'
-            },
-            {
-                value    : ${state[2]},
-                color    : 'yellow',
-                label    : '早退'
+        var ctx = document.getElementById("attdChart");
+        var pieChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ["缺勤", "迟到", "早退", "出勤"],
+                datasets: [{
+                    data: [${state[0]},${state[1]},${state[2]},${state[3]}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ]
+                }]
             }
-        ];
-        var pieOptions     = {
-            //Boolean - Whether we should show a stroke on each segment
-            segmentShowStroke    : true,
-            //String - The colour of each segment stroke
-            segmentStrokeColor   : '#fff',
-            //Number - The width of each segment stroke
-            segmentStrokeWidth   : 2,
-            //Number - The percentage of the chart that we cut out of the middle
-            percentageInnerCutout: 40, // This is 0 for Pie charts
-            //Number - Amount of animation steps
-            animationSteps       : 100,
-            //String - Animation easing effect
-            animationEasing      : 'easeOutBounce',
-            //Boolean - whether to make the chart responsive to window resizing
-            responsive           : false,
-            // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
-            maintainAspectRatio  : true
-        }
-        //Create pie or douhnut chart
-        // You can switch between pie and douhnut using the method below.
-        pieChart.Doughnut(PieData, pieOptions);
+        });
+
+        var ctx2 = document.getElementById("gradeChart");
+        var barChart = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: ["<60分", "60~79分", "80~89分", "90~100分"],
+                datasets: [{
+                    data: [${grade[0]}, ${grade[1]}, ${grade[2]}, ${grade[3]}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)'
+                    ]
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero:true
+                        }
+                    }]
+                },
+                legend: {
+                    display: false
+                }
+            }
+        });
+
+
 
         $('#attendance-table').DataTable({
             "ajax": {

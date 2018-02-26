@@ -20,7 +20,17 @@ public class StudentNavController {
     private StudentService studentService;
 
     @RequestMapping("homepage")
-    public String homepage(ModelMap model){
+    public String homepage(HttpServletRequest request,ModelMap model){
+        int uid = ((Student) request.getSession().getAttribute("student")).getId();
+        List<PayRecord> records = studentService.getPayRecordByUid(uid);
+        if(records!=null&&records.size()>5){
+            model.addAttribute("paymentList",records.subList(0,5));
+        }else{
+            model.addAttribute("paymentList",records);
+        }
+
+        model.addAttribute("datas",studentService.getHomepageData(uid));
+
         return "/student/homepage";
     }
 
@@ -69,9 +79,8 @@ public class StudentNavController {
         int lpid = Integer.parseInt(request.getParameter("lpid"));
         model.addAttribute("lpid",lpid);
 
-        int[] states = {1,4,8,9};
-
-        model.addAttribute("state",states);
+        model.addAttribute("state",studentService.getAttdNums1(lpid));
+        model.addAttribute("grade",studentService.getAttdNums2(lpid));
         return "/student/show_progress";
     }
 
