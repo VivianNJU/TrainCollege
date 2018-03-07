@@ -118,6 +118,21 @@ public class CollegeServceImpl implements CollegeService{
         collegeDao.saveOrUpdate(college);
     }
 
+    public int[] getHomepageData(int cid) {
+        int[] result = {0,0,0,0};
+
+        result[0] = lessonDao.getByCollegeId(cid).size();
+        result[1] = orderDao.getByCollegeId(cid).size();
+
+        result[2] = lessonProDao.getByCollegeId(cid).size();
+        result[3] = bankDao.findByCollegeid(cid).size();
+        return result;
+    }
+
+    public List<PayRecord> getPayRecordByCollegeid(int cid) {
+        return bankDao.findByCollegeid(cid);
+    }
+
     public List<Attendance> getAttendanceByLpidType(int lpid, int type) {
         return lessonProDao.getAttdByLessonProIdType(lpid,type);
     }

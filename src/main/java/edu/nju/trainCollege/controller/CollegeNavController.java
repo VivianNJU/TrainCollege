@@ -32,7 +32,17 @@ public class CollegeNavController {
     private StudentService studentService;
 
     @RequestMapping("homepage")
-    public String homepage(ModelMap model){
+    public String homepage(HttpServletRequest request, ModelMap model){
+        int cid = ((College)request.getSession().getAttribute("college")).getId();
+        List<PayRecord> payRecords =collegeService.getPayRecordByCollegeid(cid);
+        if(payRecords!=null&&payRecords.size()>5){
+            model.addAttribute("paymentList",payRecords.subList(0,5));
+        }else{
+            model.addAttribute("paymentList",payRecords);
+        }
+
+        model.addAttribute("datas",collegeService.getHomepageData(cid));
+
         return "/college/homepage";
     }
 
@@ -114,6 +124,13 @@ public class CollegeNavController {
         int cid = ((College)request.getSession().getAttribute("college")).getId();
         model.addAttribute("lessonList",collegeService.getLessonByStateCid(cid,1));
         return "/college/enroll_lesson";
+    }
+
+    @RequestMapping(value = "payment",method = RequestMethod.GET)
+    public String paymentView(HttpServletRequest request,ModelMap model){
+        int cid = ((College)request.getSession().getAttribute("college")).getId();
+        model.addAttribute("paymentList",collegeService.getPayRecordByCollegeid(cid));
+        return "/college/payment";
     }
 
     @RequestMapping(value = "enroll_offline",method = RequestMethod.POST)

@@ -2,12 +2,19 @@ package edu.nju.trainCollege.service;
 
 import edu.nju.trainCollege.model.College;
 import edu.nju.trainCollege.model.Manager;
+import edu.nju.trainCollege.model.MyData;
 import edu.nju.trainCollege.model.Student;
 
 import java.util.List;
 
 public interface ManagerService {
     public Manager login(String name, String password);
+
+    public void collegePayment(double proportion);
+
+    public int[] getPaymentByYear(int year);
+
+    public String getAllPayCollege();
 
     public List<College> getAllColleges();
 

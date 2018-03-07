@@ -92,20 +92,18 @@
             <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
 
-            <li class="${param.profile}">
-                <a href="/college/profile">
-                    <i class="fa fa-info"></i> <span> 机构信息</span>
-                    <span class="pull-right-container"></span>
-                </a>
-            </li>
-
-            <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
-            <li class="${help}">
+            <li class="treeview ${param.self}">
                 <a href="#">
-                    <i class="fa fa-question"></i> <span> 网站说明</span>
+                    <i class="fa fa-info"></i>
+                    <span>机构信息</span>
                     <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
             </span>
                 </a>
+                <ul class="treeview-menu">
+                    <li class="${param.profile}"><a href="/college/profile"><i class="fa fa-circle-o"></i> 基础信息</a></li>
+                    <li class="${param.payment}"><a href="/college/payment"><i class="fa fa-circle-o"></i> 交易记录</a></li>
+                </ul>
             </li>
 
             <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>

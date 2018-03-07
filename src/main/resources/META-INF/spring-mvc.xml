@@ -44,15 +44,15 @@
             <bean id="studentLoginInterceptor" class="edu.nju.trainCollege.tools.StudentLoginInterceptor"/>
         </mvc:interceptor>
 
-        <!--<mvc:interceptor>-->
-            <!--<mvc:mapping path="/college/**"/>-->
-            <!--<bean id="collegeLoginInterceptor" class="edu.nju.trainCollege.tools.CollegeLoginInterceptor"/>-->
-        <!--</mvc:interceptor>-->
-
         <mvc:interceptor>
-            <mvc:mapping path="/college_manager/**"/>
-            <bean id="managerLoginInterceptor" class="edu.nju.trainCollege.tools.ManagerLoginInterceptor"/>
+            <mvc:mapping path="/college/**"/>
+            <bean id="collegeLoginInterceptor" class="edu.nju.trainCollege.tools.CollegeLoginInterceptor"/>
         </mvc:interceptor>
+
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/college_manager/**"/>-->
+            <!--<bean id="managerLoginInterceptor" class="edu.nju.trainCollege.tools.ManagerLoginInterceptor"/>-->
+        <!--</mvc:interceptor>-->
     </mvc:interceptors>
 
 </beans>

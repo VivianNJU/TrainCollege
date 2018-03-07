@@ -10,6 +10,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -21,6 +22,8 @@ public class BankDaoImpl implements BankDao {
     private static final String searchByIdPwd = "where cardNo = :id and password = :password";
     private static final String searchByOid = "where oid = :oid";
     private static final String searchByUid = "where uid = :uid";
+    private static final String searchByCid = "where cid = :cid";
+    private static final String searchBetweenDays = "where paytime > :start and paytime < :endday";
 
     private Session getCurrentSession() {
         return this.sessionFactory.openSession();
@@ -37,6 +40,26 @@ public class BankDaoImpl implements BankDao {
 
     public List<PayRecord> findByUid(int uid) {
         Query query = getCurrentSession().createQuery(fromRecordDb+searchByUid+" order by paytime DESC").setParameter("uid",uid);
+        return query.list();
+    }
+
+    public List<PayRecord> findByCollegeid(int cid) {
+        Query query = getCurrentSession().createQuery(fromRecordDb+searchByCid+" order by paytime DESC")
+                .setParameter("cid",cid);
+        return query.list();
+    }
+
+    public List<PayRecord> findBetweenDays(Date startDay, Date endDay) {
+        Query query = getCurrentSession().createQuery(fromRecordDb+searchBetweenDays+" order by cid")
+                .setParameter("start",startDay).setParameter("endday",endDay);
+        if(startDay==null)
+            query = getCurrentSession().createQuery(fromRecordDb+"where paytime< :endday order by cid")
+                    .setParameter("endday",endDay);
+        return query.list();
+    }
+
+    public List<PayRecord> findByType2() {
+        Query query = getCurrentSession().createQuery(fromRecordDb+"where type=2 order by paytime DESC");
         return query.list();
     }
 

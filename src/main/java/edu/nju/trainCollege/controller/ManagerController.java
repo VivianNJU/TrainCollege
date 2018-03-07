@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Calendar;
 
 @Controller
 @RequestMapping("college_manager/")
@@ -27,6 +28,45 @@ public class ManagerController {
     @RequestMapping(value = "all_students", method = RequestMethod.GET)
     public String all_student(){
         return "/manager/all_students";
+    }
+
+    @RequestMapping(value = "college_payment", method = RequestMethod.GET)
+    public String collegePayment(){
+        return "/manager/college_payment";
+    }
+
+    @RequestMapping(value = "college_pay", method = RequestMethod.POST)
+    public String payCollege(HttpServletRequest request){
+        double proportion = Double.parseDouble(request.getParameter("proportion"));
+        managerService.collegePayment(proportion);
+        return "redirect:/college_manager/homepage";
+    }
+
+    @RequestMapping(value = "website_payment", method = RequestMethod.GET)
+    public String websitePayment(HttpServletRequest request,ModelMap model){
+        int year;
+        if(request.getParameter("year")!=null){
+            year = Integer.parseInt(request.getParameter("year"));
+        }else{
+            year = Calendar.getInstance().get(Calendar.YEAR);
+        }
+
+        model.addAttribute("year",year);
+        return "manager/website_payment";
+    }
+
+    @RequestMapping(value = "payment_data", method = RequestMethod.POST)
+    @ResponseBody
+    public int[] getPaymentDataByYear(HttpServletRequest request){
+        int year = Integer.parseInt(request.getParameter("year"));
+
+        return managerService.getPaymentByYear(year);
+    }
+
+    @RequestMapping(value = "all_pay_college", method = RequestMethod.POST)
+    @ResponseBody
+    public String getAllPayCollege(){
+        return managerService.getAllPayCollege();
     }
 
     @RequestMapping(value = "all_students", method = RequestMethod.POST)

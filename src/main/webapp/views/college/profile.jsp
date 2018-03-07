@@ -28,6 +28,7 @@
     <jsp:include page="../public/college_header.jsp" flush="true" />
 
     <jsp:include page="../public/college_nav.jsp" flush="true" >
+        <jsp:param name="self" value="active menu-open"/>
         <jsp:param name="profile" value="active"/>
     </jsp:include>
 

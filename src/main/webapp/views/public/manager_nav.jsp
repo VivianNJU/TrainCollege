@@ -54,7 +54,7 @@
                 <ul class="treeview-menu">
                     <li class="${param.all_college}"><a href="/college_manager/all_colleges"><i class="fa fa-circle-o"></i> 所有机构</a></li>
                     <li class="${param.unchecked_college}"><a href="/college_manager/unchecked_colleges"><i class="fa fa-circle-o"></i> 待审核机构</a></li>
-                    <li class="${param.famous}"><a href="#"><i class="fa fa-circle-o"></i> 机构统计</a></li>
+                    <li class="${param.famous}"><a href=""><i class="fa fa-circle-o"></i> 机构统计</a></li>
                 </ul>
             </li>
 
@@ -76,7 +76,7 @@
 
             <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
-            <li class="treeview ${course_more}">
+            <li class="treeview ${param.money}">
                 <a href="#">
                     <i class="fa fa-pie-chart"></i>
                     <span>交易结算</span>
@@ -85,8 +85,8 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="${course_introduction}"><a href="#"><i class="fa fa-circle-o"></i> 网站收支</a></li>
-                    <li class="${attendence}"><a href="#"><i class="fa fa-circle-o"></i> 机构结算</a></li>
+                    <li class="${param.website_payment}"><a href="/college_manager/website_payment"><i class="fa fa-circle-o"></i> 网站收支</a></li>
+                    <li class="${param.college_payment}"><a href="/college_manager/college_payment"><i class="fa fa-circle-o"></i> 机构结算</a></li>
                     <li class="${attendence}"><a href="#"><i class="fa fa-circle-o"></i> 学员结算</a></li>
                 </ul>
             </li>
