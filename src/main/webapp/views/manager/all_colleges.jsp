@@ -177,7 +177,7 @@
                     "class": "but_xq",
                     "data": null,
                     "bSortable": false,
-                    "defaultContent": "<a id=‘more’ onclick='more(this)' href='#'>查看详情</a>"
+                    "defaultContent": ""
                 }
             ],
             //每行回调函数
@@ -201,6 +201,9 @@
                         $('td:eq(4)', nRow).html("已注销");
                         break;
                 }
+
+                $('td:eq(5)', nRow).html("<a id=‘more’ onclick='more(this)'>详情</a> &nbsp;&nbsp;" +
+                    "<a href='/college_manager/college_stats?cid="+id+"'>统计数据</a>");
 
             },
 

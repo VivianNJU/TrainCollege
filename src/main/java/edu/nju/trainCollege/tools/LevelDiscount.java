@@ -4,8 +4,8 @@ import java.util.Date;
 
 public class LevelDiscount {
 
-    private static final int[] EXPR_THRESHOLD = {100,300,800,1500,3000,5000,10000};
-    private static final double[] DISCOUNT_THRESHOLD = {0.98,0.95,0.93,0.9,0.88,0.85,0.83,0.8};
+    private static final int[] EXPR_THRESHOLD = {100,300,800,2000,5000,10000};
+    private static final double[] DISCOUNT_THRESHOLD = {0.98,0.95,0.93,0.9,0.88,0.85,0.8};
     private static final int[] TIME_THRESHOLD = {0,30,90};
     private static final double[] COMP_THRESHOLD = {0,0.5,0.8,1};
 

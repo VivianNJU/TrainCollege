@@ -55,6 +55,42 @@ public class ManagerController {
         return "manager/website_payment";
     }
 
+    @RequestMapping(value = "college_stats", method = RequestMethod.GET)
+    public String collegeStatistic(HttpServletRequest request,ModelMap model){
+        int year;
+        if(request.getParameter("year")!=null){
+            year = Integer.parseInt(request.getParameter("year"));
+        }else{
+            year = Calendar.getInstance().get(Calendar.YEAR);
+        }
+
+        int cid = Integer.parseInt(request.getParameter("cid"));
+
+        model.addAttribute("year",year).addAttribute("cid",cid);
+        return "manager/college_statistic";
+    }
+
+    @RequestMapping(value = "student_stats", method = RequestMethod.GET)
+    public String studentStats(HttpServletRequest request,ModelMap model){
+        return "manager/student_statistic";
+    }
+
+    @RequestMapping(value = "student_level_data", method = RequestMethod.POST)
+    @ResponseBody
+    public int[] getStudentLevelData(HttpServletRequest request){
+
+        return managerService.getStudentLevelData();
+    }
+
+    @RequestMapping(value = "college_order_num_data", method = RequestMethod.POST)
+    @ResponseBody
+    public int[] getCollegeOrderNumByYear(HttpServletRequest request){
+        int year = Integer.parseInt(request.getParameter("year"));
+        int cid = Integer.parseInt(request.getParameter("cid"));
+
+        return managerService.getCollegeOrderByYear(cid,year);
+    }
+
     @RequestMapping(value = "payment_data", method = RequestMethod.POST)
     @ResponseBody
     public int[] getPaymentDataByYear(HttpServletRequest request){

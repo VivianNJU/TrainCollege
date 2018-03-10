@@ -20,17 +20,6 @@
                 <a href="#"><i class="fa fa-circle text-success"></i> 在线</a>
             </div>
         </div>
-        <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
-            <div class="input-group">
-                <input type="text" name="q" class="form-control" placeholder="Search...">
-                <span class="input-group-btn">
-                <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                </button>
-              </span>
-            </div>
-        </form>
-        <!-- /.search form -->
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
             <li class="${param.homepage}">
@@ -45,7 +34,7 @@
 
             <li class="treeview ${param.colleges}">
                 <a href="#">
-                    <i class="fa fa-pie-chart"></i>
+                    <i class="fa fa-calendar"></i>
                     <span>机构浏览</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -54,7 +43,6 @@
                 <ul class="treeview-menu">
                     <li class="${param.all_college}"><a href="/college_manager/all_colleges"><i class="fa fa-circle-o"></i> 所有机构</a></li>
                     <li class="${param.unchecked_college}"><a href="/college_manager/unchecked_colleges"><i class="fa fa-circle-o"></i> 待审核机构</a></li>
-                    <li class="${param.famous}"><a href=""><i class="fa fa-circle-o"></i> 机构统计</a></li>
                 </ul>
             </li>
 
@@ -62,7 +50,7 @@
 
             <li class="treeview ${param.students}">
                 <a href="#">
-                    <i class="fa fa-pie-chart"></i>
+                    <i class="fa fa-user"></i>
                     <span>学员浏览</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -70,7 +58,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="${param.all_students}"><a href="/college_manager/all_students"><i class="fa fa-circle-o"></i> 所有学员</a></li>
-                    <li class="${attendence}"><a href="#"><i class="fa fa-circle-o"></i> 学员统计</a></li>
+                    <li class="${param.student_stats}"><a href="/college_manager/student_stats"><i class="fa fa-circle-o"></i> 学员统计</a></li>
                 </ul>
             </li>
 
@@ -78,7 +66,7 @@
 
             <li class="treeview ${param.money}">
                 <a href="#">
-                    <i class="fa fa-pie-chart"></i>
+                    <i class="fa fa-area-chart"></i>
                     <span>交易结算</span>
                     <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -87,17 +75,7 @@
                 <ul class="treeview-menu">
                     <li class="${param.website_payment}"><a href="/college_manager/website_payment"><i class="fa fa-circle-o"></i> 网站收支</a></li>
                     <li class="${param.college_payment}"><a href="/college_manager/college_payment"><i class="fa fa-circle-o"></i> 机构结算</a></li>
-                    <li class="${attendence}"><a href="#"><i class="fa fa-circle-o"></i> 学员结算</a></li>
                 </ul>
-            </li>
-
-            <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
-            <li class="${help}">
-                <a href="#">
-                    <i class="fa fa-home"></i> <span> 网站说明</span>
-                    <span class="pull-right-container">
-            </span>
-                </a>
             </li>
 
             <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>

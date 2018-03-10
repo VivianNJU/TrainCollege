@@ -3,15 +3,10 @@ package edu.nju.trainCollege.service.impl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import edu.nju.trainCollege.dao.BankDao;
-import edu.nju.trainCollege.dao.CollegeDao;
-import edu.nju.trainCollege.dao.ManagerDao;
-import edu.nju.trainCollege.dao.StudentDao;
-import edu.nju.trainCollege.model.College;
-import edu.nju.trainCollege.model.Manager;
-import edu.nju.trainCollege.model.PayRecord;
-import edu.nju.trainCollege.model.Student;
+import edu.nju.trainCollege.dao.*;
+import edu.nju.trainCollege.model.*;
 import edu.nju.trainCollege.service.ManagerService;
+import edu.nju.trainCollege.tools.LevelDiscount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +22,9 @@ public class ManagerServiceImpl implements ManagerService {
     private StudentDao studentDao;
     @Autowired
     private BankDao bankDao;
+
+    @Autowired
+    private OrderDao orderDao;
 
     public Manager login(String name, String password) {
         return managerDao.getByNamePwd(name,password);
@@ -107,6 +105,34 @@ public class ManagerServiceImpl implements ManagerService {
         bankDao.saveCard(last.getBankCardID(),payment);
         bankDao.saveCard("00000000",-payment);
         bankDao.save(newRecord);
+    }
+
+    public int[] getCollegeOrderByYear(int cid, int year) {
+        int[] result = new int[12];
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(year,0,1);
+        Date start = calendar.getTime();
+        calendar.set(year+1,0,1);
+        Date end = calendar.getTime();
+
+        List<Orders> orders = orderDao.getNumByCidYear(cid,start,end);
+
+        for(Orders o:orders){
+            calendar.setTime(o.getOrderTime());
+            result[calendar.get(Calendar.MONTH)]++;//月份从0开始
+        }
+        return result;
+    }
+
+    public int[] getStudentLevelData() {
+        int[] result = new int[7];
+        List<Student> students = studentDao.getStudent();
+
+        for(Student student:students){
+            result[LevelDiscount.getLevel(student.getExpr())-1]++;
+        }
+        return result;
     }
 
     public int[] getPaymentByYear(int year) {

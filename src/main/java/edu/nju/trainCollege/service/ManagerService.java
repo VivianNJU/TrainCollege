@@ -12,6 +12,10 @@ public interface ManagerService {
 
     public void collegePayment(double proportion);
 
+    public int[] getCollegeOrderByYear(int cid,int year);
+
+    public int[] getStudentLevelData();
+
     public int[] getPaymentByYear(int year);
 
     public String getAllPayCollege();

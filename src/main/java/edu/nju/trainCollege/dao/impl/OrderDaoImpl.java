@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,6 +24,18 @@ public class OrderDaoImpl implements OrderDao {
 
     private Session getCurrentSession() {
         return this.sessionFactory.openSession();
+    }
+
+    public List<Orders> getNumByCidYear(int cid, Date start, Date end) {
+        Query query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId+
+                " and state = 1 and orderTime > :start and orderTime < :end").setParameter("start",start).
+                setParameter("end",end).setParameter("cid",cid);
+
+        if(query.list().size()==0)
+            return new LinkedList<Orders>();
+        else{
+            return query.list();
+        }
     }
 
     public List<Orders> getByStateUid(int uid,int state) {

@@ -140,7 +140,7 @@
                 { "title": "ID",
                     "data":"id"},
                 { "title": "名称",
-                    "data":"name"},
+                    "data":"username"},
                 { "title": "电子邮箱",
                     "data":"email"},
                 { "title": "联系电话",
