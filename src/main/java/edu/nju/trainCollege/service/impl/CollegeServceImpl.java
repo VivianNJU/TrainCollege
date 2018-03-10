@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -118,11 +119,46 @@ public class CollegeServceImpl implements CollegeService{
         collegeDao.saveOrUpdate(college);
     }
 
+    public List<Orders> getOrderByCidState(int cid, int state) {
+        return orderDao.getByStateCid(cid,state);
+    }
+
+    public Student getStudentById(int uid) {
+        return studentDao.get(uid);
+    }
+
+    public int[] getPaymentByYear(int cid, int year) {
+        //前12个为用户付费每月数额，后12个为用户退款每月数额
+        int[] result = new int[24];
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(year,0,1);
+        Date start = calendar.getTime();
+        calendar.set(year+1,0,1);
+        Date end = calendar.getTime();
+
+
+        List<PayRecord> payRecords = bankDao.findBetweenDays(start,end);
+        for(PayRecord record : payRecords){
+            if(record.getCid()==cid){
+                if(record.getType()==0){
+//               用户付费
+                    calendar.setTime(record.getPaytime());
+                    result[calendar.get(Calendar.MONTH)]+=record.getPayment();//月份从0开始
+                }else if(record.getType()==1){
+                    calendar.setTime(record.getPaytime());
+                    result[calendar.get(Calendar.MONTH)+12]+=record.getPayment();//月份从0开始
+                }
+            }
+        }
+        return result;
+    }
+
     public int[] getHomepageData(int cid) {
         int[] result = {0,0,0,0};
 
         result[0] = lessonDao.getByCollegeId(cid).size();
-        result[1] = orderDao.getByCollegeId(cid).size();
+        result[1] = orderDao.getByStateCid(cid,-1).size();
 
         result[2] = lessonProDao.getByCollegeId(cid).size();
         result[3] = bankDao.findByCollegeid(cid).size();

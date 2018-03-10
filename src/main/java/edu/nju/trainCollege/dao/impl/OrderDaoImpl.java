@@ -53,8 +53,14 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 
-    public List<Orders> getByCollegeId(int cid) {
-        Query query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId).setParameter("cid",cid);
+    public List<Orders> getByStateCid(int cid, int state) {
+        Query query;
+        if(state>=0){
+            query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId+" and state =:state")
+                    .setParameter("cid",cid).setParameter("state",state);
+        }else{
+            query = getCurrentSession().createQuery(fromDatabase+searchByCollegeId).setParameter("cid",cid);
+        }
         if(query.list().size()==0)
             return new LinkedList<Orders>();
         else{

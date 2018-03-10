@@ -3,6 +3,7 @@ package edu.nju.trainCollege.controller;
 import edu.nju.trainCollege.model.*;
 import edu.nju.trainCollege.service.CollegeService;
 import edu.nju.trainCollege.service.StudentService;
+import edu.nju.trainCollege.tools.LevelDiscount;
 import edu.nju.trainCollege.tools.NumberTool;
 import org.hibernate.service.spi.ServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @SessionAttributes({"student","college"})
@@ -66,6 +65,25 @@ public class CollegeNavController {
         return "/college/begin_lessons";
     }
 
+    @RequestMapping(value = "payment_chart",method = RequestMethod.GET)
+    public String paymentChartView(HttpServletRequest request, ModelMap model){
+        int year;
+        if(request.getParameter("year")!=null){
+            year = Integer.parseInt(request.getParameter("year"));
+        }else{
+            year = Calendar.getInstance().get(Calendar.YEAR);
+        }
+        model.addAttribute("year",year);
+        return "/college/money_charts";
+    }
+
+    @RequestMapping(value = "get_inout_data",method = RequestMethod.POST)
+    @ResponseBody
+    public int[] getChartData(HttpServletRequest request){
+        int year = Integer.parseInt(request.getParameter("year"));
+        int cid = ((College)request.getSession().getAttribute("college")).getId();
+        return collegeService.getPaymentByYear(cid,year);
+    }
 
     @RequestMapping(value = "get_lessons_by_state",method = RequestMethod.POST)
     @ResponseBody
@@ -93,9 +111,68 @@ public class CollegeNavController {
         return "redirect:/logout";
     }
 
+    @RequestMapping(value = "show_order",method = RequestMethod.GET)
+    public String showOrderView(HttpServletRequest request,ModelMap model){
+        if(request.getParameter("oid")==null){
+            return "redirect:/college/all_orders";
+        }
+
+        Orders orders = studentService.getOrderById(Integer.parseInt(request.getParameter("oid")));
+
+        int lid = orders.getLid();
+        model.addAttribute("lesson",studentService.getLessonByLid(lid));
+
+        Student user = collegeService.getStudentById(orders.getUid());
+
+        List<LessonProgress> progresses = studentService.getLessonProByOid(orders.getId());
+        model.addAttribute("progresses",progresses).addAttribute("student",user);
+
+        List<NormalStudent> students = new LinkedList<NormalStudent>();
+        List<String> types = new LinkedList<String>();
+        for(LessonProgress lp:progresses){
+            String uid = lp.getUid();
+            students.add(studentService.getStudentById(uid));
+            int classId = lp.getClassId();
+            if(classId==0)
+                types.add("待分配");
+            else
+                types.add(studentService.getClassesById(classId).getName());
+        }
+        model.addAttribute("types",types);
+        model.addAttribute("order",orders);
+        model.addAttribute("NMstudents",students);
+        model.addAttribute("discount", 10
+                *LevelDiscount.getDiscount(user.getExpr()));
+
+        return "/college/show_order";
+    }
+
+    @RequestMapping(value = "retrieve_orders",method = RequestMethod.GET)
+    public String retrieveOrdersView(){
+        return "/college/retrieve_orders";
+    }
+
+    @RequestMapping(value = "pay_orders",method = RequestMethod.GET)
+    public String payOrdersView(){
+        return "/college/pay_orders";
+    }
+
+    @RequestMapping(value = "all_orders",method = RequestMethod.GET)
+    public String allOrdersView(){
+        return "/college/all_orders";
+    }
+
+    @RequestMapping(value = "get_order_by_state",method = RequestMethod.POST)
+    @ResponseBody
+    public MyData getOrderByState(HttpServletRequest request){
+        int state = Integer.parseInt(request.getParameter("state"));
+        int cid = ((College)request.getSession().getAttribute("college")).getId();
+        return new MyData(collegeService.getOrderByCidState(cid,state));
+    }
+
     @RequestMapping(value = "bank_card_on",method = RequestMethod.POST)
     @ResponseBody
-    public void bankCard(HttpServletRequest request,ModelMap model){
+    public void bankCard(HttpServletRequest request){
         College college = (College) request.getSession().getAttribute("college");
         college.setCardNo(request.getParameter("cardNo"));
         collegeService.saveCollege(college);

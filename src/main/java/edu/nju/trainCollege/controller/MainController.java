@@ -90,19 +90,24 @@ public class MainController {
                 return "/index";
             }
             College college = collegeService.login(id,password);
-            switch (college.getState()){
-                case 0:
-                    model.addAttribute("error","该账号审查中，暂不能登陆");
-                    return "/index";
-                case 1:
-                    model.addAttribute("college",college);
-                    return "redirect:/college/homepage";
-                case 2:
-                    model.addAttribute("error","该账号已查封");
-                    return "/index";
-                case 3:
-                    model.addAttribute("error","该账号已注销，请重新注册");
-                    return "/index";
+            if(college==null){
+                model.addAttribute("error","编号密码错误");
+                return "/index";
+            }else{
+                switch (college.getState()){
+                    case 0:
+                        model.addAttribute("error","该账号审查中，暂不能登陆");
+                        return "/index";
+                    case 1:
+                        model.addAttribute("college",college);
+                        return "redirect:/college/homepage";
+                    case 2:
+                        model.addAttribute("error","该账号已查封");
+                        return "/index";
+                    case 3:
+                        model.addAttribute("error","该账号已注销，请重新注册");
+                        return "/index";
+                }
             }
         }
         return "/index";

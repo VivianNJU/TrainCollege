@@ -20,6 +20,12 @@ public interface CollegeService {
 
     public void saveCollege(College college);
 
+    public List<Orders> getOrderByCidState(int cid, int state);
+
+    public Student getStudentById(int uid);
+
+    public int[] getPaymentByYear(int cid,int year);
+
     public int[] getHomepageData(int cid);
 
     public List<PayRecord> getPayRecordByCollegeid(int cid);

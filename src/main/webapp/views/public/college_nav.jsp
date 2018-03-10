@@ -60,6 +60,23 @@
 
             <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
 
+            <li class="treeview ${param.orders}">
+                <a href="#">
+                    <i class="fa fa-database"></i>
+                    <span>订单浏览</span>
+                    <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                </a>
+                <ul class="treeview-menu">
+                    <li class="${param.all_orders}"><a href="/college/all_orders"><i class="fa fa-circle-o"></i> 所有订单</a></li>
+                    <li class="${param.pay_orders}"><a href="/college/pay_orders"><i class="fa fa-circle-o"></i> 已支付订单</a></li>
+                    <li class="${param.retrieve_orders}"><a href="/college/retrieve_orders"><i class="fa fa-circle-o"></i> 退订订单</a></li>
+                </ul>
+            </li>
+
+            <%--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~--%>
+
             <li class="treeview ${param.lesson_more}">
                 <a href="#">
                     <i class="fa fa-file-text-o"></i>
@@ -103,6 +120,7 @@
                 <ul class="treeview-menu">
                     <li class="${param.profile}"><a href="/college/profile"><i class="fa fa-circle-o"></i> 基础信息</a></li>
                     <li class="${param.payment}"><a href="/college/payment"><i class="fa fa-circle-o"></i> 交易记录</a></li>
+                    <li class="${param.money_charts}"><a href="/college/payment_chart"><i class="fa fa-circle-o"></i> 财务图表</a></li>
                 </ul>
             </li>
 

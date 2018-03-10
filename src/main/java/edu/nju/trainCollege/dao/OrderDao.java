@@ -8,7 +8,7 @@ import java.util.List;
 public interface OrderDao extends BaseDao<Orders,Integer> {
     public List<Orders> getByStateUid(int uid, int state);
 
-    public List<Orders> getByCollegeId(int cid);
+    public List<Orders> getByStateCid(int cid, int state);
 
     public List<Orders> getNumByCidYear(int cid, Date start, Date end);
 }
