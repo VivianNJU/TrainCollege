@@ -29,6 +29,13 @@ public class CollegeLessonController {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+    @RequestMapping(value = "arrange_class",method = RequestMethod.POST)
+    @ResponseBody
+    public boolean arrangeClassByHand(HttpServletRequest request){
+        int lid = Integer.parseInt(request.getParameter("lid"));
+        return collegeService.arrangeClass(lid);
+    }
+
     @RequestMapping(value = "show_classes",method = RequestMethod.GET)
     public String showClasses(HttpServletRequest request,ModelMap model){
         if(request.getParameter("lid")==null){
@@ -36,6 +43,7 @@ public class CollegeLessonController {
         }
         int lid = Integer.parseInt(request.getParameter("lid"));
         Lesson lesson = collegeService.getLessonByLid(lid);
+        model.addAttribute("left_num",collegeService.getNoclassLpByLid(lid).size());
         model.addAttribute("lesson",lesson);
         return "/college/show_classes";
     }

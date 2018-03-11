@@ -41,6 +41,7 @@ public class StudentOrderController {
             studentService.payOrder(oid,request.getParameter("cardNo"),request.getParameter("password"));
             return "redirect:/student/show_order?oid="+oid;
         }catch (ServiceException ex){
+            System.out.println(ex.getMessage());
             return "redirect:/student/error?reason="+ex.getMessage();
         }
     }

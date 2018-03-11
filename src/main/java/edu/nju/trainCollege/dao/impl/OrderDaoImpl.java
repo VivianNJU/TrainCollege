@@ -9,6 +9,7 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,6 +22,7 @@ public class OrderDaoImpl implements OrderDao {
     private static final String fromDatabase = "from Orders ";
     private static final String searchByUserId = "where uid = :uid";
     private static final String searchByCollegeId = "where cid = :cid";
+    private static final String searchByLid = "where lid = :lid";
 
     private Session getCurrentSession() {
         return this.sessionFactory.openSession();
@@ -35,6 +37,23 @@ public class OrderDaoImpl implements OrderDao {
             return new LinkedList<Orders>();
         else{
             return query.list();
+        }
+    }
+
+    public List<Integer> getOidByLid(int lid) {
+        Query query = getCurrentSession().createQuery("select id "+fromDatabase+searchByLid).setParameter("lid",lid);
+        return query.list();
+    }
+
+    public void checkOrder() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MINUTE,-15);
+        Query query = getCurrentSession().createQuery(fromDatabase+"where orderTime<:end and state=0").
+                setParameter("end",calendar.getTime());
+        List<Orders> orders = query.list();
+        for(Orders o:orders){
+            o.setState(3);
+            this.saveOrUpdate(o);
         }
     }
 

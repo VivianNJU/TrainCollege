@@ -24,11 +24,16 @@ public class ClassesDaoImpl implements ClassesDao{
     }
     public List<Classes> getByLessonId(int lid) {
         Query query = getCurrentSession().createQuery(fromDatabase+searchByLessonId).setParameter("lid",lid);
-        if(query.list().size()==0)
-            return null;
-        else{
-            return query.list();
+        return query.list();
+    }
+
+    public List<Classes> getByLidOrder(int lid, String order) {
+        String sql = fromDatabase+searchByLessonId;
+        if(order!=null){
+            sql+= " order by "+order;
         }
+        Query query = getCurrentSession().createQuery(sql).setParameter("lid",lid);
+        return query.list();
     }
 
     public Classes get(Integer id) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:task="http://www.springframework.org/schema/task"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
@@ -8,15 +9,20 @@
                          http://www.springframework.org/schema/context
                         http://www.springframework.org/schema/context/spring-context-3.2.xsd
                         http://www.springframework.org/schema/mvc
-                        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+                        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+                        http://www.springframework.org/schema/task
+                        http://www.springframework.org/schema/task/spring-task-3.2.xsd">
 
     <!--启用spring的一些annotation -->
     <context:annotation-config/>
+    <task:annotation-driven />
 
     <!-- 自动扫描该包，使SpringMVC认为包下用了@controller注解的类是控制器 -->
     <context:component-scan base-package="edu.nju.trainCollege.controller">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
     </context:component-scan>
+
+    <context:component-scan base-package="edu.nju.trainCollege.tools" />
 
     <!--HandlerMapping 无需配置，springmvc可以默认启动-->
 

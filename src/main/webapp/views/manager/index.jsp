@@ -57,11 +57,6 @@
 
             <div class="row">
                 <div class="col-xs-8">
-                    <div class="checkbox">
-                        <label>
-                            <input type="checkbox"> 记住密码
-                        </label>
-                    </div>
                 </div>
                 <!-- /.col -->
                 <div class="col-xs-4">

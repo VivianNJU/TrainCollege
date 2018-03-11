@@ -11,4 +11,6 @@ public interface LessonDao extends BaseDao<Lesson,Integer>  {
     public List<Lesson> getByState(int state);
 
     public List<Lesson> getByLessonStateCid(int cid,int state);
+
+    public List<Lesson> getBetweenDays(Date start, Date end);
 }

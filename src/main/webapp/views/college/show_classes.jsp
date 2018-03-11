@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Train COLLEGE | Lesson List</title>
+    <title>Train COLLEGE | Class List</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -59,6 +59,11 @@
                             </table>
                         </div>
                         <!-- /.box-body -->
+
+                        <div class="box-footer">
+                            <p>剩余${left_num}人未分班</p>
+                            <button class="btn btn-danger pull-right" style="margin-right: 10px" onclick="arrange()">强制分班</button>
+                        </div>
                     </div>
                     <!-- /.box -->
                 </div>
@@ -166,6 +171,21 @@
             }
         })
     });
+
+    function arrange() {
+        $.post("/college/arrange_class",
+            {
+                lid: ${lesson.id}
+            },
+            function (data) {
+                if(data==true){
+                    alert("分班成功");
+                    window.location.reload();
+                }else{
+                    alert("分班失败");
+                }
+            });
+    }
 </script>
 </body>
 </html>

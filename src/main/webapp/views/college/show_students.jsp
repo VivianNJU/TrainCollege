@@ -9,7 +9,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Train COLLEGE | Lesson List</title>
+    <title>Train COLLEGE | Student List</title>
     <!-- Tell the browser to be responsive to screen width -->
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!-- Bootstrap 3.3.7 -->
@@ -64,18 +64,13 @@
                         <!-- /.box-body -->
 
                         <div class="box-footer">
-                            <c:if test="${classNo<1}">
-                                <button class="btn btn-danger pull-right" style="margin-right: 10px">强制分班</button>
-                            </c:if>
                             <button class="btn btn-warning pull-right" data-toggle="modal"
                                     data-target="#class-choose-modal" style="margin-right: 10px">选择班号</button>
-                            <c:if test="${classNo>0}">
-                                <a href="/college/show_attendance?classId=${classes.id}&classNo=${classNo}" class="btn btn-success" style="margin-right: 10px">考勤查看</a>
-                                <a href="/college/show_grade?classId=${classes.id}&classNo=${classNo}" class="btn btn-info" style="margin-right: 10px">成绩查看</a>
+                            <a href="/college/show_attendance?classId=${classes.id}&classNo=${classNo}" class="btn btn-success" style="margin-right: 10px">考勤查看</a>
+                            <a href="/college/show_grade?classId=${classes.id}&classNo=${classNo}" class="btn btn-info" style="margin-right: 10px">成绩查看</a>
 
-                                <a href="/college/new_attendance?classId=${classes.id}&classNo=${classNo}" class="btn btn-success pull-right" style="margin-right: 10px">考勤签到</a>
-                                <a href="/college/new_grade?classId=${classes.id}&classNo=${classNo}" class="btn btn-info pull-right" style="margin-right: 10px">成绩录入</a>
-                            </c:if>
+                            <a href="/college/new_attendance?classId=${classes.id}&classNo=${classNo}" class="btn btn-success pull-right" style="margin-right: 10px">考勤签到</a>
+                            <a href="/college/new_grade?classId=${classes.id}&classNo=${classNo}" class="btn btn-info pull-right" style="margin-right: 10px">成绩录入</a>
                         </div>
                         <!-- /.box-footer -->
                     </div>
@@ -100,7 +95,6 @@
 
                                     <div class="form-group">
                                         <select name="classNo" class="form-control select2" style="width: 100%;" required>
-                                            <option value="0"> 待分配</option>
                                             <c:forEach var="i" begin="1" end="${classes.num}" step="1">
                                                 <option value="${i}"> ${i} 班</option>
                                             </c:forEach>
@@ -223,6 +217,7 @@
             }
         })
     });
+
 </script>
 </body>
 </html>

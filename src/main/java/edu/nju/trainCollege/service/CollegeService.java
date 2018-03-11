@@ -18,7 +18,13 @@ public interface CollegeService {
 
     public boolean checkCard(String cardNo,String pwd);
 
+    public void autoArrangeClass();
+
+    public boolean arrangeClass(int lid);
+
     public void saveCollege(College college);
+
+    public List<LessonProgress> getNoclassLpByLid(int lid);
 
     public List<Orders> getOrderByCidState(int cid, int state);
 

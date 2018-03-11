@@ -115,8 +115,87 @@ public class CollegeServceImpl implements CollegeService{
         return bankDao.findByCardIDPwd(cardNo,pwd)!=null;
     }
 
+    public void autoArrangeClass(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.WEEK_OF_YEAR,2);
+        Date start = calendar.getTime();
+        calendar.add(Calendar.DATE,2);
+        Date end = calendar.getTime();
+        List<Lesson> lessons = lessonDao.getBetweenDays(start,end);
+
+        for(Lesson l:lessons){
+            arrangeClass(l.getId());
+        }
+    }
+
+    public boolean arrangeClass(int lid) {
+        Lesson lesson = lessonDao.get(lid);
+        if(lesson==null)
+            return false;
+
+        List<Classes> classes = classesDao.getByLidOrder(lid,"price DESC");
+        int cheapCid = classes.get(classes.size()-1).getId();
+        Object[] oids = orderDao.getOidByLid(lid).toArray();
+
+        for(Classes c:classes){
+            List<LessonProgress> progresses = lessonProDao.getByOidClassIdOrder(oids,c.getId(),null);
+
+            if(progresses==null)
+                continue;
+
+            int vacant;
+//            如果是高价班，补满已有班号就行，低价班，补满所有班号
+            if(cheapCid==c.getId()){
+                vacant = c.getNum()*c.getSize()-progresses.size();
+            }else{
+                vacant = (c.getNum()*c.getSize()-progresses.size())%c.getSize();
+            }
+
+            int already = progresses.size();
+            if(vacant>0){
+                progresses = lessonProDao.getByOidClassIdOrder(oids,0,null);
+                if(vacant>=progresses.size()){
+                    for(int i = 0;i<progresses.size();i++){
+                        LessonProgress lp = progresses.get(i);
+                        lp.setClassId(c.getId());
+                        lp.setClassNo((already+i)/c.getSize()+1);
+                        lessonProDao.saveOrUpdate(lp);
+                    }
+                    return true;
+                }else{
+                    for(int i = 0;i<vacant;i++){
+                        LessonProgress lp = progresses.get(i);
+                        lp.setClassId(c.getId());
+                        lp.setClassNo((already+i)/c.getSize()+1);
+                        lessonProDao.saveOrUpdate(lp);
+                    }
+                }
+            }
+        }
+
+//        剩余人员退款
+        List<LessonProgress> progresses = lessonProDao.getByOidClassIdOrder(oids,0,null);
+        for(LessonProgress lp:progresses){
+            lp.setState(2);
+            lessonProDao.saveOrUpdate(lp);
+            PayRecord record = bankDao.findByOrderId(lp.getOid());
+            record.setId(0);
+            record.setType(1);
+            record.setPayment(lp.getPayment());
+            bankDao.save(record);
+            bankDao.saveCard("00000000",-record.getPayment());
+            bankDao.saveCard(record.getBankCardID(),record.getPayment());
+        }
+        return true;
+    }
+
     public void saveCollege(College college) {
         collegeDao.saveOrUpdate(college);
+    }
+
+    public List<LessonProgress> getNoclassLpByLid(int lid) {
+        Object[] oids = orderDao.getOidByLid(lid).toArray();
+        return lessonProDao.getByOidClassIdOrder(oids,0,null);
     }
 
     public List<Orders> getOrderByCidState(int cid, int state) {

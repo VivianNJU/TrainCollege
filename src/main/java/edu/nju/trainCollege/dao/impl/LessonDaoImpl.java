@@ -63,6 +63,12 @@ public class LessonDaoImpl implements LessonDao {
         return query.list();
     }
 
+    public List<Lesson> getBetweenDays(Date start, Date end){
+        Query query = getCurrentSession().createQuery(fromDatabase+"where state=1 and startDay>:start and " +
+                "startDay <:end").setParameter("start",start).setParameter("end",end);
+        return query.list();
+    }
+
     public Lesson get(Integer id) {
         return getCurrentSession().get(Lesson.class,id);
     }

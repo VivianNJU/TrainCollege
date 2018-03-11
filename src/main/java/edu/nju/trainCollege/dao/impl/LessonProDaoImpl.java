@@ -49,6 +49,16 @@ public class LessonProDaoImpl implements LessonProDao {
         return query.list();
     }
 
+    public List<LessonProgress> getByOidClassIdOrder(Object[] oids, int classId, String order) {
+        String sql = fromLessonProDB+"where oid in (:oids)";
+        if(classId>=0)
+            sql+=" and classId ="+classId;
+        if(order!=null)
+            sql+=" order by "+order;
+        Query query = getCurrentSession().createQuery(sql).setParameterList("oids",oids);
+        return query.list();
+    }
+
     public void saveAttendance(Attendance attendance) {
         Session session = getCurrentSession();
         Transaction tx=session.beginTransaction();

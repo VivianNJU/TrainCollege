@@ -87,7 +87,7 @@
                 </a>
                 <ul class="treeview-menu">
                     <li class="${param.new_lesson}"><a href="/college/create_lesson"><i class="fa fa-circle-o"></i> 新增课程</a></li>
-                    <li class="${param.attendance}"><a href="/college/begin_lessons"><i class="fa fa-circle-o"></i> 考勤/成绩</a></li>
+                    <li class="${param.attendance}"><a href="/college/begin_lessons"><i class="fa fa-circle-o"></i> 考勤/成绩/分班</a></li>
                 </ul>
             </li>
 
